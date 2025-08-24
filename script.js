@@ -399,6 +399,19 @@ function showStep(stepNumber) {
         targetStep.classList.add('active');
     }
     
+    // Update step counter
+    const currentStepElement = document.getElementById('currentStep');
+    if (currentStepElement) {
+        currentStepElement.textContent = stepNumber;
+    }
+    
+    // Update progress bar
+    const progressFill = document.getElementById('progressFill');
+    if (progressFill) {
+        const progressPercentage = (stepNumber / totalSteps) * 100;
+        progressFill.style.width = `${progressPercentage}%`;
+    }
+    
     // Update navigation buttons
     updateNavigationButtons(stepNumber);
 }
