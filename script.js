@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Onboarding functionality
 let currentStep = 1;
-const totalSteps = 4;
+const totalSteps = 6;
 
 function showStep(stepNumber) {
     // Hide all steps
@@ -394,13 +394,10 @@ function showStep(stepNumber) {
     });
     
     // Show current step
-    const targetStep = document.getElementById(`step-${stepNumber}`);
+    const targetStep = document.getElementById(`step${stepNumber}`);
     if (targetStep) {
         targetStep.classList.add('active');
     }
-    
-    // Update progress indicator
-    updateProgressIndicator(stepNumber);
     
     // Update navigation buttons
     updateNavigationButtons(stepNumber);
@@ -434,15 +431,15 @@ function updateProgressIndicator(currentStep) {
 }
 
 function updateNavigationButtons(stepNumber) {
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
     
     if (prevBtn) {
-        prevBtn.style.visibility = stepNumber === 1 ? 'hidden' : 'visible';
+        prevBtn.style.display = stepNumber === 1 ? 'none' : 'inline-block';
     }
     
     if (nextBtn) {
-        nextBtn.textContent = stepNumber === totalSteps ? 'Complete Profile' : 'Next Step';
+        nextBtn.textContent = stepNumber === totalSteps ? 'Complete Setup' : 'Next';
     }
 }
 
@@ -468,7 +465,7 @@ function completeOnboarding() {
     const formData = collectOnboardingData();
     
     // Show completion message
-    showNotification('Profile created successfully! Redirecting to dashboard...', 'success');
+    showNotification('Profile created successfully! Redirecting to dashboard...');
     
     // Simulate saving data and redirect
     setTimeout(() => {
@@ -479,45 +476,32 @@ function completeOnboarding() {
 function collectOnboardingData() {
     const data = {};
     
-    // Step 1: Financial Background
-    const currentSituation = document.getElementById('current-situation');
-    const primaryGoal = document.getElementById('primary-goal');
-    const timeframe = document.getElementById('timeframe');
+    // Step 1: Income
+    const income = document.getElementById('income');
+    if (income) data.income = income.value;
     
-    if (currentSituation) data.currentSituation = currentSituation.value;
-    if (primaryGoal) data.primaryGoal = primaryGoal.value;
-    if (timeframe) data.timeframe = timeframe.value;
+    // Step 2: Debt
+    const debt = document.getElementById('debt');
+    if (debt) data.debt = debt.value;
     
-    // Step 2: Current Habits
-    const budgetingHabits = [];
-    document.querySelectorAll('input[name="budgeting"]:checked').forEach(cb => {
-        budgetingHabits.push(cb.value);
+    // Step 3: Savings
+    const savings = document.getElementById('savings');
+    if (savings) data.savings = savings.value;
+    
+    // Step 4: Experience
+    const experience = document.querySelector('input[name="experience"]:checked');
+    if (experience) data.experience = experience.value;
+    
+    // Step 5: Goals
+    const goals = [];
+    document.querySelectorAll('input[name="goals"]:checked').forEach(cb => {
+        goals.push(cb.value);
     });
-    data.budgetingHabits = budgetingHabits;
+    data.goals = goals;
     
-    const savingFrequency = document.querySelector('input[name="saving-frequency"]:checked');
-    data.savingFrequency = savingFrequency ? savingFrequency.value : '';
-    
-    const investmentExperience = document.querySelector('input[name="investment-experience"]:checked');
-    data.investmentExperience = investmentExperience ? investmentExperience.value : '';
-    
-    // Step 3: Goals & Motivation
-    const specificGoals = document.getElementById('specific-goals');
-    const biggestChallenge = document.getElementById('biggest-challenge');
-    const motivationSource = document.getElementById('motivation-source');
-    
-    if (specificGoals) data.specificGoals = specificGoals.value;
-    if (biggestChallenge) data.biggestChallenge = biggestChallenge.value;
-    if (motivationSource) data.motivationSource = motivationSource.value;
-    
-    // Step 4: Confidence & Stress
-    const confidenceLevel = document.getElementById('confidence-level');
-    const stressLevel = document.getElementById('stress-level');
-    const supportAreas = document.getElementById('support-areas');
-    
-    if (confidenceLevel) data.confidenceLevel = confidenceLevel.value;
-    if (stressLevel) data.stressLevel = stressLevel.value;
-    if (supportAreas) data.supportAreas = supportAreas.value;
+    // Step 6: Motivation
+    const motivation = document.getElementById('motivation');
+    if (motivation) data.motivation = motivation.value;
     
     console.log('Onboarding data collected:', data);
     return data;
@@ -541,16 +525,14 @@ function updateSliderValue(sliderId, displayId) {
 
 // Initialize onboarding when page loads
 function initializeOnboarding() {
-    if (document.getElementById('onboarding-page')) {
+    // Check if we're on the start-here page
+    const startHerePage = document.getElementById('start-here');
+    if (startHerePage) {
         showStep(1);
         
-        // Initialize slider value displays
-        updateSliderValue('confidence-level', 'confidence-value');
-        updateSliderValue('stress-level', 'stress-value');
-        
         // Add event listeners for navigation buttons
-        const nextBtn = document.getElementById('next-btn');
-        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
         
         if (nextBtn) {
             nextBtn.addEventListener('click', nextStep);
