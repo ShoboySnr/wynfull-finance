@@ -381,6 +381,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize onboarding functionality
     initializeOnboarding();
+    
+    // Initialize modal functionality
+    initializeModal();
+    
+    // Initialize notification functionality
+    initializeNotifications();
+    
+    // Initialize theme functionality
+    initializeTheme();
+    
+    // Show onboarding modal on page load
+    openOnboardingModal();
 });
 
 // Onboarding functionality
@@ -457,6 +469,11 @@ function updateNavigationButtons(stepNumber) {
 }
 
 function nextStep() {
+    // Validate current step before proceeding
+    if (!validateCurrentStep()) {
+        return; // Don't proceed if validation fails
+    }
+    
     if (currentStep < totalSteps) {
         currentStep++;
         showStep(currentStep);
@@ -464,6 +481,64 @@ function nextStep() {
         // Complete onboarding
         completeOnboarding();
     }
+}
+
+function validateCurrentStep() {
+    switch (currentStep) {
+        case 1: // Income
+            const income = document.getElementById('income');
+            if (!income.value || parseFloat(income.value) <= 0) {
+                alert('Please enter a valid annual income amount.');
+                income.focus();
+                return false;
+            }
+            break;
+            
+        case 2: // Debt
+            const debt = document.getElementById('debt');
+            if (!debt.value || parseFloat(debt.value) < 0) {
+                alert('Please enter your total debt amount (enter 0 if you have no debt).');
+                debt.focus();
+                return false;
+            }
+            break;
+            
+        case 3: // Savings
+            const savings = document.getElementById('savings');
+            if (!savings.value || parseFloat(savings.value) < 0) {
+                alert('Please enter your current savings amount (enter 0 if you have no savings).');
+                savings.focus();
+                return false;
+            }
+            break;
+            
+        case 4: // Experience
+            const experience = document.querySelector('input[name="experience"]:checked');
+            if (!experience) {
+                alert('Please select your investing experience level.');
+                return false;
+            }
+            break;
+            
+        case 5: // Goals
+            const goals = document.querySelectorAll('input[name="goals"]:checked');
+            if (goals.length === 0) {
+                alert('Please select at least one financial goal.');
+                return false;
+            }
+            break;
+            
+        case 6: // Motivation
+            const motivation = document.getElementById('motivation');
+            if (!motivation.value.trim()) {
+                alert('Please tell us what motivates you to improve your finances.');
+                motivation.focus();
+                return false;
+            }
+            break;
+    }
+    
+    return true;
 }
 
 function prevStep() {
@@ -478,16 +553,13 @@ function completeOnboarding() {
     const formData = collectOnboardingData();
     
     // Show completion message
-    alert('Profile created successfully! Redirecting to dashboard...');
+    alert('Profile created successfully!');
     
-    // Direct navigation to dashboard
-    const dashboardLink = document.querySelector('[data-page="dashboard"]');
-    if (dashboardLink) {
-        dashboardLink.click();
-    } else {
-        // Fallback: directly show dashboard page
-        showPage('dashboard');
-    }
+    // Close the modal
+    closeOnboardingModal();
+    
+    // Ensure Dashboard is active
+    showPage('dashboard');
 }
 
 function collectOnboardingData() {
@@ -542,22 +614,138 @@ function updateSliderValue(sliderId, displayId) {
 
 // Initialize onboarding when page loads
 function initializeOnboarding() {
-    // Check if we're on the start-here page
-    const startHerePage = document.getElementById('start-here');
-    if (startHerePage) {
+    // Add event listeners for navigation buttons
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextStep);
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevStep);
+    }
+}
+
+// Modal functionality
+function initializeModal() {
+    const startBtn = document.getElementById('startOnboardingBtn');
+    
+    if (startBtn) {
+        startBtn.addEventListener('click', openOnboardingModal);
+    }
+    
+    // Modal is non-closable - no close button or click-outside functionality
+}
+
+function openOnboardingModal() {
+    const modal = document.getElementById('onboardingModal');
+    if (modal) {
+        modal.classList.add('active');
+        currentStep = 1;
         showStep(1);
-        
-        // Add event listeners for navigation buttons
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextStep);
+    }
+}
+
+function closeOnboardingModal() {
+    const modal = document.getElementById('onboardingModal');
+    if (modal) {
+        modal.classList.remove('active');
+        // Reset form
+        resetOnboardingForm();
+    }
+}
+
+function resetOnboardingForm() {
+    // Reset all form inputs
+    document.querySelectorAll('#onboardingModal input, #onboardingModal textarea').forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.checked = false;
+        } else {
+            input.value = '';
         }
-        
-        if (prevBtn) {
-            prevBtn.addEventListener('click', prevStep);
+    });
+    
+    // Reset to first step
+    currentStep = 1;
+    showStep(1);
+}
+
+// Theme functionality
+function initializeTheme() {
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Load saved theme or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = body.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+}
+
+function setTheme(theme) {
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const icon = themeToggle?.querySelector('i');
+    
+    if (theme === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+        if (icon) {
+            icon.className = 'fas fa-sun';
         }
+    } else {
+        body.removeAttribute('data-theme');
+        if (icon) {
+            icon.className = 'fas fa-moon';
+        }
+    }
+}
+
+// Notification functionality
+function initializeNotifications() {
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationPanel = document.getElementById('notificationPanel');
+    const closeNotifications = document.getElementById('closeNotifications');
+    
+    if (notificationBtn && notificationPanel) {
+        notificationBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleNotificationPanel();
+        });
+    }
+    
+    if (closeNotifications) {
+        closeNotifications.addEventListener('click', function() {
+            hideNotificationPanel();
+        });
+    }
+    
+    // Close notification panel when clicking outside
+    document.addEventListener('click', function(e) {
+        if (notificationPanel && !notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+            hideNotificationPanel();
+        }
+    });
+}
+
+function toggleNotificationPanel() {
+    const panel = document.getElementById('notificationPanel');
+    if (panel) {
+        panel.classList.toggle('active');
+    }
+}
+
+function hideNotificationPanel() {
+    const panel = document.getElementById('notificationPanel');
+    if (panel) {
+        panel.classList.remove('active');
     }
 }
 
