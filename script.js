@@ -478,12 +478,16 @@ function completeOnboarding() {
     const formData = collectOnboardingData();
     
     // Show completion message
-    showNotification('Profile created successfully! Redirecting to dashboard...');
+    alert('Profile created successfully! Redirecting to dashboard...');
     
-    // Simulate saving data and redirect
-    setTimeout(() => {
-        document.querySelector('[data-page="dashboard"]').click();
-    }, 2000);
+    // Direct navigation to dashboard
+    const dashboardLink = document.querySelector('[data-page="dashboard"]');
+    if (dashboardLink) {
+        dashboardLink.click();
+    } else {
+        // Fallback: directly show dashboard page
+        showPage('dashboard');
+    }
 }
 
 function collectOnboardingData() {
