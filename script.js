@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get all navigation links and pages
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
-    const menuToggle = document.querySelector('.menu-toggle');
+    const menuToggle = document.querySelector('#mobileMenuToggle');
     const sidebar = document.querySelector('.sidebar');
 
     // Handle navigation
