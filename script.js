@@ -1,5 +1,8 @@
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if onboarding has been completed
+    checkOnboardingStatus();
+    
     // Get all navigation links and pages
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
@@ -48,21 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Quick action buttons
-    const actionButtons = document.querySelectorAll('.action-btn');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const text = this.textContent.trim();
+    const quickActionBtns = document.querySelectorAll('.action-btn');
+    quickActionBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.action-card');
+            const title = card.querySelector('h3').textContent;
             
-            if (text === 'Book Now') {
-                // Navigate to coach call page
-                document.querySelector('[data-page="coach-call"]').click();
-            } else if (text === 'Explore') {
-                // Navigate to resource library
-                document.querySelector('[data-page="resource-library"]').click();
-            } else if (text === 'Ask Now') {
-                // Navigate to AI assistant
-                document.querySelector('[data-page="ai-assistant"]').click();
-            }
+            // Add some visual feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // You can add specific functionality for each action here
+            console.log(`${title} clicked`);
         });
     });
 
@@ -382,18 +384,226 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize onboarding functionality
     initializeOnboarding();
     
-    // Initialize modal functionality
+    // Initialize all functionality
     initializeModal();
-    
-    // Initialize notification functionality
-    initializeNotifications();
-    
-    // Initialize theme functionality
     initializeTheme();
-    
-    // Show onboarding modal on page load
-    openOnboardingModal();
+    initializeAnimations();
+    initializeMessaging();
+    initializeNotifications();
 });
+
+// Messaging functionality
+function initializeMessaging() {
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const messagesList = document.getElementById('messagesList');
+    const coachItems = document.querySelectorAll('.coach-item');
+    
+    if (!messageInput || !sendBtn || !messagesList) {
+        return; // Messaging elements not found, probably not on messaging page
+    }
+    
+    // Coach selection functionality
+    coachItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from all coaches
+            coachItems.forEach(coach => coach.classList.remove('active'));
+            
+            // Add active class to clicked coach
+            this.classList.add('active');
+            
+            // Update chat header with selected coach info
+            const coachName = this.querySelector('h4').textContent;
+            const coachSpecialty = this.querySelector('.coach-specialty').textContent;
+            const coachAvatar = this.querySelector('.coach-avatar img').src;
+            const statusDot = this.querySelector('.status-dot');
+            const isOnline = statusDot.classList.contains('online');
+            
+            updateChatHeader(coachName, coachSpecialty, coachAvatar, isOnline);
+            
+            // Clear current messages and load coach-specific messages
+            loadCoachMessages(this.dataset.coach);
+            
+            // Remove unread badge if present
+            const unreadBadge = this.querySelector('.unread-badge');
+            if (unreadBadge) {
+                unreadBadge.remove();
+            }
+        });
+    });
+    
+    function updateChatHeader(name, specialty, avatar, isOnline) {
+        const coachHeader = document.querySelector('.coach-header');
+        const statusText = isOnline ? 'Online' : 'Offline';
+        const statusClass = isOnline ? 'online' : 'offline';
+        
+        coachHeader.querySelector('.coach-profile img').src = avatar;
+        coachHeader.querySelector('.coach-details h3').textContent = name;
+        coachHeader.querySelector('.coach-details p').textContent = specialty;
+        coachHeader.querySelector('.coach-status span:last-child').textContent = statusText;
+        coachHeader.querySelector('.coach-status').className = `coach-status ${statusClass}`;
+    }
+    
+    function loadCoachMessages(coachId) {
+        // Clear existing messages except date separators
+        const messages = messagesList.querySelectorAll('.message');
+        messages.forEach(msg => msg.remove());
+        
+        // Load different message sets based on coach
+        if (coachId === 'sarah-chen') {
+            loadSarahChenMessages();
+        } else if (coachId === 'michael-torres') {
+            loadMichaelTorresMessages();
+        } else if (coachId === 'lisa-wang') {
+            loadLisaWangMessages();
+        } else if (coachId === 'david-kim') {
+            loadDavidKimMessages();
+        }
+    }
+    
+    function loadSarahChenMessages() {
+        // Keep existing Sarah Chen messages (default)
+        // Messages are already in HTML
+    }
+    
+    function loadMichaelTorresMessages() {
+        const todaySection = messagesList.querySelector('.message-date');
+        
+        const message1 = createMessageElement("I've reviewed your 401k contribution strategy. You're currently contributing 6% but your employer matches up to 8%. I recommend increasing to get the full match.", 'coach');
+        const message2 = createMessageElement("That's free money you're leaving on the table! How does increasing to 8% sound?", 'coach');
+        const message3 = createMessageElement("You're absolutely right! I can increase it to 8% starting next paycheck. Will this affect my tax situation significantly?", 'user');
+        const message4 = createMessageElement("Great decision! The additional 2% will actually reduce your taxable income, so you'll see tax benefits too. I'll send you a projection.", 'coach');
+        
+        todaySection.after(message1, message2, message3, message4);
+    }
+    
+    function loadLisaWangMessages() {
+        const todaySection = messagesList.querySelector('.message-date');
+        
+        const message1 = createMessageElement("The home buying checklist you requested is ready! I've customized it based on your current financial situation and the local market.", 'coach');
+        const message2 = createMessageElement("Based on your income and savings, you're in a good position to consider homes in the $350-400k range.", 'coach');
+        const message3 = createMessageElement("That's exciting! Should I start looking at pre-approval options? What's the typical down payment you'd recommend?", 'user');
+        const message4 = createMessageElement("I'd recommend 10-15% down to avoid PMI while keeping some emergency funds. Let's schedule a call to discuss lenders.", 'coach');
+        
+        todaySection.after(message1, message2, message3, message4);
+    }
+    
+    function loadDavidKimMessages() {
+        const todaySection = messagesList.querySelector('.message-date');
+        
+        const message1 = createMessageElement("Your business plan looks solid! The financial projections are realistic and the market analysis is thorough.", 'coach');
+        const message2 = createMessageElement("I especially like your conservative revenue estimates for year one. Have you considered the business structure - LLC vs S-Corp?", 'coach');
+        const message3 = createMessageElement("I was leaning towards LLC for simplicity. What are the main advantages of S-Corp for a business like mine?", 'user');
+        const message4 = createMessageElement("For your projected revenue, S-Corp could save on self-employment taxes. Let's run the numbers together in our next session.", 'coach');
+        
+        todaySection.after(message1, message2, message3, message4);
+    }
+    
+    // Auto-resize textarea
+    messageInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        
+        // Enable/disable send button based on content
+        sendBtn.disabled = this.value.trim() === '';
+    });
+    
+    // Send message on button click
+    sendBtn.addEventListener('click', sendMessage);
+    
+    // Send message on Enter key (but allow Shift+Enter for new lines)
+    messageInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (!messageText) return;
+        
+        // Create user message element
+        const messageElement = createMessageElement(messageText, 'user');
+        
+        // Add message to list
+        messagesList.appendChild(messageElement);
+        
+        // Clear input
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+        sendBtn.disabled = true;
+        
+        // Scroll to bottom
+        messagesList.scrollTop = messagesList.scrollHeight;
+        
+        // Simulate coach response after a delay
+        setTimeout(() => {
+            const responses = [
+                "Thanks for your message! I'll review this and get back to you shortly.",
+                "Great question! Let me look into this for you.",
+                "I appreciate you sharing this with me. I'll provide some guidance soon.",
+                "That's a good point. I'll prepare some recommendations for you."
+            ];
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            const coachMessage = createMessageElement(randomResponse, 'coach');
+            messagesList.appendChild(coachMessage);
+            messagesList.scrollTop = messagesList.scrollHeight;
+        }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
+    }
+    
+    function createMessageElement(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender === 'user' ? 'user-message' : 'coach-message'}`;
+        
+        const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        if (sender === 'coach') {
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                </div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-sender">Sarah Chen</span>
+                        <span class="message-time">${currentTime}</span>
+                    </div>
+                    <div class="message-text">${text}</div>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-sender">You</span>
+                        <span class="message-time">${currentTime}</span>
+                    </div>
+                    <div class="message-text">${text}</div>
+                </div>
+            `;
+        }
+        
+        return messageDiv;
+    }
+    
+    // Initialize send button state
+    sendBtn.disabled = true;
+}
+
+// Check onboarding status function
+function checkOnboardingStatus() {
+    const onboardingCompleted = localStorage.getItem('wynfullOnboardingCompleted');
+    
+    if (onboardingCompleted === 'true') {
+        // Onboarding already completed, don't show modal
+        return;
+    }
+    
+    // Show onboarding modal automatically for new users
+    setTimeout(() => {
+        openOnboardingModal();
+    }, 1000); // Small delay to ensure page is fully loaded
+}
 
 // Onboarding functionality
 let currentStep = 1;
@@ -551,6 +761,10 @@ function prevStep() {
 function completeOnboarding() {
     // Collect all form data
     const formData = collectOnboardingData();
+    
+    // Save onboarding completion status to localStorage
+    localStorage.setItem('wynfullOnboardingCompleted', 'true');
+    localStorage.setItem('wynfullOnboardingData', JSON.stringify(formData));
     
     // Show completion message
     alert('Profile created successfully!');
