@@ -1982,7 +1982,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);
+    transform: translateX(20px);
 }
 
 .danger-zone {
@@ -4396,4 +4396,489 @@ input:checked + .slider:before {
 
 .quick-action-card button {
     width: 100%;
+}
+
+/* Coach Dashboard - Clients Page */
+.clients-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-tab.active {
+    background: var(--wynfull-blue);
+    color: white;
+    border-color: var(--wynfull-blue);
+}
+
+.clients-search {
+    position: relative;
+    width: 300px;
+}
+
+.clients-search i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.clients-search input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.client-card {
+    background: var(--background-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    transition: all 0.2s ease;
+}
+
+.client-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.client-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.client-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.client-info {
+    flex: 1;
+}
+
+.client-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.client-info p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem 0;
+}
+
+.client-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.client-status {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.client-status.online {
+    background: #22c55e;
+}
+
+.client-status.away {
+    background: #f59e0b;
+}
+
+.client-status.offline {
+    background: #6b7280;
+}
+
+.client-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--background-light);
+    border-radius: 8px;
+}
+
+.client-stats .stat {
+    text-align: center;
+}
+
+.client-stats .label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.client-stats .value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.client-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.client-actions button {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Coach Dashboard - Messages Page */
+.coach-messaging-container {
+    display: flex;
+    height: calc(100vh - 200px);
+    background: var(--background-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.coach-clients-sidebar {
+    width: 350px;
+    background: var(--background-light);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+}
+
+.clients-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clients-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.new-message-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.conversations-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background 0.2s ease;
+    position: relative;
+}
+
+.conversation-item:hover {
+    background: var(--background-primary);
+}
+
+.conversation-item.active {
+    background: rgba(14, 77, 164, 0.1);
+    border-right: 3px solid var(--wynfull-blue);
+}
+
+.conversation-avatar {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.conversation-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.last-message {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.25rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.unread-count {
+    background: var(--wynfull-blue);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.coach-chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: var(--background-primary);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.client-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.client-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.client-details h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.client-details p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.chat-actions button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.coach-messages-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.messages-list {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.message-date {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.message-date span {
+    background: var(--background-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.message {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.client-message {
+    justify-content: flex-start;
+}
+
+.coach-message {
+    justify-content: flex-end;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-content {
+    max-width: 70%;
+    background: var(--background-light);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+}
+
+.coach-message .message-content {
+    background: var(--wynfull-blue);
+    color: white;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.message-sender {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.message-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.message-input-container {
+    padding: 1rem;
+    border-top: 1px solid var(--border-light);
+    background: var(--background-primary);
+}
+
+.message-input-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    background: var(--background-light);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.attachment-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.attachment-btn:hover {
+    background: var(--background-primary);
+    color: var(--wynfull-blue);
+}
+
+.message-input {
+    flex: 1;
+    border: none;
+    background: none;
+    resize: none;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-height: 120px;
+    min-height: 20px;
+}
+
+.message-input:focus {
+    outline: none;
+}
+
+.send-btn {
+    background: var(--wynfull-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+    background: var(--wynfull-blue-dark);
 }
