@@ -595,7 +595,16 @@ function checkOnboardingStatus() {
     const onboardingCompleted = localStorage.getItem('wynfullOnboardingCompleted');
     
     if (onboardingCompleted === 'true') {
-        // Onboarding already completed, don't show modal
+        // Onboarding already completed, load existing data and update dashboard
+        const savedData = localStorage.getItem('wynfullOnboardingData');
+        if (savedData) {
+            try {
+                const formData = JSON.parse(savedData);
+                updateDashboardFromOnboarding(formData);
+            } catch (error) {
+                console.error('Error loading onboarding data:', error);
+            }
+        }
         return;
     }
     
@@ -607,35 +616,54 @@ function checkOnboardingStatus() {
 
 // Onboarding functionality
 let currentStep = 1;
-const totalSteps = 6;
+const totalSteps = 7;
 
 function showStep(stepNumber) {
+    // Clear any existing error message when changing steps
+    hideErrorMessage();
+    
     // Hide all steps
     document.querySelectorAll('.onboarding-step').forEach(step => {
         step.classList.remove('active');
     });
     
     // Show current step
-    const targetStep = document.getElementById(`step${stepNumber}`);
-    if (targetStep) {
-        targetStep.classList.add('active');
-    }
-    
-    // Update step counter
-    const currentStepElement = document.getElementById('currentStep');
+    const currentStepElement = document.getElementById(`step${stepNumber}`);
     if (currentStepElement) {
-        currentStepElement.textContent = stepNumber;
+        currentStepElement.classList.add('active');
     }
     
     // Update progress bar
     const progressFill = document.getElementById('progressFill');
+    const progressPercentage = (stepNumber / totalSteps) * 100;
     if (progressFill) {
-        const progressPercentage = (stepNumber / totalSteps) * 100;
         progressFill.style.width = `${progressPercentage}%`;
     }
     
-    // Update navigation buttons
-    updateNavigationButtons(stepNumber);
+    // Update step counter
+    const currentStepDisplay = document.getElementById('currentStep');
+    if (currentStepDisplay) {
+        currentStepDisplay.textContent = stepNumber;
+    }
+    
+    // Update button visibility
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const completeBtn = document.getElementById('completeBtn');
+    
+    if (prevBtn) {
+        prevBtn.style.display = stepNumber === 1 ? 'none' : 'inline-flex';
+    }
+    
+    if (nextBtn && completeBtn) {
+        if (stepNumber === totalSteps) {
+            nextBtn.style.display = 'none';
+            completeBtn.style.display = 'inline-flex';
+        } else {
+            nextBtn.style.display = 'inline-flex';
+            completeBtn.style.display = 'none';
+        }
+    }
 }
 
 function updateProgressIndicator(currentStep) {
@@ -694,60 +722,75 @@ function nextStep() {
 }
 
 function validateCurrentStep() {
+    // Clear any existing error message
+    hideErrorMessage();
+    
     switch (currentStep) {
-        case 1: // Income
-            const income = document.getElementById('income');
-            if (!income.value || parseFloat(income.value) <= 0) {
-                alert('Please enter a valid annual income amount.');
-                income.focus();
+        case 1: // Financial situation
+            const financialSituation = document.querySelector('input[name="financial-situation"]:checked');
+            if (!financialSituation) {
+                showErrorMessage('Please select your current financial situation.');
+                return false;
+            }
+            // If "other" is selected, check if text is provided
+            if (financialSituation.value === 'other') {
+                const otherText = document.getElementById('financial-situation-other');
+                if (!otherText.value.trim()) {
+                    showErrorMessage('Please specify your financial situation.');
+                    otherText.focus();
+                    return false;
+                }
+            }
+            break;
+            
+        case 2: // Primary goal
+            const primaryGoal = document.querySelector('input[name="primary-goal"]:checked');
+            if (!primaryGoal) {
+                showErrorMessage('Please select your primary money goal.');
                 return false;
             }
             break;
             
-        case 2: // Debt
-            const debt = document.getElementById('debt');
-            if (!debt.value || parseFloat(debt.value) < 0) {
-                alert('Please enter your total debt amount (enter 0 if you have no debt).');
-                debt.focus();
+        case 3: // Confidence level
+            const confidenceLevel = document.querySelector('input[name="confidence-level"]:checked');
+            if (!confidenceLevel) {
+                showErrorMessage('Please select your confidence level.');
                 return false;
             }
             break;
             
-        case 3: // Savings
-            const savings = document.getElementById('savings');
-            if (!savings.value || parseFloat(savings.value) < 0) {
-                alert('Please enter your current savings amount (enter 0 if you have no savings).');
-                savings.focus();
+        case 4: // Debt feelings
+            const debtFeelings = document.querySelector('input[name="debt-feeling"]:checked');
+            if (!debtFeelings) {
+                showErrorMessage('Please select how you feel about your current debt.');
                 return false;
             }
             break;
             
-        case 4: // Experience
-            const experience = document.querySelector('input[name="experience"]:checked');
-            if (!experience) {
-                alert('Please select your investing experience level.');
+        case 5: // Savings amount
+            const savingsAmount = document.querySelector('input[name="savings-amount"]:checked');
+            if (!savingsAmount) {
+                showErrorMessage('Please select your current savings amount.');
                 return false;
             }
             break;
             
-        case 5: // Goals
-            const goals = document.querySelectorAll('input[name="goals"]:checked');
-            if (goals.length === 0) {
-                alert('Please select at least one financial goal.');
+        case 6: // Investing status
+            const investingStatus = document.querySelector('input[name="investing-status"]:checked');
+            if (!investingStatus) {
+                showErrorMessage('Please select your current investing status.');
                 return false;
             }
             break;
             
-        case 6: // Motivation
-            const motivation = document.getElementById('motivation');
-            if (!motivation.value.trim()) {
-                alert('Please tell us what motivates you to improve your finances.');
-                motivation.focus();
+        case 7: // Investing experience
+            const investingExperience = document.querySelector('input[name="investing-experience"]:checked');
+            if (!investingExperience) {
+                showErrorMessage('Please select your investing experience level.');
                 return false;
             }
             break;
     }
-    
     return true;
 }
 
@@ -758,19 +801,72 @@ function prevStep() {
     }
 }
 
+// Error message functions for onboarding modal
+function showErrorMessage(message) {
+    const errorContainer = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
+    
+    if (errorContainer && errorText) {
+        errorText.textContent = message;
+        errorContainer.style.display = 'flex';
+        
+        // Scroll to the error message
+        setTimeout(() => {
+            errorContainer.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }, 100); // Small delay to ensure the element is visible
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            hideErrorMessage();
+        }, 5000);
+    }
+}
+
+function hideErrorMessage() {
+    const errorContainer = document.getElementById('errorMessage');
+    if (errorContainer) {
+        errorContainer.style.display = 'none';
+    }
+}
+
+// Welcome modal functions
+function showWelcomeModal() {
+    const welcomeModal = document.getElementById('welcomeModal');
+    if (welcomeModal) {
+        welcomeModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeWelcomeModal() {
+    const welcomeModal = document.getElementById('welcomeModal');
+    if (welcomeModal) {
+        welcomeModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
 function completeOnboarding() {
     // Collect all form data
     const formData = collectOnboardingData();
-    
+        
     // Save onboarding completion status to localStorage
     localStorage.setItem('wynfullOnboardingCompleted', 'true');
     localStorage.setItem('wynfullOnboardingData', JSON.stringify(formData));
     
-    // Show completion message
-    alert('Profile created successfully!');
+    // Update dashboard based on questionnaire responses
+    updateDashboardFromOnboarding(formData);
     
-    // Close the modal
+    // Close the onboarding modal
     closeOnboardingModal();
+    
+    // Show welcome modal
+    setTimeout(() => {
+        showWelcomeModal();
+    }, 500);
     
     // Ensure Dashboard is active
     showPage('dashboard');
@@ -779,35 +875,192 @@ function completeOnboarding() {
 function collectOnboardingData() {
     const data = {};
     
-    // Step 1: Income
-    const income = document.getElementById('income');
-    if (income) data.income = income.value;
+    // Step 1: Financial Situation
+    const financialSituation = document.querySelector('input[name="financial-situation"]:checked');
+    if (financialSituation) {
+        data.financialSituation = financialSituation.value;
+        if (financialSituation.value === 'other') {
+            const otherInput = document.getElementById('financial-situation-other');
+            if (otherInput) data.financialSituationOther = otherInput.value;
+        }
+    }
     
-    // Step 2: Debt
-    const debt = document.getElementById('debt');
-    if (debt) data.debt = debt.value;
+    // Step 2: Primary Goal
+    const primaryGoal = document.querySelector('input[name="primary-goal"]:checked');
+    if (primaryGoal) data.primaryGoal = primaryGoal.value;
     
-    // Step 3: Savings
-    const savings = document.getElementById('savings');
-    if (savings) data.savings = savings.value;
+    // Step 3: Confidence Level
+    const confidenceLevel = document.querySelector('input[name="confidence-level"]:checked');
+    if (confidenceLevel) data.confidenceLevel = confidenceLevel.value;
     
-    // Step 4: Experience
-    const experience = document.querySelector('input[name="experience"]:checked');
-    if (experience) data.experience = experience.value;
+    // Step 4: Debt Feeling
+    const debtFeeling = document.querySelector('input[name="debt-feeling"]:checked');
+    if (debtFeeling) data.debtFeeling = debtFeeling.value;
     
-    // Step 5: Goals
-    const goals = [];
-    document.querySelectorAll('input[name="goals"]:checked').forEach(cb => {
-        goals.push(cb.value);
-    });
-    data.goals = goals;
+    // Step 5: Savings Amount
+    const savingsAmount = document.querySelector('input[name="savings-amount"]:checked');
+    if (savingsAmount) data.savingsAmount = savingsAmount.value;
     
-    // Step 6: Motivation
-    const motivation = document.getElementById('motivation');
-    if (motivation) data.motivation = motivation.value;
+    // Step 6: Investing Status
+    const investingStatus = document.querySelector('input[name="investing-status"]:checked');
+    if (investingStatus) data.investingStatus = investingStatus.value;
+    
+    // Step 7: Investing Experience
+    const investingExperience = document.querySelector('input[name="investing-experience"]:checked');
+    if (investingExperience) data.investingExperience = investingExperience.value;
     
     console.log('Onboarding data collected:', data);
     return data;
+}
+
+// Update dashboard components based on onboarding responses
+function updateDashboardFromOnboarding(data) {
+    // Update Primary Goal Card
+    updatePrimaryGoalCard(data.primaryGoal);
+    
+    // Update Confidence Score Card
+    updateConfidenceScoreCard(data.confidenceLevel);
+    
+    // Update Investing Knowledge Card
+    updateInvestingKnowledgeCard(data.investingExperience);
+    
+    // Update Phase Progress based on financial situation
+    updatePhaseProgress(data.financialSituation);
+    
+    // Update Emergency Fund Thermometer
+    updateEmergencyFundThermometer(data.savingsAmount);
+    
+    // Update Investment Tracker
+    updateInvestmentTracker(data.investingStatus);
+}
+
+function updatePrimaryGoalCard(primaryGoal) {
+    const goalText = document.getElementById('primaryGoalText');
+    const goalProgress = document.getElementById('primaryGoalProgress');
+    
+    if (!goalText || !goalProgress) return;
+    
+    const goalMap = {
+        'pay-off-debt': 'Pay Off Debt',
+        'emergency-fund': 'Build Emergency Fund',
+        'big-purchase': 'Save for Big Purchase',
+        'start-investing': 'Start Investing',
+        'wealth-retirement': 'Build Wealth'
+    };
+    
+    goalText.textContent = goalMap[primaryGoal] || 'Not Set';
+    goalProgress.textContent = 'In Progress';
+    goalProgress.className = 'metric-change positive';
+}
+
+function updateConfidenceScoreCard(confidenceLevel) {
+    const scoreValue = document.getElementById('confidenceScoreValue');
+    const scoreLevel = document.getElementById('confidenceScoreLevel');
+    
+    if (!scoreValue || !scoreLevel) return;
+    
+    const confidenceMap = {
+        'not-confident': { score: '25%', level: 'Building Confidence', class: 'negative' },
+        'somewhat-confident': { score: '50%', level: 'Growing Confidence', class: 'neutral' },
+        'confident': { score: '75%', level: 'Confident', class: 'positive' },
+        'very-confident': { score: '90%', level: 'Very Confident', class: 'positive' }
+    };
+    
+    const confidence = confidenceMap[confidenceLevel] || { score: '--', level: 'Not Set', class: 'neutral' };
+    scoreValue.textContent = confidence.score;
+    scoreLevel.textContent = confidence.level;
+    scoreLevel.className = `metric-change ${confidence.class}`;
+}
+
+function updateInvestingKnowledgeCard(investingExperience) {
+    const knowledgeLevel = document.getElementById('investingKnowledgeLevel');
+    const knowledgeBadge = document.getElementById('investingKnowledgeBadge');
+    
+    if (!knowledgeLevel || !knowledgeBadge) return;
+    
+    const experienceMap = {
+        'beginner': { level: 'Beginner', badge: 'Learning Mode', class: 'neutral' },
+        'intermediate': { level: 'Intermediate', badge: 'Growing', class: 'positive' },
+        'advanced': { level: 'Advanced', badge: 'Expert Level', class: 'positive' }
+    };
+    
+    const experience = experienceMap[investingExperience] || { level: '--', badge: 'Not Set', class: 'neutral' };
+    knowledgeLevel.textContent = experience.level;
+    knowledgeBadge.textContent = experience.badge;
+    knowledgeBadge.className = `metric-change ${experience.class}`;
+}
+
+function updatePhaseProgress(financialSituation) {
+    const phaseMap = {
+        'struggling-debt': { reset: 100, control: 0, grow: 0, sustain: 0 },
+        'paycheck-to-paycheck': { reset: 80, control: 20, grow: 0, sustain: 0 },
+        'okay-not-saving': { reset: 60, control: 40, grow: 0, sustain: 0 },
+        'saving-regularly': { reset: 100, control: 80, grow: 30, sustain: 0 },
+        'confident-focused': { reset: 100, control: 100, grow: 70, sustain: 20 }
+    };
+    
+    const progress = phaseMap[financialSituation] || { reset: 0, control: 0, grow: 0, sustain: 0 };
+    
+    updatePhaseBar('resetRewireProgress', progress.reset);
+    updatePhaseBar('takeControlProgress', progress.control);
+    updatePhaseBar('growMultiplyProgress', progress.grow);
+    updatePhaseBar('sustainScaleProgress', progress.sustain);
+}
+
+function updatePhaseBar(phaseId, percentage) {
+    const phaseElement = document.getElementById(phaseId);
+    if (!phaseElement) return;
+    
+    const fill = phaseElement.querySelector('.phase-fill');
+    const percentageText = phaseElement.querySelector('.phase-percentage');
+    
+    if (fill) fill.style.width = `${percentage}%`;
+    if (percentageText) percentageText.textContent = `${percentage}%`;
+}
+
+function updateEmergencyFundThermometer(savingsAmount) {
+    const currentElement = document.getElementById('emergencyFundCurrent');
+    const targetElement = document.getElementById('emergencyFundTarget');
+    const fillElement = document.getElementById('emergencyFundFill');
+    
+    if (!currentElement || !targetElement || !fillElement) return;
+    
+    const savingsMap = {
+        'zero': { current: 0, target: 5000 },
+        'under-1k': { current: 500, target: 5000 },
+        '1k-5k': { current: 3000, target: 10000 },
+        '5k-20k': { current: 12500, target: 20000 },
+        '20k-plus': { current: 25000, target: 30000 }
+    };
+    
+    const savings = savingsMap[savingsAmount] || { current: 0, target: 5000 };
+    const percentage = Math.min((savings.current / savings.target) * 100, 100);
+    
+    currentElement.textContent = `$${savings.current.toLocaleString()}`;
+    targetElement.textContent = `$${savings.target.toLocaleString()}`;
+    fillElement.style.height = `${percentage}%`;
+}
+
+function updateInvestmentTracker(investingStatus) {
+    const investmentCard = document.querySelector('.metric-card:has(.fa-chart-line)');
+    if (!investmentCard) return;
+    
+    const valueElement = investmentCard.querySelector('.metric-value');
+    const changeElement = investmentCard.querySelector('.metric-change');
+    
+    const statusMap = {
+        'not-yet': { value: '$0', change: 'Ready to Start', class: 'neutral' },
+        'just-starting': { value: '$2,500', change: 'Getting Started', class: 'positive' },
+        'consistently': { value: '$32,100', change: '+18.7%', class: 'positive' }
+    };
+    
+    const status = statusMap[investingStatus] || { value: '$0', change: 'Not Set', class: 'neutral' };
+    
+    if (valueElement) valueElement.textContent = status.value;
+    if (changeElement) {
+        changeElement.textContent = status.change;
+        changeElement.className = `metric-change ${status.class}`;
+    }
 }
 
 // Slider value updates
