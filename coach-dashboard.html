@@ -73,7 +73,7 @@
             <div class="user-info">
                 <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
                 <div class="user-details">
-                    <span class="user-name">Sarah Chen, CFP</span>
+                    <span class="user-name">Sarah Chen</span>
                     <span class="user-role">Financial Coach</span>
                 </div>
                 <button class="role-switch-btn" id="clientViewBtn" title="Switch to Client View">
@@ -146,16 +146,6 @@
                             <span class="stat-change">From 6 clients</span>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>Avg. Rating</h3>
-                            <p class="stat-value">4.8</p>
-                            <span class="stat-change positive">+0.2 this month</span>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Today's Schedule -->
@@ -213,7 +203,7 @@
                                     </div>
                                 </div>
                                 <div class="schedule-actions">
-                                    <button class="btn-primary">Prepare</button>
+                                    <button class="btn-primary">Join Call</button>
                                 </div>
                             </div>
                         </div>
@@ -267,12 +257,6 @@
                     <h2>Quick Actions</h2>
                     <div class="quick-actions-grid">
                         <div class="quick-action-card">
-                            <i class="fas fa-user-plus"></i>
-                            <h3>Add New Client</h3>
-                            <p>Onboard a new client to your practice</p>
-                            <button class="btn-primary">Add Client</button>
-                        </div>
-                        <div class="quick-action-card">
                             <i class="fas fa-file-alt"></i>
                             <h3>Create Resource</h3>
                             <p>Upload new educational materials</p>
@@ -283,12 +267,6 @@
                             <h3>Schedule Session</h3>
                             <p>Book a new coaching session</p>
                             <button class="btn-secondary">Schedule</button>
-                        </div>
-                        <div class="quick-action-card">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>View Analytics</h3>
-                            <p>Check your coaching performance</p>
-                            <button class="btn-secondary">View Stats</button>
                         </div>
                     </div>
                 </div>
@@ -333,7 +311,7 @@
                         </div>
                         <div class="client-stats">
                             <div class="stat">
-                                <span class="label">Net Worth</span>
+                                <span class="label">Confidence Score</span>
                                 <span class="value">$45,230</span>
                             </div>
                             <div class="stat">
@@ -362,7 +340,7 @@
                         </div>
                         <div class="client-stats">
                             <div class="stat">
-                                <span class="label">Savings</span>
+                                <span class="label">Confidence Score</span>
                                 <span class="value">$28,500</span>
                             </div>
                             <div class="stat">
@@ -391,7 +369,7 @@
                         </div>
                         <div class="client-stats">
                             <div class="stat">
-                                <span class="label">Business Value</span>
+                                <span class="label">Confidence Score</span>
                                 <span class="value">$125K</span>
                             </div>
                             <div class="stat">
@@ -478,10 +456,6 @@
                             </div>
                             <div class="chat-actions">
                                 <button class="btn-secondary">
-                                    <i class="fas fa-video"></i>
-                                    Video Call
-                                </button>
-                                <button class="btn-secondary">
                                     <i class="fas fa-calendar"></i>
                                     Schedule
                                 </button>
@@ -553,10 +527,13 @@
                         <button class="nav-btn" data-view="month">Month View</button>
                         <button class="nav-btn" data-view="day">Day View</button>
                     </div>
-                    <button class="btn-primary">
-                        <i class="fas fa-plus"></i>
-                        New Session
-                    </button>
+
+                    <div>
+                        <button class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Session
+                        </button>
+                    </div>
                 </div>
 
                 <div class="schedule-calendar">
@@ -581,6 +558,10 @@
                                     <div class="session-time">10:00 AM</div>
                                     <div class="session-client">John Doe</div>
                                     <div class="session-type">Financial Review</div>
+                                    <button class="btn-secondary join-call">
+                                        <i class="fas fa-video"></i>
+                                        Join Call
+                                    </button>
                                 </div>
                                 <div class="session-block">
                                     <div class="session-time">2:00 PM</div>
@@ -656,7 +637,7 @@
                     <div class="resource-tabs">
                         <button class="resource-tab active" data-filter="all">All Resources</button>
                         <button class="resource-tab" data-filter="templates">Templates</button>
-                        <button class="resource-tab" data-filter="guides">Guides</button>
+                        <button class="resource-tab" data-filter="guides">Word</button>
                         <button class="resource-tab" data-filter="videos">Videos</button>
                         <button class="resource-tab" data-filter="calculators">Calculators</button>
                     </div>
@@ -876,7 +857,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Professional Title</label>
-                                    <input type="text" value="Certified Financial Planner (CFP)">
+                                    <input type="text" value="Certified Financial Planner">
                                 </div>
                                 <div class="form-group">
                                     <label>Specialties</label>
