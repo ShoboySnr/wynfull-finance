@@ -70,7 +70,7 @@
             </nav>
             
             <div class="sidebar-footer">
-                <div class="user-info">
+                <div class="user-info" onclick="showPage('account')" style="cursor: pointer;">
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" alt="User Avatar" class="user-avatar">
                     <div class="user-details">
                         <span class="user-name">Femi</span>
@@ -1041,12 +1041,10 @@
                             <div class="price-difference">+$10/month</div>
                         </div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-check"></i> Everything in your current Core Access plan</li>
-                            <li><i class="fas fa-star"></i> AI-powered insights & recommendations</li>
-                            <li><i class="fas fa-star"></i> Investment tracking & analysis</li>
-                            <li><i class="fas fa-star"></i> Advanced goal planning tools</li>
-                            <li><i class="fas fa-star"></i> Priority email & chat support</li>
-                            <li><i class="fas fa-star"></i> Monthly financial health reports</li>
+                            <li><i class="fas fa-check"></i> Everything in your current Core Access plan plus:</li>
+                            <li><i class="fas fa-star"></i> Two 45-minute 1:1 coaching session per month (non-dedicated coach)</li>
+                            <li><i class="fas fa-star"></i> Personalized feedback on budgets and debt strategies</li>
+                            <li><i class="fas fa-star"></i> Access to bonus live workshops (credit repair, investing, etc)</li>
                         </ul>
                         <button class="btn-primary plan-btn">Upgrade to Guided Growth</button>
                     </div>
@@ -1062,13 +1060,10 @@
                             <div class="price-difference">+$20/month</div>
                         </div>
                         <ul class="plan-features">
-                            <li><i class="fas fa-check"></i> Everything in Guided Growth plan</li>
-                            <li><i class="fas fa-crown"></i> Monthly 1:1 coaching sessions</li>
-                            <li><i class="fas fa-crown"></i> Tax optimization strategies</li>
-                            <li><i class="fas fa-crown"></i> Advanced portfolio analysis</li>
-                            <li><i class="fas fa-crown"></i> White-glove phone support</li>
-                            <li><i class="fas fa-crown"></i> Personalized financial roadmap</li>
-                            <li><i class="fas fa-crown"></i> Priority access to new features</li>
+                            <li><i class="fas fa-check"></i> Everything in Guided Growth plan plus:</li>
+                            <li><i class="fas fa-crown"></i> Dedicated coach assignment from day one</li>
+                            <li><i class="fas fa-crown"></i> Weekly or as needed 45-minute 1:1 coaching session (up to 4/month)</li>
+                            <li><i class="fas fa-crown"></i> Exclusive event access and new products access</li>
                         </ul>
                         <button class="btn-secondary plan-btn">Upgrade to Financial Freedom Plus</button>
                     </div>
@@ -1078,19 +1073,20 @@
                     <h2>Why Upgrade?</h2>
                     <div class="benefits-grid">
                         <div class="benefit-item">
-                            <i class="fas fa-robot"></i>
-                            <h3>AI-Powered Insights</h3>
-                            <p>Get personalized recommendations based on your spending patterns and financial goals.</p>
-                        </div>
-                        <div class="benefit-item">
                             <i class="fas fa-user-tie"></i>
                             <h3>Expert Coaching</h3>
-                            <p>Work directly with certified financial planners to optimize your financial strategy.</p>
+                            <p>Work directly with certified coaches to gain confidence and optimize your
+                                financial goals.</p>
                         </div>
                         <div class="benefit-item">
                             <i class="fas fa-chart-line"></i>
-                            <h3>Advanced Analytics</h3>
+                            <h3>Advanced Strategies</h3>
                             <p>Track investments, analyze portfolio performance, and plan for long-term growth.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-comments"></i>
+                            <h3>Personalized Feedback</h3>
+                            <p>Get feedback on budgets and debt strategies</p>
                         </div>
                         <div class="benefit-item">
                             <i class="fas fa-shield-alt"></i>
@@ -1121,15 +1117,15 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" value="John">
+                                    <input type="text" value="Femi">
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" value="Doe">
+                                    <input type="text" value="Agboola">
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" value="john.doe@example.com">
+                                    <input type="email" value="femi.agboola@wynfull.com">
                                 </div>
                                 <div class="form-group">
                                     <label>Phone</label>
@@ -1187,12 +1183,11 @@
                     </div>
                     
                     <div class="account-section danger-zone">
-                        <h2>Danger Zone</h2>
                         <div class="danger-actions">
                             <div class="danger-item">
                                 <div class="danger-info">
                                     <h3>Cancel Subscription</h3>
-                                    <p>Cancel your current plan and downgrade to free</p>
+                                    <p>Cancel your current plan</p>
                                 </div>
                                 <button class="btn-danger">Cancel Plan</button>
                             </div>

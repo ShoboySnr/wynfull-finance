@@ -5470,3 +5470,10 @@ input:checked + .slider:before {
 .send-btn:hover {
     background: var(--wynfull-blue-dark);
 }
+
+button.join-call {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 10px;
+}
