@@ -89,7 +89,7 @@ p {
 }
 
 .btn-primary {
-    background: var(--wynfull-blue);
+    background: var(--success-green);
     color: white;
     box-shadow: var(--shadow-md);
 }
@@ -488,7 +488,7 @@ p {
 
 .resources-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 2rem;
 }
 
@@ -754,121 +754,60 @@ p {
     margin-top: 1rem;
 }
 
-/* Social Proof Section */
-.social-proof {
+/* Why Wynfull is Different Section */
+.why-different {
     padding: 5rem 0;
-    background: var(--background-primary);
+    background: var(--background-light);
 }
 
-.community-showcase {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.community-images {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: -0.5rem;
-    margin-bottom: 1rem;
-}
-
-.community-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: var(--shadow-md);
-    margin-left: -0.5rem;
-}
-
-.community-avatar:first-child {
-    margin-left: 0;
-}
-
-.community-count {
-    background: var(--wynfull-blue);
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-left: -0.5rem;
-    border: 3px solid white;
-}
-
-.community-text {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    margin: 0;
-}
-
-.testimonials-grid {
+.difference-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
 
-.testimonial-card {
-    background: var(--background-light);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.difference-card {
+    background: var(--background-primary);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    border: 1px solid var(--background-gray);
 }
 
-.testimonial-card:hover {
-    transform: translateY(-5px);
+.difference-card:hover {
+    transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
 }
 
-.testimonial-content {
-    margin-bottom: 1.5rem;
+.difference-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--wynfull-blue-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: var(--wynfull-blue);
 }
 
-.quote-icon {
-    color: var(--wynfull-blue);
+.difference-card h3 {
     font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
-.testimonial-content p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text-primary);
-    font-style: italic;
-    margin: 0;
-}
-
-.testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.testimonial-author img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.author-info h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0 0 0.25rem 0;
-}
-
-.author-info span {
-    font-size: 0.875rem;
+.difference-card p {
     color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
+
 
 /* Footer */
 .footer {
@@ -1038,38 +977,10 @@ p {
                             See How It Works
                         </button>
                     </div>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <span class="stat-number">1,000+</span>
-                            <span class="stat-label">Financial Warriors</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">$2.5M+</span>
-                            <span class="stat-label">Debt Eliminated</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">95%</span>
-                            <span class="stat-label">Goal Achievement</span>
-                        </div>
-                    </div>
                 </div>
                 <div class="hero-visual">
                     <div class="hero-image-container">
                         <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=400&fit=crop&crop=faces&auto=format&q=80" alt="Happy diverse team celebrating financial success" class="hero-main-image">
-                        <div class="hero-overlay-stats">
-                            <div class="stat-bubble stat-1">
-                                <span class="stat-icon">💰</span>
-                                <span class="stat-text">$2.5M+ Debt Eliminated</span>
-                            </div>
-                            <div class="stat-bubble stat-2">
-                                <span class="stat-icon">📈</span>
-                                <span class="stat-text">95% Goal Achievement</span>
-                            </div>
-                            <div class="stat-bubble stat-3">
-                                <span class="stat-icon">👥</span>
-                                <span class="stat-text">1,000+ Warriors</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1140,8 +1051,8 @@ p {
     <section id="resources" class="resource-preview">
         <div class="container">
             <div class="section-header">
-                <h2>Resource Library</h2>
-                <p>Tools and templates for every stage of your financial journey</p>
+                <h2>The Wynfull 4-Phase Strategy</h2>
+                <p>Strategy to help you develop personalized financial planning playbook to become a financial warrior</p>
             </div>
             <div class="resource-tabs">
                 <button class="tab-btn active" data-tab="phases">Learning Phases</button>
@@ -1197,30 +1108,6 @@ p {
                             <span><i class="fas fa-infinity"></i> Lifetime</span>
                         </div>
                     </div>
-                    <div class="resource-card phase-5">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 5</div>
-                            <span class="resource-time">3-6 months</span>
-                        </div>
-                        <h3>Protect & Insure</h3>
-                        <p>Safeguard your wealth with proper insurance and estate planning</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-shield-alt"></i> 6 Protections</span>
-                            <span><i class="fas fa-file-contract"></i> 4 Templates</span>
-                        </div>
-                    </div>
-                    <div class="resource-card phase-6">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 6</div>
-                            <span class="resource-time">Lifetime</span>
-                        </div>
-                        <h3>Legacy & Impact</h3>
-                        <p>Create generational wealth and make a lasting financial impact</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-seedling"></i> Growth Plans</span>
-                            <span><i class="fas fa-heart"></i> Giving Strategies</span>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="tab-content" id="tools">
@@ -1262,233 +1149,34 @@ p {
         </div>
     </section>
 
-    <!-- Dual Signup Forms -->
-    <section id="contact" class="signup-section">
+    <!-- Why Wynfull is Different Section -->
+    <section class="why-different">
         <div class="container">
             <div class="section-header">
-                <h2>Join the Wynfull Community</h2>
-                <p>Whether you're ready to transform your finances or help others do the same</p>
-                <div class="signup-hero-images">
-                    <div class="signup-image-left">
-                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=300&h=200&fit=crop&crop=faces&auto=format&q=80" alt="Person celebrating financial success" class="signup-lifestyle-image">
-                    </div>
-                    <div class="signup-image-right">
-                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=300&h=200&fit=crop&crop=faces&auto=format&q=80" alt="Coach helping client with finances" class="signup-lifestyle-image">
-                    </div>
-                </div>
+                <h2>Why Wynfull is Different</h2>
+                <p>Three key advantages that set us apart from other financial platforms</p>
             </div>
-            <div class="signup-container">
-                <div class="signup-tabs">
-                    <button class="signup-tab active" data-form="client">For Clients</button>
-                    <button class="signup-tab" data-form="coach">For Coaches</button>
+            <div class="difference-grid">
+                <div class="difference-card">
+                    <div class="difference-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Action-First Approach</h3>
+                    <p>You don't just learn; you take steps that create results.</p>
                 </div>
-                
-                <div class="form-container active" id="client-form">
-                    <div class="form-header">
-                        <h3>Start Your Financial Journey</h3>
-                        <p>Get early access to Wynfull Finance and begin building your financial future today.</p>
+                <div class="difference-card">
+                    <div class="difference-icon">
+                        <i class="fas fa-user-friends"></i>
                     </div>
-                    <form class="signup-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="client-name">First Name</label>
-                                <input type="text" id="client-name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="client-email">Email Address</label>
-                                <input type="email" id="client-email" name="email" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="client-goal">Primary Financial Goal</label>
-                            <select id="client-goal" name="goal" required>
-                                <option value="">Select your main goal</option>
-                                <option value="emergency-fund">Build Emergency Fund</option>
-                                <option value="debt-payoff">Pay Off Debt</option>
-                                <option value="save-house">Save for House</option>
-                                <option value="retirement">Plan for Retirement</option>
-                                <option value="invest">Start Investing</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="military">Military Affiliation (Optional)</label>
-                            <select id="military" name="military">
-                                <option value="">Select if applicable</option>
-                                <option value="active">Active Duty</option>
-                                <option value="veteran">Veteran</option>
-                                <option value="spouse">Military Spouse</option>
-                                <option value="none">Not Applicable</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="client-notes">Additional Notes (Optional)</label>
-                            <textarea id="client-notes" name="notes" rows="3" placeholder="Tell us about your current situation or specific challenges..."></textarea>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" required>
-                                <span class="checkmark"></span>
-                                I agree to receive updates about Wynfull Finance and understand I can unsubscribe at any time.
-                            </label>
-                        </div>
-                        <button type="submit" class="btn-primary full-width">
-                            Request Early Access
-                        </button>
-                    </form>
+                    <h3>Personalized Coaching</h3>
+                    <p>Coaches guide you through your unique journey.</p>
                 </div>
-
-                <div class="form-container" id="coach-form">
-                    <div class="form-header">
-                        <h3>Join Our Coach Network</h3>
-                        <p>Help build financial warriors and grow your coaching practice with Wynfull's platform.</p>
+                <div class="difference-card">
+                    <div class="difference-icon">
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <form class="signup-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="coach-name">Full Name</label>
-                                <input type="text" id="coach-name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="coach-email">Email Address</label>
-                                <input type="email" id="coach-email" name="email" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="experience">Experience Level</label>
-                            <select id="experience" name="experience" required>
-                                <option value="">Select your experience</option>
-                                <option value="new">New to Financial Coaching</option>
-                                <option value="1-3">1-3 Years Experience</option>
-                                <option value="3-5">3-5 Years Experience</option>
-                                <option value="5+">5+ Years Experience</option>
-                                <option value="certified">Certified Financial Planner</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="specialties">Specialties (Select all that apply)</label>
-                            <div class="checkbox-grid">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="debt">
-                                    <span class="checkmark"></span>
-                                    Debt Management
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="budgeting">
-                                    <span class="checkmark"></span>
-                                    Budgeting & Saving
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="investing">
-                                    <span class="checkmark"></span>
-                                    Investment Planning
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="retirement">
-                                    <span class="checkmark"></span>
-                                    Retirement Planning
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="military">
-                                    <span class="checkmark"></span>
-                                    Military Finance
-                                </label>
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="business">
-                                    <span class="checkmark"></span>
-                                    Business Finance
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="linkedin">LinkedIn Profile (Optional)</label>
-                                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
-                            </div>
-                            <div class="form-group">
-                                <label for="website">Website (Optional)</label>
-                                <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
-                            </div>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" required>
-                                <span class="checkmark"></span>
-                                I'm interested in joining the Wynfull coach network and agree to be contacted about opportunities.
-                            </label>
-                        </div>
-                        <button type="submit" class="btn-primary full-width">
-                            Apply to Coach Network
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Social Proof Section -->
-    <section class="social-proof">
-        <div class="container">
-            <div class="section-header">
-                <h2>Trusted by Financial Warriors</h2>
-                <p>Real stories from people transforming their financial lives</p>
-                <div class="community-showcase">
-                    <div class="community-images">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop&crop=face&auto=format&q=80" alt="Community member" class="community-avatar">
-                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face&auto=format&q=80" alt="Community member" class="community-avatar">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face&auto=format&q=80" alt="Community member" class="community-avatar">
-                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face&auto=format&q=80" alt="Community member" class="community-avatar">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face&auto=format&q=80" alt="Community member" class="community-avatar">
-                        <div class="community-count">+995 more</div>
-                    </div>
-                    <p class="community-text">Join 1,000+ people building their financial future</p>
-                </div>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="quote-icon">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p>"Wynfull helped me pay off $23,000 in credit card debt in 18 months. The step-by-step approach and real coaching made all the difference."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="Sarah M.">
-                        <div class="author-info">
-                            <h4>Sarah M.</h4>
-                            <span>Military Spouse, Texas</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="quote-icon">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p>"Finally, a platform that doesn't just teach theory. Wynfull's action-first approach helped me build a 6-month emergency fund and start investing."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="Marcus J.">
-                        <div class="author-info">
-                            <h4>Marcus J.</h4>
-                            <span>Veteran, California</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="quote-icon">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <p>"As a financial coach, Wynfull's platform has revolutionized how I work with clients. The tools and resources are incredible."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="David Chen">
-                        <div class="author-info">
-                            <h4>David Chen, CFP</h4>
-                            <span>Financial Coach</span>
-                        </div>
-                    </div>
+                    <h3>Smart Tools + AI</h3>
+                    <p>Practical calculators, planners, and insights always at your fingertips.</p>
                 </div>
             </div>
         </div>
