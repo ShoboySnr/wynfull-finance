@@ -759,12 +759,13 @@ p {
     justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
 }
 
 .signup-image-left,
 .signup-image-right {
     flex: 1;
-    max-width: 300px;
 }
 
 .signup-lifestyle-image {
@@ -776,7 +777,7 @@ p {
 }
 
 .signup-container {
-    max-width: 600px;
+    max-width: 900px;
     margin: 3rem auto 0;
     background: var(--background-primary);
     border-radius: 12px;
@@ -795,9 +796,10 @@ p {
     border: none;
     background: transparent;
     color: var(--text-secondary);
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 20px;
 }
 
 .signup-tab.active {
@@ -1807,22 +1809,25 @@ p {
                                 <label for="client-goal">Primary Financial Goal</label>
                                 <select id="client-goal" name="goal" required>
                                     <option value="">Select your main goal</option>
-                                    <option value="emergency-fund">Build Emergency Fund</option>
-                                    <option value="debt-payoff">Pay Off Debt</option>
-                                    <option value="save-house">Save for House</option>
-                                    <option value="retirement">Plan for Retirement</option>
-                                    <option value="invest">Start Investing</option>
+                                    <option value="debt-payoff">Pay Off or Reduce Debt</option>
+                                    <option value="emergency-fund">Build an Emergency Fund</option>
+                                    <option value="save-house">Save for a Big Purchase (Home, Car, Travel)</option>
+                                    <option value="invest">Start Investing or Invest More</option>
+                                    <option value="retirement">Grow Wealth for Retirement/Financial Independence</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>
+                            <div class="form-group" id="other-goal-group" style="display: none;">
+                                <label for="other-goal">Please specify your financial goal</label>
+                                <input type="text" id="other-goal" name="other-goal" placeholder="Describe your specific financial goal..." style="width: 100%;">
+                            </div>
                             <div class="form-group">
-                                <label for="military">Military Affiliation (Optional)</label>
-                                <select id="military" name="military">
+                                <label for="community">Community Affiliation (Optional)</label>
+                                <select id="community" name="community">
                                     <option value="">Select if applicable</option>
-                                    <option value="active">Active Duty</option>
-                                    <option value="veteran">Veteran</option>
-                                    <option value="spouse">Military Spouse</option>
-                                    <option value="none">Not Applicable</option>
+                                    <option value="military">Veteran / Active Duty / Military Family</option>
+                                    <option value="civilian">Civilian / General Public</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -1873,36 +1878,35 @@ p {
                                 <label for="specialties">Specialties (Select all that apply)</label>
                                 <div class="checkbox-grid">
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="debt">
+                                        <input type="checkbox" name="specialties" value="financial-coaching">
                                         <span class="checkmark"></span>
-                                        Debt Management
+                                        Financial Coaching
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="budgeting">
+                                        <input type="checkbox" name="specialties" value="life-coaching">
                                         <span class="checkmark"></span>
-                                        Budgeting & Saving
+                                        Life Coaching
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="investing">
+                                        <input type="checkbox" name="specialties" value="accountability-coaching">
                                         <span class="checkmark"></span>
-                                        Investment Planning
+                                        Accountability Coaching
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="retirement">
+                                        <input type="checkbox" name="specialties" value="mindset-motivation">
                                         <span class="checkmark"></span>
-                                        Retirement Planning
+                                        Mindset & Motivation Coaching
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="military">
+                                        <input type="checkbox" name="specialties" value="other" id="specialty-other">
                                         <span class="checkmark"></span>
-                                        Military Finance
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="specialties" value="business">
-                                        <span class="checkmark"></span>
-                                        Business Finance
+                                        Other (please specify)
                                     </label>
                                 </div>
+                            </div>
+                            <div class="form-group" id="other-specialty-group" style="display: none;">
+                                <label for="other-specialty">Please specify your specialty</label>
+                                <input type="text" id="other-specialty" name="other-specialty" placeholder="Describe your specialty..." style="width: 100%;">
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
@@ -1994,7 +1998,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Signup Form Tabs
+    // Primary Financial Goal dropdown handler
+    const goalSelect = document.getElementById('client-goal');
+    const otherGoalGroup = document.getElementById('other-goal-group');
+    
+    if (goalSelect && otherGoalGroup) {
+        goalSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                otherGoalGroup.style.display = 'block';
+                document.getElementById('other-goal').setAttribute('required', 'required');
+            } else {
+                otherGoalGroup.style.display = 'none';
+                document.getElementById('other-goal').removeAttribute('required');
+            }
+        });
+    }
+    
+    // Coach specialty "Other" checkbox handler
+    const specialtyOtherCheckbox = document.getElementById('specialty-other');
+    const otherSpecialtyGroup = document.getElementById('other-specialty-group');
+    
+    if (specialtyOtherCheckbox && otherSpecialtyGroup) {
+        specialtyOtherCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                otherSpecialtyGroup.style.display = 'block';
+                document.getElementById('other-specialty').setAttribute('required', 'required');
+            } else {
+                otherSpecialtyGroup.style.display = 'none';
+                document.getElementById('other-specialty').removeAttribute('required');
+            }
+        });
+    }
+    
+    // Signup form tabs
     const signupTabs = document.querySelectorAll('.signup-tab');
     const formContainers = document.querySelectorAll('.form-container');
     
