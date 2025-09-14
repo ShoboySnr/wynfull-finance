@@ -970,6 +970,349 @@ p {
         gap: 1rem;
     }
 }
+
+/* Why Wynfull is Different Section */
+.why-different {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.why-different::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.why-different .container {
+    position: relative;
+    z-index: 1;
+}
+
+.why-different .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.why-different .section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--wynfull-blue);
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.why-different .section-header p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.difference-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.difference-card {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(14, 77, 164, 0.08);
+    border: 1px solid rgba(14, 77, 164, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.difference-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--wynfull-blue), #F5C518);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.difference-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(14, 77, 164, 0.15);
+}
+
+.difference-card:hover::before {
+    transform: scaleX(1);
+}
+
+.difference-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--wynfull-blue), #1E5BB8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(14, 77, 164, 0.2);
+}
+
+.difference-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.difference-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--wynfull-blue);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.difference-card p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Why Wynfull is Different CTA Section */
+.why-different-cta {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(14, 77, 164, 0.1);
+    border: 1px solid rgba(14, 77, 164, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.why-different-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(14, 77, 164, 0.03) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.why-different-description {
+    font-size: 1.4rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.movement-button {
+    display: inline-block;
+    padding: 1.25rem 3rem;
+    background: linear-gradient(135deg, var(--wynfull-blue), #1E5BB8);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 25px rgba(14, 77, 164, 0.3);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.movement-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.movement-button:hover {
+    background: linear-gradient(135deg, #0A3D85, var(--wynfull-blue));
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(14, 77, 164, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.movement-button:hover::before {
+    left: 100%;
+}
+
+.movement-button:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+.secondary-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--wynfull-blue);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.4s ease;
+    border: 2px solid var(--wynfull-blue);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+}
+
+.secondary-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--wynfull-blue);
+    transition: left 0.4s ease;
+    z-index: -1;
+}
+
+.secondary-button:hover {
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 77, 164, 0.2);
+}
+
+.secondary-button:hover::before {
+    left: 0;
+}
+
+.secondary-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+@media (max-width: 1024px) {
+    .difference-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .difference-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .why-different {
+        padding: 3rem 0;
+    }
+    
+    .why-different .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .difference-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .difference-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .why-different-cta {
+        padding: 2rem 1.5rem;
+        margin: 1.5rem 1rem 0;
+        border-radius: 16px;
+    }
+    
+    .why-different-description {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .movement-button {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        border-radius: 40px;
+    }
+    
+    .secondary-button {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        border-radius: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .why-different .section-header h2 {
+        font-size: 1.75rem;
+    }
+    
+    .difference-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .difference-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .difference-icon i {
+        font-size: 1.75rem;
+    }
+    
+    .difference-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .why-different-description {
+        font-size: 1.1rem;
+    }
+    
+    .movement-button {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .secondary-button {
+        padding: 0.75rem 1.75rem;
+        font-size: 0.9rem;
+    }
+}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1183,6 +1526,16 @@ p {
                     <h3>Smart Tools + AI</h3>
                     <p>Practical calculators, planners, and insights always at your fingertips.</p>
                 </div>
+            </div>
+            
+            <div class="why-different-cta">
+                <p class="why-different-description">
+                    We're redefining financial coaching with clarity, self-action,<br>
+                    and real results - so you can build confidence, take control,<br>
+                    and grow your wealth step by step.
+                </p>
+                <a href="#contact" class="cta-button movement-button">Join the Movement</a>
+                <a href="#how-it-works" class="cta-button secondary-button">See How it Works</a>
             </div>
         </div>
     </section>
