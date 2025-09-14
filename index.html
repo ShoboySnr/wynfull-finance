@@ -154,18 +154,43 @@
                             </div>
                         </div>
                         
-                        <div class="metric-card debt-stress-card">
-                            <h3>Debt Stress</h3>
+                        <div class="metric-card debt-progress-card">
+                            <h3>Debt Journey</h3>
                             <div class="debt-status">
-                                <div class="debt-emoji">😞</div>
-                                <span class="debt-text">I feel overwhelmed</span>
+                                <div class="debt-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="debt-content">
+                                    <span class="debt-text">Taking control</span>
+                                    <div class="debt-progress-bar">
+                                        <div class="debt-progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <span class="debt-subtitle">You're making progress</span>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="metric-card education-card">
-                            <h3>Intermediate</h3>
-                            <div class="education-icon">
-                                <i class="fas fa-graduation-cap"></i>
+                        <div class="metric-card knowledge-card">
+                            <h3>Financial Knowledge</h3>
+                            <div class="knowledge-content">
+                                <div class="knowledge-level">
+                                    <div class="knowledge-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="knowledge-info">
+                                        <span class="knowledge-text">Intermediate</span>
+                                        <div class="knowledge-progress">
+                                            <div class="knowledge-dots">
+                                                <span class="dot active"></span>
+                                                <span class="dot active"></span>
+                                                <span class="dot active"></span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                            </div>
+                                        </div>
+                                        <span class="knowledge-subtitle">Growing your expertise</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -1264,15 +1289,15 @@
                 
                 <div class="onboarding-step active" id="step1">
                     <h2>Which best describes your current financial situation?</h2>
-                    <div class="radio-group">
-                        <label><input type="radio" name="financial-situation" value="struggling-debt"> Struggling with debt</label>
-                        <label><input type="radio" name="financial-situation" value="paycheck-to-paycheck"> Living paycheck-to-paycheck</label>
-                        <label><input type="radio" name="financial-situation" value="okay-not-saving"> Doing okay but not saving much</label>
-                        <label><input type="radio" name="financial-situation" value="saving-regularly"> Saving regularly and want to invest</label>
-                        <label><input type="radio" name="financial-situation" value="confident-focused"> Confident and focused on long-term wealth</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="financial-situation" value="struggling-debt"> Struggling with debt</label>
+                        <label><input type="checkbox" name="financial-situation" value="paycheck-to-paycheck"> Living paycheck-to-paycheck</label>
+                        <label><input type="checkbox" name="financial-situation" value="okay-not-saving"> Doing okay but not saving much</label>
+                        <label><input type="checkbox" name="financial-situation" value="saving-regularly"> Saving regularly and want to invest</label>
+                        <label><input type="checkbox" name="financial-situation" value="confident-focused"> Confident and focused on long-term wealth</label>
                         <label class="other-option">
                             <div>
-                                <input type="radio" name="financial-situation" value="other"> Other: 
+                                <input type="checkbox" name="financial-situation" value="other"> Other: 
                             </div>
                             <input type="text" id="financial-situation-other" placeholder="Please specify..." class="other-input">
                         </label>
@@ -1287,6 +1312,12 @@
                         <label><input type="radio" name="primary-goal" value="big-purchase"> Save for a big purchase (home, car, travel)</label>
                         <label><input type="radio" name="primary-goal" value="start-investing"> Start investing or invest more</label>
                         <label><input type="radio" name="primary-goal" value="wealth-retirement"> Grow wealth for retirement/financial independence</label>
+                        <label class="other-option">
+                            <div>
+                                <input type="radio" name="primary-goal" value="other"> Other: 
+                            </div>
+                            <input type="text" id="primary-goal-other" placeholder="Please specify..." class="other-input">
+                        </label>
                     </div>
                 </div>
 
@@ -1358,6 +1389,39 @@
                 <p>Your personalized dashboard is ready</p>
             </div>
             <div class="welcome-content">
+                <div class="welcome-summary">
+                    <h3>Your Profile Summary</h3>
+                    <div class="summary-section">
+                        <div class="summary-item">
+                            <strong>Financial Situation:</strong>
+                            <span id="summary-financial-situation"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Primary Goal:</strong>
+                            <span id="summary-primary-goal"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Confidence Level:</strong>
+                            <span id="summary-confidence-level"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Debt Feelings:</strong>
+                            <span id="summary-debt-feelings"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Savings Amount:</strong>
+                            <span id="summary-savings-amount"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Investing Experience:</strong>
+                            <span id="summary-investing-experience"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Learning Style:</strong>
+                            <span id="summary-learning-style"></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="welcome-features">
                     <div class="feature-item">
                         <i class="fas fa-chart-line"></i>

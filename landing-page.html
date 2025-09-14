@@ -1217,6 +1217,170 @@ p {
         </div>
     </section>
 
+        <!-- Dual Signup Forms -->
+        <section id="contact" class="signup-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Join the Wynfull Community</h2>
+                    <p>Whether you're ready to transform your finances or help others do the same</p>
+                    <div class="signup-hero-images">
+                        <div class="signup-image-left">
+                            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=300&h=200&fit=crop&crop=faces&auto=format&q=80" alt="Person celebrating financial success" class="signup-lifestyle-image">
+                        </div>
+                        <div class="signup-image-right">
+                            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=300&h=200&fit=crop&crop=faces&auto=format&q=80" alt="Coach helping client with finances" class="signup-lifestyle-image">
+                        </div>
+                    </div>
+                </div>
+                <div class="signup-container">
+                    <div class="signup-tabs">
+                        <button class="signup-tab active" data-form="client">For Clients</button>
+                        <button class="signup-tab" data-form="coach">For Coaches</button>
+                    </div>
+                    
+                    <div class="form-container active" id="client-form">
+                        <div class="form-header">
+                            <h3>Start Your Financial Journey</h3>
+                            <p>Get early access to Wynfull Finance and begin building your financial future today.</p>
+                        </div>
+                        <form class="signup-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="client-name">First Name</label>
+                                    <input type="text" id="client-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="client-email">Email Address</label>
+                                    <input type="email" id="client-email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="client-goal">Primary Financial Goal</label>
+                                <select id="client-goal" name="goal" required>
+                                    <option value="">Select your main goal</option>
+                                    <option value="emergency-fund">Build Emergency Fund</option>
+                                    <option value="debt-payoff">Pay Off Debt</option>
+                                    <option value="save-house">Save for House</option>
+                                    <option value="retirement">Plan for Retirement</option>
+                                    <option value="invest">Start Investing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="military">Military Affiliation (Optional)</label>
+                                <select id="military" name="military">
+                                    <option value="">Select if applicable</option>
+                                    <option value="active">Active Duty</option>
+                                    <option value="veteran">Veteran</option>
+                                    <option value="spouse">Military Spouse</option>
+                                    <option value="none">Not Applicable</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="client-notes">Additional Notes (Optional)</label>
+                                <textarea id="client-notes" name="notes" rows="3" placeholder="Tell us about your current situation or specific challenges..."></textarea>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" required>
+                                    <span class="checkmark"></span>
+                                    I agree to receive updates about Wynfull Finance and understand I can unsubscribe at any time.
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-primary full-width">
+                                Request Early Access
+                            </button>
+                        </form>
+                    </div>
+    
+                    <div class="form-container" id="coach-form">
+                        <div class="form-header">
+                            <h3>Join Our Coach Network</h3>
+                            <p>Help build financial warriors and grow your coaching practice with Wynfull's platform.</p>
+                        </div>
+                        <form class="signup-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="coach-name">Full Name</label>
+                                    <input type="text" id="coach-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="coach-email">Email Address</label>
+                                    <input type="email" id="coach-email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="experience">Experience Level</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select your experience</option>
+                                    <option value="new">New to Financial Coaching</option>
+                                    <option value="1-3">1-3 Years Experience</option>
+                                    <option value="3-5">3-5 Years Experience</option>
+                                    <option value="5+">5+ Years Experience</option>
+                                    <option value="certified">Certified Financial Planner</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="specialties">Specialties (Select all that apply)</label>
+                                <div class="checkbox-grid">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="debt">
+                                        <span class="checkmark"></span>
+                                        Debt Management
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="budgeting">
+                                        <span class="checkmark"></span>
+                                        Budgeting & Saving
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="investing">
+                                        <span class="checkmark"></span>
+                                        Investment Planning
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="retirement">
+                                        <span class="checkmark"></span>
+                                        Retirement Planning
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="military">
+                                        <span class="checkmark"></span>
+                                        Military Finance
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="specialties" value="business">
+                                        <span class="checkmark"></span>
+                                        Business Finance
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="linkedin">LinkedIn Profile (Optional)</label>
+                                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">Website (Optional)</label>
+                                    <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
+                                </div>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" required>
+                                    <span class="checkmark"></span>
+                                    I'm interested in joining the Wynfull coach network and agree to be contacted about opportunities.
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-primary full-width">
+                                Apply to Coach Network
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
