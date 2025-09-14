@@ -208,8 +208,28 @@ p {
     align-items: center;
     padding-top: 100px;
     overflow: hidden;
-    background: var(--wynfull-blue);
+    position: relative;
     color: white;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(14, 77, 164, 0.7);
+    z-index: 2;
 }
 
 .hero-container {
@@ -217,7 +237,7 @@ p {
     margin: 0 auto;
     padding: 0 2rem;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .hero-content {
@@ -983,13 +1003,17 @@ p {
 
     <!-- Hero Section -->
     <section class="hero">
+        <video class="hero-video" autoplay muted loop>
+            <source src="wynfull_background_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay"></div>
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="hero-headline">
-                        Wynfull Finance — 
                         <span class="highlight">Building Financial Warriors</span> 
-                        for Life
+                        — For Life
                     </h1>
                     <p class="hero-subheadline">
                         A practical, action-first platform that helps you master money through simple steps, 
@@ -1089,95 +1113,41 @@ p {
                 <h2>The Wynfull 4-Phase Strategy</h2>
                 <p>Strategy to help you develop personalized financial planning playbook to become a financial warrior</p>
             </div>
-            <div class="resource-tabs">
-                <button class="tab-btn active" data-tab="phases">Learning Phases</button>
-                <button class="tab-btn" data-tab="tools">Tools & Templates</button>
-            </div>
-            <div class="tab-content active" id="phases">
-                <div class="resources-grid">
-                    <div class="resource-card phase-1">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 1</div>
-                            <span class="resource-time">2-4 weeks</span>
+            <div class="resource-content">
+                <div id="tools" class="resource-tab-content active">
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <h4>Budget Tracker</h4>
+                            <p>Complete Excel template</p>
+                            <span class="tool-type">Spreadsheet</span>
                         </div>
-                        <h3>Reset & Rewire</h3>
-                        <p>Build healthy money mindsets and establish foundational habits</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-video"></i> 8 Videos</span>
-                            <span><i class="fas fa-file-alt"></i> 5 Guides</span>
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h4>Debt Payoff Calculator</h4>
+                            <p>Avalanche vs Snowball</p>
+                            <span class="tool-type">Calculator</span>
                         </div>
-                    </div>
-                    <div class="resource-card phase-2">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 2</div>
-                            <span class="resource-time">4-8 weeks</span>
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h4>Investment Planner</h4>
+                            <p>Portfolio allocation guide</p>
+                            <span class="tool-type">Planner</span>
                         </div>
-                        <h3>Take Control</h3>
-                        <p>Master budgeting, eliminate debt, and build your emergency fund</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-calculator"></i> 12 Tools</span>
-                            <span><i class="fas fa-chart-bar"></i> 6 Trackers</span>
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h4>Emergency Fund Guide</h4>
+                            <p>Step-by-step roadmap</p>
+                            <span class="tool-type">Guide</span>
                         </div>
-                    </div>
-                    <div class="resource-card phase-3">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 3</div>
-                            <span class="resource-time">6-12 months</span>
-                        </div>
-                        <h3>Grow & Multiply</h3>
-                        <p>Start investing, optimize taxes, and accelerate wealth building</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-chart-line"></i> 10 Strategies</span>
-                            <span><i class="fas fa-file-excel"></i> 8 Calculators</span>
-                        </div>
-                    </div>
-                    <div class="resource-card phase-4">
-                        <div class="resource-header">
-                            <div class="phase-badge">Phase 4</div>
-                            <span class="resource-time">Ongoing</span>
-                        </div>
-                        <h3>Sustain & Scale</h3>
-                        <p>Advanced strategies for long-term wealth and financial freedom</p>
-                        <div class="resource-meta">
-                            <span><i class="fas fa-crown"></i> Premium</span>
-                            <span><i class="fas fa-infinity"></i> Lifetime</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-content" id="tools">
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-file-excel"></i>
-                        </div>
-                        <h4>Budget Tracker</h4>
-                        <p>Complete Excel template</p>
-                        <span class="tool-type">Spreadsheet</span>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h4>Debt Payoff Calculator</h4>
-                        <p>Avalanche vs Snowball</p>
-                        <span class="tool-type">Calculator</span>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-chart-pie"></i>
-                        </div>
-                        <h4>Investment Planner</h4>
-                        <p>Portfolio allocation guide</p>
-                        <span class="tool-type">Planner</span>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-icon">
-                            <i class="fas fa-file-pdf"></i>
-                        </div>
-                        <h4>Emergency Fund Guide</h4>
-                        <p>Step-by-step roadmap</p>
-                        <span class="tool-type">Guide</span>
                     </div>
                 </div>
             </div>
@@ -1405,7 +1375,7 @@ p {
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Wynfull Finance. All rights reserved.</p>
+                <p>&copy; 2025 Wynfull Finance. All rights reserved.</p>
             </div>
         </div>
     </footer>
