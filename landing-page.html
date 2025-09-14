@@ -51,7 +51,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -137,7 +137,7 @@ p {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -326,7 +326,7 @@ p {
 }
 
 .hero-container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 2rem;
     position: relative;
@@ -1409,6 +1409,139 @@ p {
         font-size: 0.9rem;
     }
 }
+
+/* Learning Phases Styles */
+.phases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.phase-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.phase-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.phase-card.current {
+    border-color: var(--wynfull-blue);
+    box-shadow: 0 0 0 1px rgba(14, 77, 164, 0.1);
+}
+
+.phase-card.locked {
+    opacity: 0.7;
+}
+
+.phase-header {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.phase-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: rgba(14, 77, 164, 0.1);
+    color: var(--wynfull-blue);
+    flex-shrink: 0;
+}
+
+.phase-card.completed .phase-icon {
+    background: rgba(46, 182, 125, 0.1);
+    color: #2EB67D;
+}
+
+.phase-card.locked .phase-icon {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--text-light);
+}
+
+.phase-info {
+    flex: 1;
+}
+
+.phase-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.phase-info p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.phase-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.phase-status.completed {
+    background: rgba(46, 182, 125, 0.1);
+    color: #2EB67D;
+}
+
+.phase-status.current {
+    background: rgba(14, 77, 164, 0.1);
+    color: var(--wynfull-blue);
+}
+
+.phase-status.locked {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--text-light);
+}
+
+.phase-progress {
+    padding: 0 2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #2EB67D;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.phase-card.current .progress-fill {
+    background: var(--wynfull-blue);
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1456,13 +1589,7 @@ p {
                         — Take Control of Your Money, Your Way.
                     </h1>
                     <p class="hero-subheadline">
-                        Wynfull is a practical, action-first platform that helps you build confidence and skills in budgeting, debt management, savings, investing, and planning for financial freedom.
-                    </p>
-                    <p class="hero-subheadline">
-                        With simple steps, real coaching, and smart tools, you'll learn by doing, take action with confidence, and celebrate every milestone.
-                    </p>
-                    <p class="hero-subheadline">
-                        Wynfull gives you the tools, structure, and support to build lasting money habits, gain confidence, and make your own financial decisions.
+                        Wynfull empowers you to master money through action — build skills in budgeting, saving, investing, and more, while celebrating every milestone.
                     </p>
                     <div class="hero-ctas">
                         <button class="btn-primary">
@@ -1557,41 +1684,39 @@ p {
                 <h2>The Wynfull 4-Phase Strategy</h2>
                 <p>Strategy to help you develop personalized financial planning playbook to become a financial warrior</p>
             </div>
-            <div class="resource-content">
-                <div id="tools" class="resource-tab-content active">
-                    <div class="tools-grid">
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-file-excel"></i>
-                            </div>
-                            <h4>Budget Tracker</h4>
-                            <p>Complete Excel template</p>
-                            <span class="tool-type">Spreadsheet</span>
+            <div class="tab-content active" id="phases">
+                <div class="resources-grid">
+                    <div class="resource-card phase-1">
+                        <div class="resource-header">
+                            <div class="phase-badge">Phase 1</div>
+                            <span class="resource-time">2-4 weeks</span>
                         </div>
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-calculator"></i>
-                            </div>
-                            <h4>Debt Payoff Calculator</h4>
-                            <p>Avalanche vs Snowball</p>
-                            <span class="tool-type">Calculator</span>
+                        <h3>Reset & Rewire</h3>
+                        <p>Build healthy money mindsets and establish foundational habits</p>
+                    </div>
+                    <div class="resource-card phase-2">
+                        <div class="resource-header">
+                            <div class="phase-badge">Phase 2</div>
+                            <span class="resource-time">4-8 weeks</span>
                         </div>
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <h4>Investment Planner</h4>
-                            <p>Portfolio allocation guide</p>
-                            <span class="tool-type">Planner</span>
+                        <h3>Take Control</h3>
+                        <p>Master budgeting, eliminate debt, and build your emergency fund</p>
+                    </div>
+                    <div class="resource-card phase-3">
+                        <div class="resource-header">
+                            <div class="phase-badge">Phase 3</div>
+                            <span class="resource-time">6-12 months</span>
                         </div>
-                        <div class="tool-card">
-                            <div class="tool-icon">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <h4>Emergency Fund Guide</h4>
-                            <p>Step-by-step roadmap</p>
-                            <span class="tool-type">Guide</span>
+                        <h3>Grow & Multiply</h3>
+                        <p>Start investing, optimize taxes, and accelerate wealth building</p>
+                    </div>
+                    <div class="resource-card phase-4">
+                        <div class="resource-header">
+                            <div class="phase-badge">Phase 4</div>
+                            <span class="resource-time">Ongoing</span>
                         </div>
+                        <h3>Sustain & Scale</h3>
+                        <p>Advanced strategies for long-term wealth and financial freedom</p>
                     </div>
                 </div>
             </div>
@@ -2051,6 +2176,34 @@ window.addEventListener('scroll', function() {
     } else {
         navbar.classList.remove('scrolled');
     }
+});
+
+// Resource Library tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const resourceTabs = document.querySelectorAll('.resource-tab');
+    const resourceTabContents = document.querySelectorAll('.resource-tab-content');
+
+    resourceTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            resourceTabs.forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all tab contents
+            resourceTabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            const targetTab = this.getAttribute('data-tab');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
 });
     </script>
 </body>
