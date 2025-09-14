@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize walkthrough sidebar functionality
     initializeWalkthroughSidebar();
     
+    // Initialize notification functionality
+    initializeNotifications();
+    
     // Get all navigation links and pages
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');

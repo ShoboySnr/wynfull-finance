@@ -33,7 +33,7 @@
 
 /* Dark Theme Variables */
 [data-theme="dark"] {
-    --wynfull-blue: #1E3A8A;
+    --wynfull-blue: #10B981;
     --wynfull-blue-light: #3B82F6;
     --wynfull-blue-dark: #1E40AF;
     --background-light: #111827;
@@ -50,6 +50,8 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
     --soft-gray: #374151;
     --white: #1F2937;
+    --navy-blue: #10B981;
+    --teal: #10B981;
 }
 
 /* Modal Styles */
