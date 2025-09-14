@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if onboarding has been completed
     checkOnboardingStatus();
     
+    // Initialize download popup functionality
+    initializeDownloadPopup();
+    
+    // Initialize walkthrough sidebar functionality
+    initializeWalkthroughSidebar();
+    
     // Get all navigation links and pages
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
@@ -242,30 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Tool download functionality
-    const downloadButtons = document.querySelectorAll('.tool-download-btn');
-    downloadButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const toolName = this.closest('.tool-card').querySelector('h3').textContent;
-            
-            // Simulate download
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalContent;
-                    this.disabled = false;
-                }, 2000);
-                
-                // Show download notification
-                showNotification(`${toolName} has been downloaded to your computer.`);
-            }, 1500);
-        });
-    });
+    // Tool download functionality is now handled by initializeDownloadPopup()
 
     // Search functionality
     const resourceSearch = document.querySelector('.resource-search');
@@ -1675,4 +1658,396 @@ function updateProfile() {
     setTimeout(() => {
         showPage('onboarding-page');
     }, 1000);
+}
+
+// Download Format Popup Functions
+function initializeDownloadPopup() {
+    const downloadButtons = document.querySelectorAll('.tool-download-btn');
+    const popup = document.getElementById('download-format-popup');
+    const closeBtn = document.querySelector('.download-popup-close');
+    const formatOptions = document.querySelectorAll('.format-option');
+    
+    let currentToolName = '';
+    
+    // Add click event to all download buttons
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get the tool name from the closest tool card
+            const toolCard = this.closest('.tool-card');
+            const toolTitle = toolCard.querySelector('h3').textContent;
+            currentToolName = toolTitle;
+            
+            // Show the popup
+            popup.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+    });
+    
+    // Close popup when clicking the close button
+    closeBtn.addEventListener('click', function() {
+        closeDownloadPopup();
+    });
+    
+    // Close popup when clicking outside
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            closeDownloadPopup();
+        }
+    });
+    
+    // Handle format selection
+    formatOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const format = this.dataset.format;
+            startDownload(currentToolName, format);
+            closeDownloadPopup();
+        });
+    });
+    
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popup.style.display === 'block') {
+            closeDownloadPopup();
+        }
+    });
+}
+
+function closeDownloadPopup() {
+    const popup = document.getElementById('download-format-popup');
+    popup.style.display = 'none';
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+function startDownload(toolName, format) {
+    // Create a temporary download link (simulating file download)
+    const fileName = `${toolName.toLowerCase().replace(/\s+/g, '-')}.${format === 'docx' ? 'docx' : format === 'excel' ? 'xlsx' : 'pdf'}`;
+    
+    // In a real application, you would have actual file URLs
+    // For now, we'll simulate the download with a placeholder
+    const link = document.createElement('a');
+    link.href = `#`; // This would be the actual file URL
+    link.download = fileName;
+    
+    // Show a brief success message
+    showDownloadNotification(toolName, format);
+    
+    // Simulate download (in real app, uncomment the line below)
+    // link.click();
+}
+
+function showDownloadNotification(toolName, format) {
+    // Create a temporary notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1001;
+        font-size: 14px;
+        font-weight: 500;
+        animation: slideInRight 0.3s ease-out;
+    `;
+    
+    const formatName = format === 'docx' ? 'Word Document' : format === 'excel' ? 'Excel Spreadsheet' : 'PDF';
+    notification.textContent = `${toolName} (${formatName}) download started!`;
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Walkthrough Sidebar Functions
+function initializeWalkthroughSidebar() {
+    const walkthroughIndicators = document.querySelectorAll('.walkthrough-indicator');
+    const sidebar = document.getElementById('walkthrough-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const closeBtn = document.querySelector('.walkthrough-close');
+    const replayBtn = document.querySelector('.replay-video');
+    const downloadBtn = document.querySelector('.download-after-video');
+    
+    // Add click event to all walkthrough indicators
+    walkthroughIndicators.forEach(indicator => {
+        indicator.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const toolId = this.dataset.tool;
+            openWalkthroughSidebar(toolId);
+        });
+    });
+    
+    // Close sidebar events
+    closeBtn.addEventListener('click', closeWalkthroughSidebar);
+    overlay.addEventListener('click', closeWalkthroughSidebar);
+    
+    // Replay video
+    replayBtn.addEventListener('click', function() {
+        const video = document.getElementById('walkthrough-video');
+        video.currentTime = 0;
+        video.play();
+    });
+    
+    // Download after video
+    downloadBtn.addEventListener('click', function() {
+        // Trigger the download popup for the current tool
+        const currentTool = sidebar.dataset.currentTool;
+        if (currentTool) {
+            closeWalkthroughSidebar();
+            // Find the download button for this tool and trigger it
+            const toolCard = document.querySelector(`[data-tool="${currentTool}"]`).closest('.tool-card');
+            const downloadButton = toolCard.querySelector('.tool-download-btn');
+            if (downloadButton) {
+                downloadButton.click();
+            }
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+            closeWalkthroughSidebar();
+        }
+    });
+}
+
+function openWalkthroughSidebar(toolId) {
+    const sidebar = document.getElementById('walkthrough-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    
+    // Store current tool for download functionality
+    sidebar.dataset.currentTool = toolId;
+    
+    // Populate sidebar with tool-specific content
+    populateWalkthroughContent(toolId);
+    
+    // Show sidebar and overlay
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeWalkthroughSidebar() {
+    const sidebar = document.getElementById('walkthrough-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const video = document.getElementById('walkthrough-video');
+    
+    // Hide sidebar and overlay
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Pause video if playing
+    if (video && !video.paused) {
+        video.pause();
+    }
+}
+
+function populateWalkthroughContent(toolId) {
+    const toolData = getToolData(toolId);
+    
+    // Update title
+    document.getElementById('walkthrough-title').textContent = `${toolData.name} Walkthrough`;
+    
+    // Update video
+    const video = document.getElementById('walkthrough-video');
+    video.src = toolData.videoUrl;
+    video.poster = toolData.posterUrl;
+    
+    // Update description
+    document.getElementById('tool-description').textContent = toolData.description;
+    
+    // Update features
+    const featuresList = document.getElementById('tool-features');
+    featuresList.innerHTML = toolData.features.map(feature => `<li>${feature}</li>`).join('');
+    
+    // Update steps
+    const stepsList = document.getElementById('tool-steps');
+    stepsList.innerHTML = toolData.steps.map(step => `<li>${step}</li>`).join('');
+}
+
+function getToolData(toolId) {
+    const toolDatabase = {
+        'monthly-budget-tracker': {
+            name: 'Monthly Budget Tracker',
+            description: 'A comprehensive Excel template that helps you track your monthly income, categorize expenses, and monitor your savings goals. Perfect for getting a clear picture of your financial habits.',
+            videoUrl: '/videos/budget-tracker-walkthrough.mp4',
+            posterUrl: '/images/budget-tracker-poster.jpg',
+            features: [
+                'Automatic calculations for income vs expenses',
+                'Pre-built expense categories with customization options',
+                'Visual charts showing spending patterns',
+                'Savings goal tracking with progress indicators',
+                'Monthly comparison reports'
+            ],
+            steps: [
+                'Download and open the Excel template',
+                'Enter your monthly income in the designated cells',
+                'Input your expenses by category throughout the month',
+                'Review the automatically generated charts and summaries',
+                'Set and track your savings goals using the built-in calculator'
+            ]
+        },
+        'debt-payoff-calculator': {
+            name: 'Debt Payoff Calculator',
+            description: 'Calculate your debt elimination timeline using either the debt snowball or avalanche method. This tool helps you create a strategic plan to become debt-free faster.',
+            videoUrl: '/videos/debt-calculator-walkthrough.mp4',
+            posterUrl: '/images/debt-calculator-poster.jpg',
+            features: [
+                'Support for both snowball and avalanche methods',
+                'Interest calculation and payment scheduling',
+                'Visual timeline showing debt elimination progress',
+                'Extra payment impact analysis',
+                'Printable payment schedule'
+            ],
+            steps: [
+                'List all your debts with balances and interest rates',
+                'Choose between snowball or avalanche method',
+                'Set your total monthly payment amount',
+                'Review the generated payment schedule',
+                'Track your progress as you pay down debts'
+            ]
+        },
+        'emergency-fund-planner': {
+            name: 'Emergency Fund Planner',
+            description: 'Calculate your ideal emergency fund size based on your expenses and track your progress toward this crucial financial safety net.',
+            videoUrl: '/videos/emergency-fund-walkthrough.mp4',
+            posterUrl: '/images/emergency-fund-poster.jpg',
+            features: [
+                'Personalized emergency fund target calculation',
+                'Monthly savings goal recommendations',
+                'Progress tracking with visual indicators',
+                'Scenario planning for different emergency types',
+                'High-yield savings account recommendations'
+            ],
+            steps: [
+                'Calculate your monthly essential expenses',
+                'Determine your target emergency fund amount (3-6 months)',
+                'Set a realistic monthly savings goal',
+                'Choose the best savings account for your fund',
+                'Track your progress and celebrate milestones'
+            ]
+        },
+        'investment-portfolio-tracker': {
+            name: 'Investment Portfolio Tracker',
+            description: 'Monitor your investment performance, track asset allocation, and analyze your portfolio\'s growth over time with this comprehensive tracking tool.',
+            videoUrl: '/videos/portfolio-tracker-walkthrough.mp4',
+            posterUrl: '/images/portfolio-tracker-poster.jpg',
+            features: [
+                'Multi-account portfolio consolidation',
+                'Asset allocation analysis and rebalancing alerts',
+                'Performance tracking with benchmark comparisons',
+                'Dividend and income tracking',
+                'Tax-loss harvesting opportunities identification'
+            ],
+            steps: [
+                'Input your investment accounts and holdings',
+                'Set your target asset allocation percentages',
+                'Update market values regularly (or link to data feeds)',
+                'Review performance reports and rebalancing needs',
+                'Use insights to optimize your investment strategy'
+            ]
+        },
+        'financial-goals-worksheet': {
+            name: 'Financial Goals Worksheet',
+            description: 'Set and track SMART financial goals with actionable steps and timeline tracking. Turn your financial dreams into achievable milestones.',
+            videoUrl: '/videos/goals-worksheet-walkthrough.mp4',
+            posterUrl: '/images/goals-worksheet-poster.jpg',
+            features: [
+                'SMART goal framework implementation',
+                'Timeline and milestone tracking',
+                'Action step breakdown and planning',
+                'Progress monitoring and adjustment tools',
+                'Goal prioritization matrix'
+            ],
+            steps: [
+                'Define your financial goals using the SMART framework',
+                'Break down each goal into actionable steps',
+                'Set realistic timelines and milestones',
+                'Create accountability measures and check-ins',
+                'Track progress and adjust plans as needed'
+            ]
+        },
+        'home-buying-readiness-checklist': {
+            name: 'Home Buying Readiness Checklist',
+            description: 'Comprehensive checklist and calculator to determine if you\'re financially ready to buy a home, including affordability analysis and preparation steps.',
+            videoUrl: '/videos/home-buying-walkthrough.mp4',
+            posterUrl: '/images/home-buying-poster.jpg',
+            features: [
+                'Affordability calculator with debt-to-income ratios',
+                'Down payment and closing cost estimators',
+                'Credit score improvement tracking',
+                'Pre-approval preparation checklist',
+                'Market research and comparison tools'
+            ],
+            steps: [
+                'Assess your current financial situation',
+                'Calculate how much house you can afford',
+                'Determine your down payment and closing cost needs',
+                'Check and improve your credit score if needed',
+                'Complete the pre-approval preparation checklist'
+            ]
+        },
+        'college-savings-planner': {
+            name: 'College Savings Planner',
+            description: 'Plan and track savings for education expenses with projections for tuition costs and optimal savings strategies including 529 plans.',
+            videoUrl: '/videos/college-savings-walkthrough.mp4',
+            posterUrl: '/images/college-savings-poster.jpg',
+            features: [
+                'Future tuition cost projections with inflation',
+                '529 plan vs other savings vehicle comparisons',
+                'Age-based savings goal calculations',
+                'Tax benefit optimization strategies',
+                'Multiple child planning support'
+            ],
+            steps: [
+                'Estimate future education costs for your timeline',
+                'Choose the best savings vehicle (529, Coverdell, etc.)',
+                'Calculate required monthly savings amounts',
+                'Set up automatic contributions and investments',
+                'Monitor progress and adjust for cost changes'
+            ]
+        },
+        'insurance-needs-calculator': {
+            name: 'Insurance Needs Calculator',
+            description: 'Determine the right amount of life and disability insurance coverage based on your family\'s needs and financial obligations.',
+            videoUrl: '/videos/insurance-calculator-walkthrough.mp4',
+            posterUrl: '/images/insurance-calculator-poster.jpg',
+            features: [
+                'Life insurance needs analysis using multiple methods',
+                'Disability insurance coverage calculations',
+                'Family income replacement planning',
+                'Debt and expense coverage analysis',
+                'Policy comparison and recommendation tools'
+            ],
+            steps: [
+                'Calculate your family\'s income replacement needs',
+                'Factor in debts, mortgages, and future expenses',
+                'Determine appropriate coverage amounts',
+                'Compare different policy types and providers',
+                'Review and update coverage as life changes'
+            ]
+        }
+    };
+    
+    return toolDatabase[toolId] || {
+        name: 'Tool Walkthrough',
+        description: 'Learn how to use this financial tool effectively.',
+        videoUrl: '/videos/default-walkthrough.mp4',
+        posterUrl: '/images/default-poster.jpg',
+        features: ['Feature 1', 'Feature 2', 'Feature 3'],
+        steps: ['Step 1', 'Step 2', 'Step 3']
+    };
 }

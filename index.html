@@ -537,6 +537,9 @@
                 <div class="tools-grid">
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="monthly-budget-tracker" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-file-excel"></i>
                         </div>
@@ -555,6 +558,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="debt-payoff-calculator" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-calculator"></i>
                         </div>
@@ -573,6 +579,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="emergency-fund-planner" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-piggy-bank"></i>
                         </div>
@@ -592,6 +601,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="investment-portfolio-tracker" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-chart-pie"></i>
                         </div>
@@ -610,6 +622,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="financial-goals-worksheet" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-file-alt"></i>
                         </div>
@@ -629,6 +644,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="home-buying-readiness-checklist" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-home"></i>
                         </div>
@@ -648,6 +666,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="college-savings-planner" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
@@ -666,6 +687,9 @@
 
                     <div class="tool-card">
                         <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="insurance-needs-calculator" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
                         <div class="tool-icon">
                             <i class="fas fa-umbrella"></i>
                         </div>
@@ -686,6 +710,91 @@
             </div>
             </div>
         </div>
+
+        <!-- Download Format Popup -->
+        <div id="download-format-popup" class="download-popup-overlay">
+            <div class="download-popup">
+                <div class="download-popup-header">
+                    <h3>Choose Download Format</h3>
+                    <button class="download-popup-close">&times;</button>
+                </div>
+                <div class="download-popup-content">
+                    <p>Select the format you'd like to download:</p>
+                    <div class="format-options">
+                        <button class="format-option" data-format="pdf">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                        </button>
+                        <button class="format-option" data-format="docx">
+                            <i class="fas fa-file-word"></i>
+                            <span>Word Document</span>
+                        </button>
+                        <button class="format-option" data-format="excel">
+                            <i class="fas fa-file-excel"></i>
+                            <span>Excel Spreadsheet</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Walkthrough Video Sidebar -->
+        <div id="walkthrough-sidebar" class="walkthrough-sidebar">
+            <div class="walkthrough-header">
+                <h3 id="walkthrough-title">Tool Walkthrough</h3>
+                <button class="walkthrough-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="walkthrough-content">
+                <div class="video-container">
+                    <video id="walkthrough-video" controls poster="">
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="walkthrough-details">
+                    <div class="tool-overview">
+                        <h4>Overview</h4>
+                        <p id="tool-description">Learn how to use this tool effectively with our step-by-step walkthrough.</p>
+                    </div>
+                    
+                    <div class="key-features">
+                        <h4>Key Features</h4>
+                        <ul id="tool-features">
+                            <li>Feature 1</li>
+                            <li>Feature 2</li>
+                            <li>Feature 3</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="getting-started">
+                        <h4>Getting Started</h4>
+                        <ol id="tool-steps">
+                            <li>Step 1</li>
+                            <li>Step 2</li>
+                            <li>Step 3</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="walkthrough-actions">
+                        <button class="btn-primary download-after-video">
+                            <i class="fas fa-download"></i>
+                            Download Template
+                        </button>
+                        <button class="btn-secondary replay-video">
+                            <i class="fas fa-redo"></i>
+                            Replay Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
         <!-- Wynfull AI Page -->
         <div class="page" id="wynfull-ai">
