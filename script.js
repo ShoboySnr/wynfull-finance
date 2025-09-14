@@ -727,13 +727,14 @@ function validateCurrentStep() {
     
     switch (currentStep) {
         case 1: // Financial situation
-            const financialSituation = document.querySelector('input[name="financial-situation"]:checked');
-            if (!financialSituation) {
-                showErrorMessage('Please select your current financial situation.');
+            const financialSituationCheckboxes = document.querySelectorAll('input[name="financial-situation"]:checked');
+            if (financialSituationCheckboxes.length === 0) {
+                showErrorMessage('Please select at least one option that describes your current financial situation.');
                 return false;
             }
             // If "other" is selected, check if text is provided
-            if (financialSituation.value === 'other') {
+            const otherSelected = Array.from(financialSituationCheckboxes).some(cb => cb.value === 'other');
+            if (otherSelected) {
                 const otherText = document.getElementById('financial-situation-other');
                 if (!otherText.value.trim()) {
                     showErrorMessage('Please specify your financial situation.');
@@ -746,8 +747,17 @@ function validateCurrentStep() {
         case 2: // Primary goal
             const primaryGoal = document.querySelector('input[name="primary-goal"]:checked');
             if (!primaryGoal) {
-                showErrorMessage('Please select your primary money goal.');
+                showErrorMessage('Please select your primary financial goal.');
                 return false;
+            }
+            // If "other" is selected, check if text is provided
+            if (primaryGoal.value === 'other') {
+                const otherText = document.getElementById('primary-goal-other');
+                if (!otherText.value.trim()) {
+                    showErrorMessage('Please specify your primary financial goal.');
+                    otherText.focus();
+                    return false;
+                }
             }
             break;
             
@@ -836,9 +846,86 @@ function hideErrorMessage() {
 function showWelcomeModal() {
     const welcomeModal = document.getElementById('welcomeModal');
     if (welcomeModal) {
+        populateWelcomeSummary();
         welcomeModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
+}
+
+function populateWelcomeSummary() {
+    // Get data from localStorage if available, otherwise collect from form
+    let data = JSON.parse(localStorage.getItem('wynfullOnboardingData')) || collectOnboardingData();
+    
+    // Financial Situation
+    const financialSituation = document.getElementById('summary-financial-situation');
+    if (financialSituation) {
+        if (data.financialSituation) {
+            if (Array.isArray(data.financialSituation)) {
+                const situations = data.financialSituation.map(situation => {
+                    if (situation === 'other' && data.financialSituationOther) {
+                        return data.financialSituationOther;
+                    }
+                    return formatOptionText(situation);
+                });
+                financialSituation.textContent = situations.join(', ');
+            } else {
+                financialSituation.textContent = formatOptionText(data.financialSituation);
+            }
+        } else {
+            financialSituation.textContent = 'Not specified';
+        }
+    }
+    
+    // Primary Goal
+    const primaryGoal = document.getElementById('summary-primary-goal');
+    if (primaryGoal) {
+        if (data.primaryGoal) {
+            if (data.primaryGoal === 'other' && data.primaryGoalOther) {
+                primaryGoal.textContent = data.primaryGoalOther;
+            } else {
+                primaryGoal.textContent = formatOptionText(data.primaryGoal);
+            }
+        } else {
+            primaryGoal.textContent = 'Not specified';
+        }
+    }
+    
+    // Confidence Level
+    const confidenceLevel = document.getElementById('summary-confidence-level');
+    if (confidenceLevel) {
+        confidenceLevel.textContent = data.confidenceLevel ? formatOptionText(data.confidenceLevel) : 'Not specified';
+    }
+    
+    // Debt Feelings
+    const debtFeelings = document.getElementById('summary-debt-feelings');
+    if (debtFeelings) {
+        debtFeelings.textContent = data.debtFeeling ? formatOptionText(data.debtFeeling) : 'Not specified';
+    }
+    
+    // Savings Amount
+    const savingsAmount = document.getElementById('summary-savings-amount');
+    if (savingsAmount) {
+        savingsAmount.textContent = data.savingsAmount ? formatOptionText(data.savingsAmount) : 'Not specified';
+    }
+    
+    // Investing Experience
+    const investingExperience = document.getElementById('summary-investing-experience');
+    if (investingExperience) {
+        investingExperience.textContent = data.investingExperience ? formatOptionText(data.investingExperience) : 'Not specified';
+    }
+    
+    // Learning Style
+    const learningStyle = document.getElementById('summary-learning-style');
+    if (learningStyle) {
+        learningStyle.textContent = data.learningStyle ? formatOptionText(data.learningStyle) : 'Not specified';
+    }
+}
+
+function formatOptionText(value) {
+    // Convert kebab-case to readable text
+    return value.split('-').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
 }
 
 function closeWelcomeModal() {
@@ -876,10 +963,10 @@ function collectOnboardingData() {
     const data = {};
     
     // Step 1: Financial Situation
-    const financialSituation = document.querySelector('input[name="financial-situation"]:checked');
-    if (financialSituation) {
-        data.financialSituation = financialSituation.value;
-        if (financialSituation.value === 'other') {
+    const financialSituationCheckboxes = document.querySelectorAll('input[name="financial-situation"]:checked');
+    if (financialSituationCheckboxes.length > 0) {
+        data.financialSituation = Array.from(financialSituationCheckboxes).map(cb => cb.value);
+        if (data.financialSituation.includes('other')) {
             const otherInput = document.getElementById('financial-situation-other');
             if (otherInput) data.financialSituationOther = otherInput.value;
         }
@@ -887,7 +974,13 @@ function collectOnboardingData() {
     
     // Step 2: Primary Goal
     const primaryGoal = document.querySelector('input[name="primary-goal"]:checked');
-    if (primaryGoal) data.primaryGoal = primaryGoal.value;
+    if (primaryGoal) {
+        data.primaryGoal = primaryGoal.value;
+        if (primaryGoal.value === 'other') {
+            const otherInput = document.getElementById('primary-goal-other');
+            if (otherInput) data.primaryGoalOther = otherInput.value;
+        }
+    }
     
     // Step 3: Confidence Level
     const confidenceLevel = document.querySelector('input[name="confidence-level"]:checked');
@@ -924,6 +1017,9 @@ function updateDashboardFromOnboarding(data) {
     // Update Investing Knowledge Card
     updateInvestingKnowledgeCard(data.investingExperience);
     
+    // Update Debt Progress Card
+    updateDebtProgressCard(data.debtFeeling);
+    
     // Update Phase Progress based on financial situation
     updatePhaseProgress(data.financialSituation);
     
@@ -932,6 +1028,49 @@ function updateDashboardFromOnboarding(data) {
     
     // Update Investment Tracker
     updateInvestmentTracker(data.investingStatus);
+}
+
+function updateDebtProgressCard(debtFeeling) {
+    const debtText = document.querySelector('.debt-text');
+    const debtSubtitle = document.querySelector('.debt-subtitle');
+    const debtProgressFill = document.querySelector('.debt-progress-fill');
+    const debtIcon = document.querySelector('.debt-icon i');
+    
+    if (!debtText || !debtSubtitle || !debtProgressFill || !debtIcon) return;
+    
+    const debtMap = {
+        'overwhelmed': {
+            text: 'Starting your journey',
+            subtitle: 'Every step counts',
+            progress: 15,
+            icon: 'fas fa-seedling'
+        },
+        'concerned': {
+            text: 'Building momentum',
+            subtitle: 'You\'re taking action',
+            progress: 35,
+            icon: 'fas fa-chart-line'
+        },
+        'manageable': {
+            text: 'Making great progress',
+            subtitle: 'Keep up the good work',
+            progress: 65,
+            icon: 'fas fa-trending-up'
+        },
+        'confident': {
+            text: 'Debt under control',
+            subtitle: 'You\'re doing amazing',
+            progress: 85,
+            icon: 'fas fa-check-circle'
+        }
+    };
+    
+    const debtStatus = debtMap[debtFeeling] || debtMap['concerned'];
+    
+    debtText.textContent = debtStatus.text;
+    debtSubtitle.textContent = debtStatus.subtitle;
+    debtProgressFill.style.width = `${debtStatus.progress}%`;
+    debtIcon.className = debtStatus.icon;
 }
 
 function updatePrimaryGoalCard(primaryGoal) {
@@ -973,21 +1112,43 @@ function updateConfidenceScoreCard(confidenceLevel) {
 }
 
 function updateInvestingKnowledgeCard(investingExperience) {
-    const knowledgeLevel = document.getElementById('investingKnowledgeLevel');
-    const knowledgeBadge = document.getElementById('investingKnowledgeBadge');
+    const knowledgeText = document.querySelector('.knowledge-text');
+    const knowledgeSubtitle = document.querySelector('.knowledge-subtitle');
+    const knowledgeDots = document.querySelectorAll('.knowledge-dots .dot');
     
-    if (!knowledgeLevel || !knowledgeBadge) return;
+    if (!knowledgeText || !knowledgeSubtitle || !knowledgeDots.length) return;
     
     const experienceMap = {
-        'beginner': { level: 'Beginner', badge: 'Learning Mode', class: 'neutral' },
-        'intermediate': { level: 'Intermediate', badge: 'Growing', class: 'positive' },
-        'advanced': { level: 'Advanced', badge: 'Expert Level', class: 'positive' }
+        'never-invested': { 
+            level: 'Beginner', 
+            subtitle: 'Starting your learning journey',
+            activeDots: 1
+        },
+        'some-experience': { 
+            level: 'Intermediate', 
+            subtitle: 'Growing your expertise',
+            activeDots: 3
+        },
+        'experienced': { 
+            level: 'Advanced', 
+            subtitle: 'Mastering financial strategies',
+            activeDots: 5
+        }
     };
     
-    const experience = experienceMap[investingExperience] || { level: '--', badge: 'Not Set', class: 'neutral' };
-    knowledgeLevel.textContent = experience.level;
-    knowledgeBadge.textContent = experience.badge;
-    knowledgeBadge.className = `metric-change ${experience.class}`;
+    const experience = experienceMap[investingExperience] || experienceMap['some-experience'];
+    
+    knowledgeText.textContent = experience.level;
+    knowledgeSubtitle.textContent = experience.subtitle;
+    
+    // Update dots based on experience level
+    knowledgeDots.forEach((dot, index) => {
+        if (index < experience.activeDots) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
 }
 
 function updatePhaseProgress(financialSituation) {
@@ -999,7 +1160,36 @@ function updatePhaseProgress(financialSituation) {
         'confident-focused': { reset: 100, control: 100, grow: 70, sustain: 20 }
     };
     
-    const progress = phaseMap[financialSituation] || { reset: 0, control: 0, grow: 0, sustain: 0 };
+    // Handle array of financial situations (multiple checkboxes)
+    let progress = { reset: 0, control: 0, grow: 0, sustain: 0 };
+    
+    if (Array.isArray(financialSituation)) {
+        // Calculate average progress across all selected situations
+        let totalProgress = { reset: 0, control: 0, grow: 0, sustain: 0 };
+        let validSelections = 0;
+        
+        financialSituation.forEach(situation => {
+            if (phaseMap[situation]) {
+                totalProgress.reset += phaseMap[situation].reset;
+                totalProgress.control += phaseMap[situation].control;
+                totalProgress.grow += phaseMap[situation].grow;
+                totalProgress.sustain += phaseMap[situation].sustain;
+                validSelections++;
+            }
+        });
+        
+        if (validSelections > 0) {
+            progress = {
+                reset: Math.round(totalProgress.reset / validSelections),
+                control: Math.round(totalProgress.control / validSelections),
+                grow: Math.round(totalProgress.grow / validSelections),
+                sustain: Math.round(totalProgress.sustain / validSelections)
+            };
+        }
+    } else {
+        // Handle single selection (backward compatibility)
+        progress = phaseMap[financialSituation] || { reset: 0, control: 0, grow: 0, sustain: 0 };
+    }
     
     updatePhaseBar('resetRewireProgress', progress.reset);
     updatePhaseBar('takeControlProgress', progress.control);
