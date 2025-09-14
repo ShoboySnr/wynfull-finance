@@ -11,6 +11,9 @@ function initializeCoachDashboard() {
     const pages = document.querySelectorAll('.page');
     const menuToggle = document.querySelector('#mobileMenuToggle');
     const sidebar = document.querySelector('.sidebar');
+    
+    // Initialize resource filtering
+    initializeResourceFiltering();
 
     // Handle navigation
     navLinks.forEach(link => {
@@ -100,7 +103,7 @@ function initializeCoachDashboard() {
                 this.style.transform = '';
             }, 150);
             
-            console.log(`Activity action: ${clientAction}`);
+            console.log(`Activity action for: ${clientAction}`);
         });
     });
 
@@ -150,4 +153,43 @@ function updateThemeIcon(theme) {
             icon.className = 'fas fa-sun';
         }
     }
+}
+
+// Resource Filtering Functions
+function initializeResourceFiltering() {
+    const resourceTabs = document.querySelectorAll('.resource-tab');
+    const resourceItems = document.querySelectorAll('.resource-item');
+    
+    // Add click event to all resource tabs
+    resourceTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            
+            // Remove active class from all tabs
+            resourceTabs.forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Filter resources
+            filterResources(filter, resourceItems);
+        });
+    });
+}
+
+function filterResources(filter, resourceItems) {
+    resourceItems.forEach(item => {
+        const itemType = item.dataset.type;
+        
+        if (filter === 'all') {
+            // Show all items
+            item.style.display = 'flex';
+        } else if (itemType === filter) {
+            // Show items that match the filter
+            item.style.display = 'flex';
+        } else {
+            // Hide items that don't match
+            item.style.display = 'none';
+        }
+    });
 }
