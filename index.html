@@ -1793,7 +1793,7 @@ p {
                         <form class="signup-form" name="client-signup" method="POST" data-netlify="true">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="client-name">First Name</label>
+                                    <label for="client-name">Full Name</label>
                                     <input type="text" id="client-name" name="name" required>
                                 </div>
                                 <div class="form-group">
@@ -2069,19 +2069,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const clientForm = document.querySelector('#client-form form');
     const coachForm = document.querySelector('#coach-form form');
     
-    if (clientForm) {
-        clientForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleClientFormSubmission(this);
-        });
-    }
+    // Netlify forms will handle submission automatically
+    // Remove the preventDefault to allow Netlify to process forms
     
-    if (coachForm) {
-        coachForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleCoachFormSubmission(this);
-        });
-    }
+    // if (clientForm) {
+    //     clientForm.addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         handleClientFormSubmission(this);
+    //     });
+    // }
+    
+    // if (coachForm) {
+    //     coachForm.addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         handleCoachFormSubmission(this);
+    //     });
+    // }
     
     // Hero CTA button actions
     const primaryCTA = document.querySelector('.hero-ctas .btn-primary');
