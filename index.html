@@ -51,7 +51,6 @@ body {
 }
 
 .container {
-    max-width: 1300px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -435,13 +434,13 @@ p {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-top: 100px;
-    overflow: hidden;
+    padding: 120px 0 80px;
     position: relative;
-    color: white;
+    background: linear-gradient(135deg, var(--background-light) 0%, var(--wynfull-blue-lighter) 100%);
+    overflow: hidden;
 }
 
-.hero-video {
+.hero-background-video {
     position: absolute;
     top: 0;
     left: 0;
@@ -449,9 +448,10 @@ p {
     height: 100%;
     object-fit: cover;
     z-index: 1;
+    opacity: 0.3;
 }
 
-.hero-overlay {
+.hero-background-gradient {
     position: absolute;
     top: 0;
     left: 0;
@@ -461,19 +461,30 @@ p {
     z-index: 2;
 }
 
-.hero-container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
-    position: relative;
-    z-index: 3;
-}
-
 .hero-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
+    position: relative;
+    z-index: 3;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--wynfull-blue);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.hero-badge i {
+    color: #FFD700;
 }
 
 .hero-headline {
@@ -481,12 +492,11 @@ p {
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
 }
 
 .highlight {
-    color: var(--wynfull-blue-light);
+    color: #ffffff;
     font-weight: 700;
 }
 
@@ -494,22 +504,16 @@ p {
     font-size: 1.25rem;
     line-height: 1.6;
     margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.hero-ctas {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 3rem;
+    color: #ffffff;
 }
 
 .hero-stats {
     display: flex;
     gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.stat {
+.stat-item {
     text-align: center;
 }
 
@@ -517,63 +521,345 @@ p {
     display: block;
     font-size: 2rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--wynfull-blue);
+    margin-bottom: 0.25rem;
 }
 
 .stat-label {
     font-size: 0.875rem;
-    color: #ffffff;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* Hero Visual */
 .hero-visual {
+    position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: 2rem;
 }
 
-.hero-image-container {
+.hero-video-preview {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 1rem;
+}
+
+.video-preview-container {
     position: relative;
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     box-shadow: var(--shadow-2xl);
-    transition: all 0.3s ease;
+    background: var(--background-primary);
 }
 
-.hero-main-image, .hero-main-video {
+.hero-preview-video {
     width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 20px;
-}
-
-.hero-main-video {
+    height: 350px;
     object-fit: cover;
-    max-height: 400px;
+    display: block;
 }
 
-.video-unmute-btn {
+.video-overlay {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    border: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(14, 77, 164, 0.8) 0%, rgba(14, 77, 164, 0.6) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.video-overlay:hover {
+    background: linear-gradient(135deg, rgba(14, 77, 164, 0.9) 0%, rgba(14, 77, 164, 0.7) 100%);
+}
+
+.video-play-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 3px solid white;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: white;
+    font-size: 1.5rem;
     cursor: pointer;
-    font-size: 1.2rem;
     transition: all 0.3s ease;
-    z-index: 10;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
 }
 
-.video-unmute-btn:hover {
-    background: rgba(0, 0, 0, 0.9);
+.video-play-button:hover {
+    background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
+}
+
+.video-play-button i {
+    margin-left: 3px; /* Adjust play icon position */
+}
+
+.video-info {
+    text-align: center;
+    color: white;
+}
+
+.video-info h4 {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.video-info p {
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+.hero-dashboard-preview {
+    background: var(--background-primary);
+    border-radius: 16px;
+    box-shadow: var(--shadow-2xl);
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--border-light);
+}
+
+.dashboard-header {
+    background: var(--wynfull-blue);
+    padding: 1rem;
+}
+
+.dashboard-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-item {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.dashboard-content {
+    padding: 1.5rem;
+}
+
+.dashboard-card {
+    background: var(--background-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--wynfull-blue);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--wynfull-blue) 0%, var(--success-green) 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.mini-card {
+    background: var(--background-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mini-card-icon {
+    font-size: 1.5rem;
+}
+
+.mini-card-title {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.mini-card-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.hero-features {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.feature-bubble {
+    background: var(--background-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 50px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.feature-bubble:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-bubble i {
+    color: var(--wynfull-blue);
+}
+
+/* Video Modal */
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.video-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.video-modal-content {
+    background: var(--background-primary);
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    box-shadow: var(--shadow-2xl);
+}
+
+.video-modal-header {
+    background: var(--wynfull-blue);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.video-modal-header h3 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.video-modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .hero-overlay-stats {
@@ -1885,12 +2171,12 @@ p {
 
     <!-- Hero Section -->
     <section class="hero">
-        <video class="hero-video" autoplay muted loop>
+        <video class="hero-background-video" autoplay muted loop playsinline>
             <source src="wynfull_background_video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <div class="hero-overlay"></div>
-        <div class="hero-container">
+        <div class="hero-background-gradient"></div>
+        <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
                     <h1 class="hero-headline">
@@ -1901,33 +2187,55 @@ p {
                         Wynfull empowers you to master money through action — build skills in budgeting, saving, investing, and more, while celebrating every milestone.
                     </p>
                     <div class="hero-ctas">
-                        <button class="btn-primary">
+                        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">
                             <i class="fas fa-rocket"></i>
                             Request Early Access
                         </button>
-                        <button class="btn-secondary">
+                        <button class="btn-secondary video-play-btn" onclick="openVideoModal()">
                             <i class="fas fa-play"></i>
                             See How It Works
                         </button>
                     </div>
                 </div>
                 <div class="hero-visual">
-                    <div class="hero-image-container">
-                        <video class="hero-main-video" autoplay muted loop playsinline controls>
-                            <source src="wynfull-finance.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button class="video-unmute-btn" onclick="toggleVideoSound()">
-                            <i class="fas fa-volume-mute" id="volume-icon"></i>
-                        </button>
+                    <div class="hero-video-preview">
+                        <div class="video-preview-container">
+                            <video class="hero-preview-video" muted loop playsinline poster="">
+                                <source src="wynfull-finance.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay" onclick="openVideoModal()">
+                                <button class="video-play-button">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div class="video-info">
+                                    <h4>See Wynfull in Action</h4>
+                                    <p>Watch how our platform transforms financial education</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="hero-background">
-            <!-- Removed colorful gradient orbs for professional look -->
-        </div>
     </section>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal" style="display: none;">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <h3>See How Wynfull Works</h3>
+                <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+            </div>
+            <div class="video-container">
+                <video id="modalVideo" controls>
+                    <source src="wynfull-finance.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+        <div class="video-modal-overlay" onclick="closeVideoModal()"></div>
+    </div>
 
     <!-- How Wynfull Works Section -->
     <section id="how-it-works" class="how-it-works">
@@ -2728,6 +3036,37 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 closeMobileMenu();
+            }
+        });
+
+        // Video Modal Functions
+        function openVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Auto-play video when modal opens
+            video.currentTime = 0;
+            video.play();
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Pause video when modal closes
+            video.pause();
+        }
+
+        // Close video modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
             }
         });
     </script>
