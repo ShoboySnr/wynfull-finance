@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wynfull Finance Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h2>Wynfull</h2>
+                        <span>Finance Platform</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="resource-library">
+                        <i class="fas fa-book"></i>
+                        <span>Resource Library</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="wynfull-ai">
+                        <i class="fas fa-robot"></i>
+                        <span>Wynfull AI</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="coaching">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Coaching</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="messaging">
+                        <i class="fas fa-comments"></i>
+                        <span>Messaging</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="plans">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Plans</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="account">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Account</span>
+                    </a>
+                </li>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" onclick="showPage('account')" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <span class="user-name">Femi</span>
+                        <span class="user-role">Financial Freedom Plus Member</span>
+                    </div>
+                    <button class="role-switch-btn" id="roleSwitchBtn" title="Switch to Coach View">
+                        <i class="fas fa-user-tie"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <div class="top-header">
+                <div class="header-left">
+                    
+                </div>
+                <div class="header-right">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Start Here Page -->
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard">
+                <div class="page-content">
+                    <div class="page-header">
+                        <h1>Welcome back, Femi! 👋</h1>
+                        <p>Ready to continue your financial journey?</p>
+                    </div>
+                    
+                    <div class="dashboard-top-section">
+                        <div class="phase-status-card">
+                            <h2>Phase Status</h2>
+                            <div class="phase-chart">
+                                <div class="phase-bar-container">
+                                    <div class="phase-bar reset-rewire"></div>
+                                    <div class="phase-bar take-control"></div>
+                                    <div class="phase-bar grow-multiply"></div>
+                                    <div class="phase-bar sustain-scale"></div>
+                                </div>
+                                <div class="phase-labels">
+                                    <span class="phase-label">Reset & Rewire</span>
+                                    <span class="phase-label">Grow & Multiply</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="primary-goals-card">
+                            <h2>Primary Goals</h2>
+                            <ul class="goals-list">
+                                <li>Pay off or reduce debt</li>
+                                <li>Build an emergency fund</li>
+                                <li>Save for a big purchase</li>
+                                <li>Start investing or invest more</li>
+                                <li>Grow wealth for retirement/financial independence</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid">
+                        <div class="metric-card confidence-card">
+                            <h3>Confidence Score</h3>
+                            <div class="confidence-circle">
+                                <div class="confidence-progress">
+                                    <span class="confidence-value">120</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card debt-progress-card">
+                            <h3>Debt Journey</h3>
+                            <div class="debt-status">
+                                <div class="debt-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="debt-content">
+                                    <span class="debt-text">Taking control</span>
+                                    <div class="debt-progress-bar">
+                                        <div class="debt-progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <span class="debt-subtitle">You're making progress</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card knowledge-card">
+                            <h3>Financial Knowledge</h3>
+                            <div class="knowledge-content">
+                                <div class="knowledge-level">
+                                    <div class="knowledge-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="knowledge-info">
+                                        <span class="knowledge-text">Intermediate</span>
+                                        <div class="knowledge-progress">
+                                            <div class="knowledge-dots">
+                                                <span class="dot active"></span>
+                                                <span class="dot active"></span>
+                                                <span class="dot active"></span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                            </div>
+                                        </div>
+                                        <span class="knowledge-subtitle">Growing your expertise</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card emergency-fund-card">
+                            <h3>Emergency Fund</h3>
+                            <div class="fund-amount">$5,000</div>
+                            <div class="fund-progress">
+                                <div class="fund-bar">
+                                    <div class="fund-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card investing-card">
+                            <h3>Investing</h3>
+                            <div class="investing-content">
+                                <span class="investing-label">Contribution score</span>
+                                <span class="investing-status">Just starting</span>
+                                <div class="investing-progress">
+                                    <div class="investing-bar">
+                                        <div class="investing-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-sections two-columns">
+                        <div class="ai-insights">
+                            <h2>AI Insights</h2>
+                            <div class="insight-card">
+                                <i class="fas fa-lightbulb"></i>
+                                <p>Based on your spending patterns, you could save an additional $200/month by optimizing your subscription services.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-activity">
+                            <h2>Recent Activity</h2>
+                                    <div class="activity-list">
+                                        <div class="activity-item">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <span>Added $500 to emergency fund</span>
+                                            <time>2 days ago</time>
+                                        </div>
+                                        <div class="activity-item">
+                                            <i class="fas fa-chart-line"></i>
+                                            <span>Investment portfolio up 3.2%</span>
+                                            <time>1 week ago</time>
+                                        </div>
+                                        <div class="activity-item">
+                                            <i class="fas fa-credit-card"></i>
+                                            <span>Paid off credit card balance</span>
+                                            <time>2 weeks ago</time>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                </div>
+            </div>
+
+                    <!-- Resource Library Page -->
+        <div id="resource-library" class="page">
+            <div class="page-content">
+                <!-- Resource Library Header -->
+                <div class="resource-header">
+                    <div class="resource-title">
+                        <h1>Resource Library</h1>
+                    <p>Your comprehensive financial education hub</p>
+                </div>
+                
+                <div class="resource-controls">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search guides, tools, or templates..." class="resource-search">
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select class="filter-dropdown">
+                            <option value="">By Phase</option>
+                            <option value="reset-rewire">Reset &amp; Rewire</option>
+                            <option value="take-control">Take Control</option>
+                            <option value="grow-multiply">Grow &amp; Multiply</option>
+                            <option value="sustain-scale">Sustain &amp; Scale</option>
+                        </select>
+                        
+                        <select class="filter-dropdown">
+                            <option value="">By Format</option>
+                            <option value="guide">Word</option>
+                            <option value="excel">Excel Template</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="resource-tabs">
+                <button class="resource-tab active" data-tab="learning-phases">
+                    <i class="fas fa-graduation-cap"></i>
+                    Learning Phases
+                </button>
+                <button class="resource-tab" data-tab="tools-templates">
+                    <i class="fas fa-tools"></i>
+                    Tools &amp; Templates
+                </button>
+            </div>
+
+            <!-- Learning Phases Tab -->
+            <div id="learning-phases" class="resource-tab-content active">
+                <div class="phases-container">
+                    <!-- Phase 1: Reset & Rewire -->
+                    <div class="phase-card" data-phase="reset-rewire">
+                        <div class="phase-header">
+                            <div class="phase-icon">
+                                <i class="fas fa-refresh"></i>
+                            </div>
+                            <div class="phase-info">
+                                <h3>Reset &amp; Rewire</h3>
+                                <p>Foundation building and mindset transformation for financial success</p>
+                            </div>
+                            <div class="phase-status completed">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Completed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phase-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="progress-text">8/8 modules • 100% complete</span>
+                        </div>
+                        
+                        <div class="phase-modules">
+                            <div class="module-item completed">
+                                <div class="module-info">
+                                    <h4>Money Mindset Transformation</h4>
+                                    <p>Overcome limiting beliefs about money</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag video">Video</span>
+                                </div>
+                                <button class="module-btn">Open Resource</button>
+                            </div>
+                            
+                            <div class="module-item completed">
+                                <div class="module-info">
+                                    <h4>Financial Values Assessment</h4>
+                                    <p>Identify your core financial values and priorities</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                </div>
+                                <button class="module-btn">Open Resource</button>
+                            </div>
+                            
+                            <div class="module-item completed">
+                                <div class="module-info">
+                                    <h4>Goal Setting Framework</h4>
+                                    <p>Create SMART financial goals that motivate action</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                    <span class="resource-tag video">Video</span>
+                                </div>
+                                <button class="module-btn">Open Resource</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2: Take Control -->
+                    <div class="phase-card current" data-phase="take-control">
+                        <div class="phase-header">
+                            <div class="phase-icon">
+                                <i class="fas fa-hand-holding-dollar"></i>
+                            </div>
+                            <div class="phase-info">
+                                <h3>Take Control</h3>
+                                <p>Master budgeting, saving, and debt management fundamentals</p>
+                            </div>
+                            <div class="phase-status current">
+                                <i class="fas fa-play-circle"></i>
+                                <span>In Progress</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phase-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%"></div>
+                            </div>
+                            <span class="progress-text">7/12 modules • 68% complete</span>
+                        </div>
+                        
+                        <div class="phase-modules">
+                            <div class="module-item completed">
+                                <div class="module-info">
+                                    <h4>Budget Creation Masterclass</h4>
+                                    <p>Build a realistic budget that actually works</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                    <span class="resource-tag video">Video</span>
+                                </div>
+                                <button class="module-btn">Open Resource</button>
+                            </div>
+                            
+                            <div class="module-item completed">
+                                <div class="module-info">
+                                    <h4>Emergency Fund Planning</h4>
+                                    <p>Calculate and build your financial safety net</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                </div>
+                                <button class="module-btn">Open Resource</button>
+                            </div>
+                            
+                            <div class="module-item current">
+                                <div class="module-info">
+                                    <h4>Debt Elimination Strategies</h4>
+                                    <p>Proven methods to eliminate debt faster</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                    <span class="resource-tag video">Video</span>
+                                </div>
+                                <button class="module-btn primary">Continue Learning</button>
+                            </div>
+                            
+                            <div class="module-item">
+                                <div class="module-info">
+                                    <h4>Credit Score Optimization</h4>
+                                    <p>Understand and improve your credit profile</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                </div>
+                                <button class="module-btn">Start Module</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Grow & Multiply -->
+                    <div class="phase-card locked" data-phase="grow-multiply">
+                        <div class="phase-header">
+                            <div class="phase-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="phase-info">
+                                <h3>Grow &amp; Multiply</h3>
+                                <p>Investment strategies and wealth building techniques</p>
+                            </div>
+                            <div class="phase-status locked">
+                                <i class="fas fa-lock"></i>
+                                <span>Locked</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phase-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0/15 modules • Complete "Take Control" to unlock</span>
+                        </div>
+                        
+                        <div class="phase-modules locked">
+                            <div class="module-item locked">
+                                <div class="module-info">
+                                    <h4>Investing Fundamentals Toolkit</h4>
+                                    <p>Beginner-friendly guide + growth calculator to start investing</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                </div>
+                                <button class="module-btn locked">Locked</button>
+                            </div>
+                            
+                            <div class="module-item locked">
+                                <div class="module-info">
+                                    <h4>Portfolio Diversification</h4>
+                                    <p>Build a balanced investment portfolio</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                    <span class="resource-tag video">Video</span>
+                                </div>
+                                <button class="module-btn locked">Locked</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 4: Sustain & Scale -->
+                    <div class="phase-card locked" data-phase="sustain-scale">
+                        <div class="phase-header">
+                            <div class="phase-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="phase-info">
+                                <h3>Sustain &amp; Scale</h3>
+                                <p>Advanced wealth management and legacy planning</p>
+                            </div>
+                            <div class="phase-status locked">
+                                <i class="fas fa-lock"></i>
+                                <span>Locked</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phase-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0/10 modules • Complete "Grow &amp; Multiply" to unlock</span>
+                        </div>
+                        
+                        <div class="phase-modules locked">
+                            <div class="module-item locked">
+                                <div class="module-info">
+                                    <h4>Tax Optimization Strategies</h4>
+                                    <p>Minimize taxes and maximize wealth retention</p>
+                                </div>
+                                <div class="module-resources">
+                                    <span class="resource-tag guide">Word Guide</span>
+                                    <span class="resource-tag excel">Excel Tool</span>
+                                </div>
+                                <button class="module-btn locked">Locked</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools & Templates Tab -->
+            <div id="tools-templates" class="resource-tab-content">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="monthly-budget-tracker" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-file-excel"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Monthly Budget Tracker</h3>
+                            <p>Comprehensive Excel template for tracking income, expenses, and savings goals</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Template</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="debt-payoff-calculator" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Debt Payoff Calculator</h3>
+                            <p>Calculate your debt elimination timeline using snowball or avalanche methods</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Template</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="emergency-fund-planner" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Emergency Fund Planner</h3>
+                            <p>Calculate your ideal emergency fund size and track your progress</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Template</span>
+                                <span class="format-tag pdf">PDF Guide</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="investment-portfolio-tracker" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Investment Portfolio Tracker</h3>
+                            <p>Monitor your investment performance and asset allocation</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Template</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="financial-goals-worksheet" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Financial Goals Worksheet</h3>
+                            <p>Set and track SMART financial goals with actionable steps</p>
+                            <div class="tool-formats">
+                                <span class="format-tag pdf">PDF Worksheet</span>
+                                <span class="format-tag word">Word Doc</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="home-buying-readiness-checklist" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Home Buying Readiness Checklist</h3>
+                            <p>Comprehensive checklist to determine if you're ready to buy a home</p>
+                            <div class="tool-formats">
+                                <span class="format-tag pdf">PDF Checklist</span>
+                                <span class="format-tag excel">Excel Calculator</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="college-savings-planner" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>College Savings Planner</h3>
+                            <p>Plan and track savings for education expenses</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Template</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-accent"></div>
+                        <button class="walkthrough-indicator" data-tool="insurance-needs-calculator" title="Watch walkthrough video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div class="tool-icon">
+                            <i class="fas fa-umbrella"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Insurance Needs Calculator</h3>
+                            <p>Determine the right amount of life and disability insurance</p>
+                            <div class="tool-formats">
+                                <span class="format-tag excel">Excel Calculator</span>
+                                <span class="format-tag pdf">PDF Guide</span>
+                            </div>
+                        </div>
+                        <button class="tool-download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Download Format Popup -->
+        <div id="download-format-popup" class="download-popup-overlay">
+            <div class="download-popup">
+                <div class="download-popup-header">
+                    <h3>Choose Download Format</h3>
+                    <button class="download-popup-close">&times;</button>
+                </div>
+                <div class="download-popup-content">
+                    <p>Select the format you'd like to download:</p>
+                    <div class="format-options">
+                        <button class="format-option" data-format="pdf">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                        </button>
+                        <button class="format-option" data-format="docx">
+                            <i class="fas fa-file-word"></i>
+                            <span>Word Document</span>
+                        </button>
+                        <button class="format-option" data-format="excel">
+                            <i class="fas fa-file-excel"></i>
+                            <span>Excel Spreadsheet</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Walkthrough Video Sidebar -->
+        <div id="walkthrough-sidebar" class="walkthrough-sidebar">
+            <div class="walkthrough-header">
+                <h3 id="walkthrough-title">Tool Walkthrough</h3>
+                <button class="walkthrough-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="walkthrough-content">
+                <div class="video-container">
+                    <video id="walkthrough-video" controls poster="">
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="walkthrough-details">
+                    <div class="tool-overview">
+                        <h4>Overview</h4>
+                        <p id="tool-description">Learn how to use this tool effectively with our step-by-step walkthrough.</p>
+                    </div>
+                    
+                    <div class="key-features">
+                        <h4>Key Features</h4>
+                        <ul id="tool-features">
+                            <li>Feature 1</li>
+                            <li>Feature 2</li>
+                            <li>Feature 3</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="getting-started">
+                        <h4>Getting Started</h4>
+                        <ol id="tool-steps">
+                            <li>Step 1</li>
+                            <li>Step 2</li>
+                            <li>Step 3</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="walkthrough-actions">
+                        <button class="btn-primary download-after-video">
+                            <i class="fas fa-download"></i>
+                            Download Template
+                        </button>
+                        <button class="btn-secondary replay-video">
+                            <i class="fas fa-redo"></i>
+                            Replay Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <!-- Wynfull AI Page -->
+        <div class="page" id="wynfull-ai">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>Wynfull AI Assistant</h1>
+                    <p>Get personalized answers to your questions</p>
+                </div>
+                
+                <div class="ai-chat-container">
+                    <div class="quick-questions">
+                        <h3>Quick Questions</h3>
+                        <div class="quick-question-buttons">
+                            <button class="quick-question-btn" data-question="How much should I save for retirement?">
+                                How much should I save for retirement?
+                            </button>
+                            <button class="quick-question-btn" data-question="What's the best way to pay off debt?">
+                                What's the best way to pay off debt?
+                            </button>
+                            <button class="quick-question-btn" data-question="Should I invest or save more?">
+                                Should I invest or save more?
+                            </button>
+                            <button class="quick-question-btn" data-question="How can I improve my credit score?">
+                                How can I improve my credit score?
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I'm your Wynfull AI assistant. I'm here to help you with personalized financial advice. What would you like to know?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" placeholder="Ask me anything about your finances...">
+                        <button id="sendMessage" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coaching Page -->
+        <div class="page" id="coaching">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>Coach Access & Workshops</h1>
+                    <p>Connect with certified coaches for personalized guidance and support</p>
+                </div>
+                
+                <div class="coaching-sections">
+                    <div class="coaching-section">
+                        <h2>1:1 Coaching Sessions</h2>
+                        <div class="session-card">
+                            <div class="coach-info">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face&auto=format" alt="Coach" class="coach-avatar">
+                                <div class="coach-details">
+                                    <h3>Sarah Chen,</h3>
+                                    <p>Experienced coach with a proven track record of guiding clients through
+                                        personal and <br />professional growth, accountability, and mindset shifts.</p>
+                                </div>
+                            </div>
+                            <button class="btn-primary">Book Session</button>
+                        </div>
+                    </div>
+                    
+                    <div class="coaching-section">
+                        <h2>Group Workshops</h2>
+                        <div class="workshop-list">
+                            <div class="workshop-item">
+                                <div class="workshop-info">
+                                    <h3>Retirement Planning Masterclass</h3>
+                                    <p>Learn advanced strategies for retirement savings</p>
+                                    <div class="workshop-meta">
+                                        <span><i class="fas fa-calendar"></i> March 15, 2024</span>
+                                        <span><i class="fas fa-clock"></i> 2:00 PM EST</span>
+                                    </div>
+                                </div>
+                                <button class="btn-secondary">Join</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="coaching-section">
+                        <h2>Workshop Notes</h2>
+                        <div class="notes-container">
+                            <div class="note-item">
+                                <div class="note-header">
+                                    <h4>Session with Sarah Chen</h4>
+                                    <span class="note-date">March 1, 2024</span>
+                                </div>
+                                <p>Discussed debt consolidation strategy. Recommended focusing on high-interest credit cards first while maintaining minimum payments on student loans.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messaging Page -->
+        <div class="page" id="messaging">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>Messages</h1>
+                    <p>Connect with your coach</p>
+                </div>
+                
+                <div class="messaging-container">
+                    <!-- Coaches List Sidebar -->
+                    <div class="coaches-sidebar">
+                        <div class="coaches-header">
+                            <h3>Your Coaches</h3>
+                        </div>
+                        <div class="coaches-list">
+                            <div class="coach-item active" data-coach="sarah-chen">
+                                <div class="coach-avatar">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=50&h=50&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="coach-info">
+                                    <h4>Sarah Chen, CFP</h4>
+                                    <p class="coach-specialty">Debt & Investment Planning</p>
+                                    <div class="last-message">
+                                        <span class="message-preview">Great question! Always prioritize...</span>
+                                        <span class="message-time">11:45 AM</span>
+                                    </div>
+                                </div>
+                                <div class="unread-badge">2</div>
+                            </div>
+                            
+                            <div class="coach-item" data-coach="michael-torres">
+                                <div class="coach-avatar">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face&auto=format" alt="Michael Torres">
+                                    <div class="status-dot away"></div>
+                                </div>
+                                <div class="coach-info">
+                                    <h4>Michael Torres, CPA</h4>
+                                    <p class="coach-specialty">Tax & Retirement Planning</p>
+                                    <div class="last-message">
+                                        <span class="message-preview">I've reviewed your 401k...</span>
+                                        <span class="message-time">Yesterday</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="coach-item" data-coach="lisa-wang">
+                                <div class="coach-avatar">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face&auto=format" alt="Lisa Wang">
+                                    <div class="status-dot offline"></div>
+                                </div>
+                                <div class="coach-info">
+                                    <h4>Lisa Wang, CFP</h4>
+                                    <p class="coach-specialty">Real Estate & Insurance</p>
+                                    <div class="last-message">
+                                        <span class="message-preview">The home buying checklist...</span>
+                                        <span class="message-time">Mar 10</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="coach-item" data-coach="david-kim">
+                                <div class="coach-avatar">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face&auto=format" alt="David Kim">
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="coach-info">
+                                    <h4>David Kim, MBA</h4>
+                                    <p class="coach-specialty">Business & Entrepreneurship</p>
+                                    <div class="last-message">
+                                        <span class="message-preview">Your business plan looks solid...</span>
+                                        <span class="message-time">Mar 8</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Area -->
+                    <div class="chat-area">
+                        <!-- Coach Info Header -->
+                        <div class="coach-header">
+                        <div class="coach-profile">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face&auto=format" alt="Sarah Chen" class="coach-avatar">
+                            <div class="coach-details">
+                                <h3>Sarah Chen, CFP</h3>
+                                <p>Your Coach</p>
+                                <div class="coach-status online">
+                                    <span class="status-indicator"></span>
+                                    <span>Online</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="coach-actions">
+                            <button class="btn-secondary">
+                                <i class="fas fa-calendar"></i>
+                                Schedule
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages Area -->
+                    <div class="messages-area">
+                        <div class="messages-list" id="messagesList">
+                            <!-- Today's Messages -->
+                            <div class="message-date">
+                                <span>Today</span>
+                            </div>
+                            
+                            <div class="message coach-message">
+                                <div class="message-avatar">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Sarah Chen</span>
+                                        <span class="message-time">10:30 AM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Hi! I've reviewed your budget from our last session. Great progress on reducing your dining out expenses! 🎉
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message coach-message">
+                                <div class="message-avatar">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Sarah Chen</span>
+                                        <span class="message-time">10:32 AM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        I've attached a new debt consolidation strategy that could save you $150/month. Take a look when you have a chance.
+                                    </div>
+                                    <div class="message-attachment">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>Debt_Consolidation_Plan.pdf</span>
+                                        <button class="attachment-download">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-time">11:15 AM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Thank you! I'll review the plan today. Quick question - should I prioritize the credit card with 18% APR or the personal loan at 12%?
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message coach-message">
+                                <div class="message-avatar">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Sarah Chen</span>
+                                        <span class="message-time">11:45 AM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Great question! Always prioritize the highest interest rate first. Focus on the 18% credit card while maintaining minimum payments on the personal loan. This will save you more money in the long run.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Yesterday's Messages -->
+                            <div class="message-date">
+                                <span>Yesterday</span>
+                            </div>
+                            
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-time">3:20 PM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Hi Sarah! I completed the emergency fund worksheet. I think I need about $12,000 for 6 months of expenses. Is this realistic to achieve in 18 months?
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="message coach-message">
+                                <div class="message-avatar">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Sarah Chen">
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-sender">Sarah Chen</span>
+                                        <span class="message-time">4:10 PM</span>
+                                    </div>
+                                    <div class="message-text">
+                                        Absolutely! $12,000 in 18 months means saving about $667 per month. Based on your current budget, this is very achievable. Let's discuss this in our next session on Friday.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Message Input -->
+                        <div class="message-input-container">
+                            <div class="message-input-area">
+                                <button class="attachment-btn">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <textarea 
+                                    placeholder="Type your message to Sarah..." 
+                                    class="message-input"
+                                    rows="1"
+                                    id="messageInput"
+                                ></textarea>
+                                <button class="send-btn" id="sendBtn">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Plans Page -->
+        <div class="page" id="plans">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>Your Plans</h1>
+                    <p>Manage your subscription and explore upgrade options to unlock advanced features.</p>
+                </div>
+                
+                <div class="plans-grid">
+                    <div class="plan-card current">
+                        <div class="plan-badge current-badge">Current Plan</div>
+                        <div class="plan-header">
+                            <h3>Core Access</h3>
+                            <div class="plan-price">
+                                <span class="price">$20</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Full access to 4-phase curriculum & resource library (videos, templates, reference guide)</li>
+                            <li><i class="fas fa-check"></i> Community access + monthly group coaching and Q&A session</li>
+                            <li><i class="fas fa-check"></i> Wynfull AI research access</li>
+                        </ul>
+                        <button class="btn-secondary plan-btn current-plan-btn" disabled>Current Plan</button>
+                    </div>
+                    
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Most Popular</div>
+                        <div class="plan-header">
+                            <h3>Guided Growth</h3>
+                            <div class="plan-price">
+                                <span class="price">$30</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <div class="price-difference">+$10/month</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Everything in your current Core Access plan plus:</li>
+                            <li><i class="fas fa-star"></i> Two 45-minute 1:1 coaching session per month (non-dedicated coach)</li>
+                            <li><i class="fas fa-star"></i> Personalized feedback on budgets and debt strategies</li>
+                            <li><i class="fas fa-star"></i> Access to bonus live workshops (credit repair, investing, etc)</li>
+                        </ul>
+                        <button class="btn-primary plan-btn">Upgrade to Guided Growth</button>
+                    </div>
+                    
+                    <div class="plan-card premium">
+                        <div class="plan-badge">Best Value</div>
+                        <div class="plan-header">
+                            <h3>Financial Freedom Plus</h3>
+                            <div class="plan-price">
+                                <span class="price">$40</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <div class="price-difference">+$20/month</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Everything in Guided Growth plan plus:</li>
+                            <li><i class="fas fa-crown"></i> Dedicated coach assignment from day one</li>
+                            <li><i class="fas fa-crown"></i> Weekly or as needed 45-minute 1:1 coaching session (up to 4/month)</li>
+                            <li><i class="fas fa-crown"></i> Exclusive event access and new products access</li>
+                        </ul>
+                        <button class="btn-secondary plan-btn">Upgrade to Financial Freedom Plus</button>
+                    </div>
+                </div>
+                
+                <div class="upgrade-benefits">
+                    <h2>Why Upgrade?</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Expert Coaching</h3>
+                            <p>Work directly with certified coaches to gain confidence and optimize your
+                                financial goals.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Advanced Strategies</h3>
+                            <p>Track investments, analyze portfolio performance, and plan for long-term growth.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-comments"></i>
+                            <h3>Personalized Feedback</h3>
+                            <p>Get feedback on budgets and debt strategies</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Priority Support</h3>
+                            <p>Get faster responses and dedicated assistance when you need help.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Page -->
+        <div class="page" id="account">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>Account Settings</h1>
+                    <p>Manage your profile and preferences</p>
+                </div>
+                
+                <div class="account-sections">
+                    <div class="account-section">
+                        <h2>Profile Information</h2>
+                        <div class="profile-form">
+                            <div class="profile-avatar-section">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format" alt="Profile" class="profile-avatar">
+                                <button class="btn-secondary">Change Photo</button>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" value="Femi">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" value="Agboola">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" value="femi.agboola@wynfull.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" value="+1 (555) 123-4567">
+                                </div>
+                            </div>
+                            <button class="btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-section">
+                        <h2>Security</h2>
+                        <div class="security-options">
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h3>Password</h3>
+                                    <p>Last changed 3 months ago</p>
+                                </div>
+                                <button class="btn-secondary">Change Password</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h3>Two-Factor Authentication</h3>
+                                    <p>Add an extra layer of security</p>
+                                </div>
+                                <button class="btn-secondary">Enable 2FA</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="account-section">
+                        <h2>Notifications</h2>
+                        <div class="notification-preferences">
+                            <div class="notification-item">
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="notification-info">
+                                    <h3>Email Notifications</h3>
+                                    <p>Receive updates about your account via email</p>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <div class="notification-info">
+                                    <h3>Goal Reminders</h3>
+                                    <p>Get reminders about your financial goals</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="account-section danger-zone">
+                        <div class="danger-actions">
+                            <div class="danger-item">
+                                <div class="danger-info">
+                                    <h3>Cancel Subscription</h3>
+                                    <p>Cancel your current plan</p>
+                                </div>
+                                <button class="btn-danger">Cancel Plan</button>
+                            </div>
+                            <div class="danger-item">
+                                <div class="danger-info">
+                                    <h3>Delete Account</h3>
+                                    <p>Permanently delete your account and all data</p>
+                                </div>
+                                <button class="btn-danger">Delete Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-notifications" id="closeNotifications">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="notification-list">
+            <div class="notification-item unread">
+                <div class="notification-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>Portfolio Update</h4>
+                    <p>Your investments are up 2.3% this week</p>
+                    <time>2 hours ago</time>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>Goal Milestone</h4>
+                    <p>You're 75% towards your emergency fund goal!</p>
+                    <time>1 day ago</time>
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>Coaching Session</h4>
+                    <p>Reminder: Session with Sarah Chen tomorrow at 2 PM</p>
+                    <time>2 days ago</time>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Modal -->
+    <div class="modal-overlay" id="onboardingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Welcome to Wynfull Finance</h1>
+                <p>Let's get started on your financial education and solution journey</p>
+            </div>
+            <div class="onboarding-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="step-counter">
+                    <span id="currentStep">1</span> of <span id="totalSteps">7</span>
+                </div>
+                
+                <!-- Error Message Container -->
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="errorText"></span>
+                </div>
+                
+                <div class="onboarding-step active" id="step1">
+                    <h2>Which best describes your current financial situation?</h2>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="financial-situation" value="struggling-debt"> Struggling with debt</label>
+                        <label><input type="checkbox" name="financial-situation" value="paycheck-to-paycheck"> Living paycheck-to-paycheck</label>
+                        <label><input type="checkbox" name="financial-situation" value="okay-not-saving"> Doing okay but not saving much</label>
+                        <label><input type="checkbox" name="financial-situation" value="saving-regularly"> Saving regularly and want to invest</label>
+                        <label><input type="checkbox" name="financial-situation" value="confident-focused"> Confident and focused on long-term wealth</label>
+                        <label class="other-option">
+                            <div>
+                                <input type="checkbox" name="financial-situation" value="other"> Other: 
+                            </div>
+                            <input type="text" id="financial-situation-other" placeholder="Please specify..." class="other-input">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step2">
+                    <h2>What's your #1 money goal for the next 12 months?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="primary-goal" value="pay-off-debt"> Pay off or reduce debt</label>
+                        <label><input type="radio" name="primary-goal" value="emergency-fund"> Build an emergency fund</label>
+                        <label><input type="radio" name="primary-goal" value="big-purchase"> Save for a big purchase (home, car, travel)</label>
+                        <label><input type="radio" name="primary-goal" value="start-investing"> Start investing or invest more</label>
+                        <label><input type="radio" name="primary-goal" value="wealth-retirement"> Grow wealth for retirement/financial independence</label>
+                        <label class="other-option">
+                            <div>
+                                <input type="radio" name="primary-goal" value="other"> Other: 
+                            </div>
+                            <input type="text" id="primary-goal-other" placeholder="Please specify..." class="other-input">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step3">
+                    <h2>How confident do you feel managing your finances right now?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="confidence-level" value="not-confident"> Not confident</label>
+                        <label><input type="radio" name="confidence-level" value="somewhat-confident"> Somewhat confident</label>
+                        <label><input type="radio" name="confidence-level" value="confident"> Confident</label>
+                        <label><input type="radio" name="confidence-level" value="very-confident"> Very confident</label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step4">
+                    <h2>How do you feel about your current debt?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="debt-feeling" value="overwhelmed"> I feel overwhelmed</label>
+                        <label><input type="radio" name="debt-feeling" value="managing-stressful"> I'm managing but it's stressful</label>
+                        <label><input type="radio" name="debt-feeling" value="comfortable"> I'm comfortable with it</label>
+                        <label><input type="radio" name="debt-feeling" value="debt-free"> I'm debt-free</label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step5">
+                    <h2>How much cash do you currently have saved (emergency or otherwise)?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="savings-amount" value="zero"> $0</label>
+                        <label><input type="radio" name="savings-amount" value="under-1k"> Less than $1,000</label>
+                        <label><input type="radio" name="savings-amount" value="1k-5k"> $1,000–$5,000</label>
+                        <label><input type="radio" name="savings-amount" value="5k-20k"> $5,000–$20,000</label>
+                        <label><input type="radio" name="savings-amount" value="20k-plus"> $20,000+</label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step6">
+                    <h2>Do you currently invest money, e.g. stock market (outside of savings)?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="investing-status" value="not-yet"> Not yet</label>
+                        <label><input type="radio" name="investing-status" value="just-starting"> Yes, but just starting</label>
+                        <label><input type="radio" name="investing-status" value="consistently"> Yes, consistently</label>
+                    </div>
+                </div>
+
+                <div class="onboarding-step" id="step7">
+                    <h2>What's your investing experience?</h2>
+                    <div class="radio-group">
+                        <label><input type="radio" name="investing-experience" value="beginner"> Beginner</label>
+                        <label><input type="radio" name="investing-experience" value="intermediate"> Intermediate</label>
+                        <label><input type="radio" name="investing-experience" value="advanced"> Advanced</label>
+                    </div>
+                </div>
+
+                <div class="onboarding-actions">
+                    <button class="btn-secondary" id="prevBtn" style="display: none;">Previous</button>
+                    <button class="btn-primary" id="nextBtn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div class="modal-overlay" id="welcomeModal" style="display: none;">
+        <div class="modal welcome-modal">
+            <div class="welcome-header">
+                <div class="welcome-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Welcome to Your Financial Journey!</h2>
+                <p>Your personalized dashboard is ready</p>
+            </div>
+            <div class="welcome-content">
+                <div class="welcome-summary">
+                    <h3>Your Profile Summary</h3>
+                    <div class="summary-section">
+                        <div class="summary-item">
+                            <strong>Financial Situation:</strong>
+                            <span id="summary-financial-situation"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Primary Goal:</strong>
+                            <span id="summary-primary-goal"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Confidence Level:</strong>
+                            <span id="summary-confidence-level"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Debt Feelings:</strong>
+                            <span id="summary-debt-feelings"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Savings Amount:</strong>
+                            <span id="summary-savings-amount"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Investing Experience:</strong>
+                            <span id="summary-investing-experience"></span>
+                        </div>
+                        <div class="summary-item">
+                            <strong>Learning Style:</strong>
+                            <span id="summary-learning-style"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="welcome-features">
+                    <div class="feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Personalized progress tracking</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-target"></i>
+                        <span>Goal-focused recommendations</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-brain"></i>
+                        <span>AI-powered insights</span>
+                    </div>
+                </div>
+                <p class="welcome-message">
+                    Based on your responses, we've customized your dashboard to help you achieve your financial goals. 
+                    Let's start building your wealth together!
+                </p>
+            </div>
+            <div class="welcome-actions">
+                <button class="btn-primary" onclick="closeWelcomeModal()">
+                    <i class="fas fa-rocket"></i>
+                    Let's Get Started!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
