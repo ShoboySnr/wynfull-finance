@@ -965,6 +965,157 @@ p {
     line-height: 1.6;
 }
 
+/* Privacy Policy Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    padding: 20px;
+}
+
+.modal-container {
+    background: var(--background-primary);
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: var(--shadow-2xl);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    background: var(--wynfull-blue);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 16px 16px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-content {
+    max-height: calc(90vh - 100px);
+    overflow-y: auto;
+    padding: 0;
+}
+
+.privacy-content {
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.privacy-content h3 {
+    color: var(--wynfull-blue);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--wynfull-blue-light);
+}
+
+.privacy-content h4 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+.privacy-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.privacy-content ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+    color: var(--text-secondary);
+}
+
+.privacy-content li {
+    margin-bottom: 0.5rem;
+}
+
+.privacy-content a {
+    color: var(--wynfull-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.privacy-content a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+    .modal-container {
+        margin: 10px;
+        max-height: calc(100vh - 20px);
+    }
+    
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .privacy-content {
+        padding: 1.5rem;
+    }
+    
+    .privacy-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .privacy-content h4 {
+        font-size: 1rem;
+    }
+}
 
 /* Footer */
 .footer {
@@ -1958,8 +2109,8 @@ p {
                 </div>
                 <div class="footer-right">
                     <div class="footer-links">
-                        <a href="#privacy">Privacy Policy</a>
-                        <a href="#terms">Terms of Service</a>
+                        <a href="#" onclick="openPrivacyModal()">Privacy Policy</a>
+                        <a href="#" onclick="openTermsModal()">Terms of Service</a>
                         <a href="#contact">Contact Us</a>
                     </div>
                 </div>
@@ -2251,6 +2402,153 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+    </script>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <button class="modal-close" onclick="closePrivacyModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="privacy-content">
+                    <p><strong>Effective Date:</strong> September 22, 2025</p>
+                    <p>Wynfull Finance ("we," "our," "us") values your privacy. This Privacy Policy explains how we collect, use, disclose, and protect your information when you use our website and services.</p>
+                    
+                    <h4>1. Information We Collect</h4>
+                    <ul>
+                        <li><strong>Personal Data:</strong> Name, email address, payment information (if applicable).</li>
+                        <li><strong>Usage Data:</strong> IP address, browser type, device identifiers, and site activity.</li>
+                        <li><strong>Cookies:</strong> We use cookies and tracking technologies for analytics and functionality.</li>
+                    </ul>
+                    
+                    <h4>2. How We Use Your Information</h4>
+                    <p>We use data to provide services, process payments, send updates, improve the website, and personalize your experience.</p>
+                    
+                    <h4>3. Sharing of Data</h4>
+                    <p>We may share data with trusted third parties such as payment processors, analytics providers, and service partners. We may also disclose data when required by law.</p>
+                    
+                    <h4>4. Data Retention</h4>
+                    <p>We retain personal data as long as necessary to provide our services or comply with legal obligations.</p>
+                    
+                    <h4>5. Data Security</h4>
+                    <p>We take reasonable measures to protect your data against unauthorized access or misuse.</p>
+                    
+                    <h4>6. Your Rights</h4>
+                    <p>Depending on your location, you may have rights to access, update, or delete your personal data, and to opt out of marketing communications.</p>
+                    
+                    <h4>7. Children's Privacy</h4>
+                    <p>Our services are not directed to children under 13. We do not knowingly collect personal data from minors.</p>
+                    
+                    <h4>8. International Transfers</h4>
+                    <p>Your data may be transferred to and stored in countries outside your own. We implement safeguards to protect this data.</p>
+                    
+                    <h4>9. Changes to this Policy</h4>
+                    <p>We may update this Privacy Policy. Changes will be posted with an updated effective date.</p>
+                    
+                    <h4>10. Contact Us</h4>
+                    <p>For questions, contact us at: <a href="mailto:contact@wynfull.com">contact@wynfull.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Terms of Service</h2>
+                <button class="modal-close" onclick="closeTermsModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="privacy-content">
+                    <p><strong>Effective Date:</strong> September 22, 2025</p>
+                    <p>These Terms of Service ("Terms") govern your use of Wynfull Finance's website and services. By accessing or using our services, you agree to be bound by these Terms.</p>
+                    
+                    <h4>1. Services</h4>
+                    <p>Wynfull Finance provides financial coaching, resources, and tools to support users in making informed financial decisions.</p>
+                    
+                    <h4>2. User Obligations</h4>
+                    <p>You agree to provide accurate information, comply with all applicable laws, and not misuse our services.</p>
+                    
+                    <h4>3. Accounts</h4>
+                    <p>If you create an account, you are responsible for maintaining its confidentiality and for all activity under your account.</p>
+                    
+                    <h4>4. Payments</h4>
+                    <p>If paid services are offered, you agree to pay fees as described. Payment terms, billing frequency, and refund policies will be specified at checkout.</p>
+                    
+                    <h4>5. Intellectual Property</h4>
+                    <p>All content, branding, and materials provided by Wynfull Finance are owned by us and protected by copyright law.</p>
+                    
+                    <h4>6. Financial Disclaimer</h4>
+                    <p>Wynfull Finance provides educational resources only. We are not licensed financial advisors, and nothing provided should be considered personalized financial, tax, or legal advice. Users are responsible for their financial decisions.</p>
+                    
+                    <h4>7. Limitation of Liability</h4>
+                    <p>We are not liable for damages or losses resulting from your use of our services, to the maximum extent permitted by law.</p>
+                    
+                    <h4>8. Indemnification</h4>
+                    <p>You agree to indemnify and hold Wynfull Finance harmless from claims or damages arising from your misuse of the service or violation of these Terms.</p>
+                    
+                    <h4>9. Termination</h4>
+                    <p>We may suspend or terminate your access if you violate these Terms or misuse the service.</p>
+                    
+                    <h4>10. Governing Law</h4>
+                    <p>These Terms are governed by the laws of the State of Florida, United States.</p>
+                    
+                    <h4>11. Changes to Terms</h4>
+                    <p>We may update these Terms from time to time. Continued use of our services indicates acceptance of the new Terms.</p>
+                    
+                    <h4>12. Contact</h4>
+                    <p>For questions, contact us at: <a href="mailto:contact@wynfull.com">contact@wynfull.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Privacy Modal Functions
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore background scrolling
+        }
+
+        // Terms Modal Functions
+        function openTermsModal() {
+            document.getElementById('termsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeTermsModal() {
+            document.getElementById('termsModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore background scrolling
+        }
+
+        // Close modals when clicking outside of them
+        document.getElementById('privacyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePrivacyModal();
+            }
+        });
+
+        document.getElementById('termsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTermsModal();
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePrivacyModal();
+                closeTermsModal();
+            }
+        });
     </script>
 </body>
 </html>
