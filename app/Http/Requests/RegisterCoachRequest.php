@@ -11,7 +11,6 @@ class RegisterCoachRequest extends FormRequest
         return [
             'name'        => ['required','string','max:255'],
             'email'       => ['required','email','max:255','unique:users,email'],
-            'password'    => ['required','confirmed','min:8'],
             'experience'  => ['required','in:1-3,3-5,5+'],
             'specialties' => ['array'],
             'specialties.*' => ['string','max:255'],

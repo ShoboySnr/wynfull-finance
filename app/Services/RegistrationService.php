@@ -14,10 +14,13 @@ class RegistrationService
     public function registerClient(array $data): User
     {
         return DB::transaction(function () use ($data) {
+            $randomPassword = Str::random(20);
+
             $user = User::create([
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'password' => Hash::make($data['password']),
+                'password' => Hash::make($randomPassword),
+                'is_active'=> false, // pending admin activation
             ]);
             $user->assignRole('client');
 
@@ -29,11 +32,16 @@ class RegistrationService
                 'notes'      => $data['notes'] ?? null,
             ]);
 
-            activity()->performedOn($user)->causedBy($user)
-                ->withProperties(['type'=>'client','goal'=>$data['goal']])
-                ->log('client_registered');
+            activity()
+                ->performedOn($user)->causedBy($user)
+                ->withProperties([
+                    'type'   => 'client',
+                    'goal'   => $data['goal'],
+                    'status' => 'pending_activation'
+                ])->log('client_registered');
 
-            Auth::login($user);
+
+            // Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
 
             return $user;
         });
@@ -42,26 +50,31 @@ class RegistrationService
     public function registerCoach(array $data): User
     {
         return DB::transaction(function () use ($data) {
+            $randomPassword = \Illuminate\Support\Str::random(20);
+
             $user = User::create([
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'password' => Hash::make($data['password']),
+                'password' => Hash::make($randomPassword),
+                'is_active'=> false,
             ]);
             $user->assignRole('coach');
 
             CoachProfile::create([
-                'user_id'    => $user->id,
-                'experience' => $data['experience'],
-                'specialties'=> $data['specialties'] ?? [],
-                'linkedin'   => $data['linkedin'] ?? null,
-                'website'    => $data['website'] ?? null,
+                'user_id'     => $user->id,
+                'experience'  => $data['experience'],
+                'specialties' => $data['specialties'] ?? [],
+                'linkedin'    => $data['linkedin'] ?? null,
+                'website'     => $data['website'] ?? null,
             ]);
 
-            activity()->performedOn($user)->causedBy($user)
-                ->withProperties(['type'=>'coach','experience'=>$data['experience']])
-                ->log('coach_registered');
-
-            Auth::login($user);
+            activity()
+                ->performedOn($user)->causedBy($user)
+                ->withProperties([
+                    'type'       => 'coach',
+                    'experience' => $data['experience'],
+                    'status'     => 'pending_activation'
+                ])->log('coach_registered');
 
             return $user;
         });
