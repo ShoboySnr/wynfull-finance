@@ -24,16 +24,17 @@ class NewUserPendingActivation extends Notification implements ShouldQueue
     public function toMail($notifiable): MailMessage
     {
         $role = $this->pendingUser->getRoleNames()->first() ?? 'user';
+        $actionUrl = route('admin.users.activate', $this->pendingUser);
 
         return (new MailMessage)
             ->subject("New {$role} awaiting activation: {$this->pendingUser->name}")
-            ->greeting('Hello Admin,')
-            ->line("A new {$role} has registered and is pending activation.")
-            ->line("Name: {$this->pendingUser->name}")
-            ->line("Email: {$this->pendingUser->email}")
-            ->line('You can review and activate this account from the admin dashboard.')
-            ->action('Activate User', route('admin.users.activate', $this->pendingUser))
-            ->line('Thank you for keeping the community safe and verified.');
+            ->view('mail.notifications.new_user_pending_activation', [
+                'pendingUser' => $this->pendingUser,
+                'role'       => $role,
+                'actionUrl'  => $actionUrl,
+                'extra'      => [
+                ],
+            ]);
     }
 
     public function toArray($notifiable): array

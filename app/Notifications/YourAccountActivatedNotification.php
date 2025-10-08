@@ -24,11 +24,10 @@ class YourAccountActivatedNotification extends Notification implements ShouldQue
     {
         return (new MailMessage)
             ->subject('Your Wynfull account is now active')
-            ->greeting("Hi {$notifiable->name},")
-            ->line('Great news—your account has been activated by an administrator.')
-            ->line('For security, please set your password now to sign in.')
-            ->action('Set Password', $this->resetUrl)
-            ->line('If you did not request an account, you can ignore this email.');;
+            ->view('mail.notifications.account_activated', [
+                'user'     => $notifiable,
+                'resetUrl' => $this->resetUrl,
+            ]);
     }
 
     public function toArray($notifiable): array
