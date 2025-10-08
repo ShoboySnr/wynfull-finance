@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Models\ClientProfile;
 use App\Models\CoachProfile;
 use App\Models\User;
+use App\Notifications\NewUserPendingActivation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class RegistrationService
 {
@@ -41,7 +43,12 @@ class RegistrationService
                 ])->log('client_registered');
 
 
-            // Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
+             Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
+
+            activity()->causedBy($user)
+                ->performedOn($user)
+                ->withProperties(['notification' => 'NewUserPendingActivation'])
+                ->log('notification_dispatched');
 
             return $user;
         });

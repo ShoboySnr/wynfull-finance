@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\YourAccountActivatedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 class UserActivationController extends Controller
 {
@@ -28,7 +30,18 @@ class UserActivationController extends Controller
             ->withProperties(['activated_user_id' => $user->id])
             ->log('user_activated');
 
-        // $user->notify(new YourAccountActivatedNotification());
+        $token = Password::createToken($user);
+        $resetUrl = route('password.reset', [
+            'token' => $token,
+            'email' => $user->email,
+        ]);
+
+         $user->notify(new YourAccountActivatedNotification($resetUrl));
+
+        activity()->causedBy($request->user())
+            ->performedOn($user)
+            ->withProperties(['notification' => 'YourAccountActivatedNotification'])
+            ->log('notification_dispatched');
 
         return back()->with('status', 'User activated.');
     }
