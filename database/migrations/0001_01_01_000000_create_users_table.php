@@ -18,9 +18,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->boolean('is_active')->default(false)->after('remember_token');
-            $table->timestamp('activated_at')->nullable()->after('is_active');
-            $table->foreignId('activated_by_id')->nullable()->after('activated_at')->constrained('users')->nullOnDelete();
+            $table->boolean('is_active')->default(false);
+            $table->timestamp('activated_at')->nullable();
+            $table->foreignId('activated_by_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->boolean('onboarding_completed')->default(false);
+            $table->timestamp('onboarding_completed_at')->nullable();
             $table->timestamps();
         });
 

@@ -260,148 +260,176 @@
                     <button class="signup-tab" data-form="coach">For Coaches</button>
                 </div>
 
+                {{-- CLIENT FORM --}}
                 <div class="form-container active" id="client-form">
                     <div class="form-header">
                         <h3>Start Your Financial Journey</h3>
                         <p>Get early access to Wynfull Finance and begin building your financial future today.</p>
                     </div>
-                    <form class="signup-form" name="client-signup" method="POST" data-netlify="true">
+
+                    <form class="signup-form" name="client-signup" method="POST" action="{{ route('register.client') }}">
                         @csrf
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="client-name">Full Name</label>
-                                <input type="text" id="client-name" name="name" required>
+                                <input type="text" id="client-name" name="name" value="{{ old('name') }}" required autocomplete="name">
+                                @error('name')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="client-email">Email Address</label>
-                                <input type="email" id="client-email" name="email" required>
+                                <input type="email" id="client-email" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                @error('email')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="client-goal">Primary Financial Goal</label>
                             <select id="client-goal" name="goal" required>
                                 <option value="">Select your main goal</option>
-                                <option value="debt-payoff">Pay Off or Reduce Debt</option>
-                                <option value="emergency-fund">Build an Emergency Fund</option>
-                                <option value="save-house">Save for a Big Purchase (Home, Car, Travel)</option>
-                                <option value="invest">Start Investing or Invest More</option>
-                                <option value="retirement">Grow Wealth for Retirement/Financial Independence</option>
-                                <option value="other">Other</option>
+                                <option value="debt-payoff"      @selected(old('goal')==='debt-payoff')>Pay Off or Reduce Debt</option>
+                                <option value="emergency-fund"   @selected(old('goal')==='emergency-fund')>Build an Emergency Fund</option>
+                                <option value="save-house"       @selected(old('goal')==='save-house')>Save for a Big Purchase (Home, Car, Travel)</option>
+                                <option value="invest"           @selected(old('goal')==='invest')>Start Investing or Invest More</option>
+                                <option value="retirement"       @selected(old('goal')==='retirement')>Grow Wealth for Retirement/Financial Independence</option>
+                                <option value="other"            @selected(old('goal')==='other')>Other</option>
                             </select>
+                            @error('goal')<small class="text-red-600">{{ $message }}</small>@enderror
                         </div>
-                        <div class="form-group" id="other-goal-group" style="display: none;">
+
+                        <div class="form-group" id="other-goal-group" style="display: {{ old('goal')==='other' ? 'block' : 'none' }};">
                             <label for="other-goal">Please specify your financial goal</label>
-                            <input type="text" id="other-goal" name="other-goal" placeholder="Describe your specific financial goal..." style="width: 100%;">
+                            <input type="text" id="other-goal" name="other-goal" value="{{ old('other-goal') }}" placeholder="Describe your specific financial goal..." style="width: 100%;">
+                            @error('other-goal')<small class="text-red-600">{{ $message }}</small>@enderror
                         </div>
+
                         <div class="form-group">
                             <label for="community">Community Affiliation (Optional)</label>
                             <select id="community" name="community">
                                 <option value="">Select if applicable</option>
-                                <option value="military">Veteran / Active Duty / Military Family</option>
-                                <option value="civilian">Civilian / General Public</option>
-                                <option value="prefer-not-to-say">Prefer not to say</option>
+                                <option value="military"            @selected(old('community')==='military')>Veteran / Active Duty / Military Family</option>
+                                <option value="civilian"            @selected(old('community')==='civilian')>Civilian / General Public</option>
+                                <option value="prefer-not-to-say"   @selected(old('community')==='prefer-not-to-say')>Prefer not to say</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="client-notes">Additional Notes (Optional)</label>
-                            <textarea id="client-notes" name="notes" rows="3" placeholder="Tell us about your current situation or specific challenges..."></textarea>
+                            <textarea id="client-notes" name="notes" rows="3" placeholder="Tell us about your current situation or specific challenges...">{{ old('notes') }}</textarea>
                         </div>
+
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" required>
+                                <input type="checkbox" name="accept" {{ old('accept') ? 'checked' : '' }} required>
                                 <span class="checkmark"></span>
                                 I agree to receive updates about Wynfull Finance and understand I can unsubscribe at any time.
                             </label>
+                            @error('accept')<small class="text-red-600">{{ $message }}</small>@enderror
                         </div>
-                        <button type="submit" class="btn-primary full-width">
-                            Request Early Access
-                        </button>
+
+                        <button type="submit" class="btn-primary full-width">Request Early Access</button>
                     </form>
                 </div>
 
+                {{-- COACH FORM --}}
                 <div class="form-container" id="coach-form">
                     <div class="form-header">
                         <h3>Join Our Coach Network</h3>
                         <p>Help build financial warriors and grow your coaching practice with Wynfull's platform.</p>
                     </div>
-                    <form class="signup-form" name="coach-signup" method="POST" data-netlify="true">
+
+                    <form class="signup-form" name="coach-signup" method="POST" action="{{ route('register.coach') }}">
                         @csrf
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="coach-name">Full Name</label>
-                                <input type="text" id="coach-name" name="name" required>
+                                <input type="text" id="coach-name" name="name" value="{{ old('name') }}" required autocomplete="name">
+                                @error('name')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="coach-email">Email Address</label>
-                                <input type="email" id="coach-email" name="email" required>
+                                <input type="email" id="coach-email" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                @error('email')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="experience">Experience Level</label>
                             <select id="experience" name="experience" required>
                                 <option value="">Select your experience</option>
-                                <option value="1-3">1-3 Years Experience</option>
-                                <option value="3-5">3-5 Years Experience</option>
-                                <option value="5+">5+ Years Experience</option>
+                                <option value="1-3" @selected(old('experience')==='1-3')>1-3 Years Experience</option>
+                                <option value="3-5" @selected(old('experience')==='3-5')>3-5 Years Experience</option>
+                                <option value="5+" @selected(old('experience')==='5+')>5+ Years Experience</option>
                             </select>
+                            @error('experience')<small class="text-red-600">{{ $message }}</small>@enderror
                         </div>
+
                         <div class="form-group">
                             <label for="specialties">Specialties (Select all that apply)</label>
                             <div class="checkbox-grid">
+                                @php $spec = collect(old('specialties', [])); @endphp
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="financial-coaching">
+                                    <input type="checkbox" name="specialties[]" value="financial-coaching" {{ $spec->contains('financial-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
                                     Financial Coaching
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="life-coaching">
+                                    <input type="checkbox" name="specialties[]" value="life-coaching" {{ $spec->contains('life-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
                                     Life Coaching
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="accountability-coaching">
+                                    <input type="checkbox" name="specialties[]" value="accountability-coaching" {{ $spec->contains('accountability-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
                                     Accountability Coaching
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="mindset-motivation">
+                                    <input type="checkbox" name="specialties[]" value="mindset-motivation" {{ $spec->contains('mindset-motivation') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
                                     Mindset & Motivation Coaching
                                 </label>
                                 <label class="checkbox-label">
-                                    <input type="checkbox" name="specialties" value="other" id="specialty-other">
+                                    <input type="checkbox" name="specialties[]" value="other" id="specialty-other" {{ $spec->contains('other') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
                                     Other (please specify)
                                 </label>
                             </div>
+                            @error('specialties')<small class="text-red-600">{{ $message }}</small>@enderror>
                         </div>
-                        <div class="form-group" id="other-specialty-group" style="display: none;">
+
+                        <div class="form-group" id="other-specialty-group" style="display: {{ collect(old('specialties', []))->contains('other') ? 'block' : 'none' }};">
                             <label for="other-specialty">Please specify your specialty</label>
-                            <input type="text" id="other-specialty" name="other-specialty" placeholder="Describe your specialty..." style="width: 100%;">
+                            <input type="text" id="other-specialty" name="other-specialty" value="{{ old('other-specialty') }}" placeholder="Describe your specialty..." style="width: 100%;">
                         </div>
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="linkedin">LinkedIn Profile (Optional)</label>
-                                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                                <input type="url" id="linkedin" name="linkedin" value="{{ old('linkedin') }}" placeholder="https://linkedin.com/in/yourprofile" autocomplete="url">
+                                @error('linkedin')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="website">Website (Optional)</label>
-                                <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
+                                <input type="url" id="website" name="website" value="{{ old('website') }}" placeholder="https://yourwebsite.com" autocomplete="url">
+                                @error('website')<small class="text-red-600">{{ $message }}</small>@enderror
                             </div>
                         </div>
+
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" required>
+                                <input type="checkbox" name="accept" {{ old('accept') ? 'checked' : '' }} required>
                                 <span class="checkmark"></span>
                                 I'm interested in joining the Wynfull coach network and agree to be contacted about opportunities.
                             </label>
+                            @error('accept')<small class="text-red-600">{{ $message }}</small>@enderror
                         </div>
-                        <button type="submit" class="btn-primary full-width">
-                            Apply to Coach Network
-                        </button>
+
+                        <button type="submit" class="btn-primary full-width">Apply to Coach Network</button>
                     </form>
                 </div>
             </div>
+
         </div>
     </section>
 

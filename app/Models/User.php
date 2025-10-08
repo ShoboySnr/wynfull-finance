@@ -28,7 +28,9 @@ class User extends Authenticatable
         'password',
         'is_active',
         'activated_at',
-        'activated_by_id'
+        'activated_by_id',
+        'onboarding_completed',
+        'onboarding_completed_at',
     ];
 
     /**
@@ -51,6 +53,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'onboarding_completed' => 'boolean',
+            'onboarding_completed_at' => 'datetime',
         ];
     }
 

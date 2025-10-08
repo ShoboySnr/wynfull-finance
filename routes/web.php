@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ClientOnboardingController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('home');
@@ -16,3 +17,9 @@ Route::view('/dashboard/coach',  'dashboards.coach')->name('dashboard.coach')->m
 Route::post('/admin/users/{user}/activate', UserActivationController::class)
     ->name('admin.users.activate')
     ->middleware(['auth', 'role:admin']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/onboarding/complete', [ClientOnboardingController::class, 'store'])
+        ->name('onboarding.complete')
+        ->middleware('role:client');
+});
