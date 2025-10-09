@@ -17,15 +17,13 @@ class RegisterController extends Controller
     {
         $user = $this->service->registerClient($request->validated());
 
-        Auth::login($user);
-        return redirect()->route('dashboard.client');
+        return redirect()->route('auth.login');
     }
 
     public function registerCoach(RegisterCoachRequest $request): RedirectResponse
     {
         $user = $this->service->registerCoach($request->validated());
 
-        Auth::login($user);
-        return redirect()->route('dashboard.coach');
+        return redirect()->route('auth.login');
     }
 }

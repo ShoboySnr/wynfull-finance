@@ -39,7 +39,7 @@ class LoginController extends Controller
             ]);
         }
 
-        if (! $user->activated) {
+        if (! $user->is_active) {
             RateLimiter::hit($key, 60);
             throw ValidationException::withMessages([
                 'email' => __('Your account is pending activation by an administrator.'),
