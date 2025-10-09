@@ -1454,5 +1454,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{{ asset('assets/js/script.js') }}" defer></script>
 @endpush
