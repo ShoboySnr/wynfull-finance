@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,6 +33,10 @@ class User extends Authenticatable
         'onboarding_completed',
         'onboarding_completed_at',
     ];
+
+    protected static array $logAttributes = ['name', 'email'];
+    protected static string $logName = 'user';
+    protected static bool $logOnlyDirty = true;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -71,6 +76,30 @@ class User extends Authenticatable
     public function coachProfile(): HasOne
     {
         return $this->hasOne(CoachProfile::class);
+    }
+
+
+    // app/Models/User.php
+    public function clients(): BelongsToMany // for a coach
+    {
+        return $this->belongsToMany(User::class, 'coach_client_assignments', 'coach_id', 'client_id')
+            ->withPivot(['is_primary', 'status', 'assigned_at', 'ended_at', 'assigned_by', 'subscription_id', 'notes'])
+            ->withTimestamps();
+    }
+
+    public function coaches(): BelongsToMany // for a client
+    {
+        return $this->belongsToMany(User::class, 'coach_client_assignments', 'client_id', 'coach_id')
+            ->withPivot(['is_primary', 'status', 'assigned_at', 'ended_at', 'assigned_by', 'subscription_id', 'notes'])
+            ->withTimestamps();
+    }
+
+    public function primaryCoach(): BelongsToMany // client -> current primary coach
+    {
+        return $this->belongsToMany(User::class, 'coach_client_assignments', 'client_id', 'coach_id')
+            ->wherePivot('is_primary', true)
+            ->wherePivot('status', 'active')
+            ->limit(1);
     }
 
 }

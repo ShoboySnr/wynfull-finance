@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CoachClientAssignmentController;
 use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -25,24 +26,28 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 Route::post('/register/client', [RegisterController::class,'registerClient'])->name('register.client');
 Route::post('/register/coach',  [RegisterController::class,'registerCoach'])->name('register.coach');
 
-Route::middleware(['auth', 'role:client'])
-    ->get('/dashboard/client', [ClientDashboardController::class, 'index'])
-    ->name('dashboard.client');
 
 Route::middleware(['auth', 'role:coach'])
     ->get('/dashboard/coach', [CoachDashboardController::class, 'index'])
     ->name('dashboard.coach');
 
-Route::middleware(['auth', 'role:admin'])
-    ->get('/dashboard/admin', [AdminDashboardController::class, 'index'])
-    ->name('dashboard.admin');
+Route::middleware(['auth', 'role:client'])->group(function () {
+    Route::get('/dashboard/client', [ClientDashboardController::class, 'index'])
+        ->name('dashboard.client');
 
-Route::post('/admin/users/{user}/activate', UserActivationController::class)
-    ->name('admin.users.activate')
-    ->middleware(['auth', 'role:admin']);
-
-Route::middleware(['auth'])->group(function () {
     Route::post('/onboarding/complete', [ClientOnboardingController::class, 'store'])
-        ->name('onboarding.complete')
-        ->middleware('role:client');
+        ->name('onboarding.complete');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard/admin', [AdminDashboardController::class, 'index'])
+        ->name('dashboard.admin');
+
+    Route::post('/admin/users/{user}/activate', UserActivationController::class)
+        ->name('admin.users.activate');
+
+    Route::get('/admin/assignments', [CoachClientAssignmentController::class, 'index'])->name('admin.assignments.index');
+    Route::get('/admin/assignments/create', [CoachClientAssignmentController::class, 'create'])->name('admin.assignments.create');
+    Route::post('/admin/assignments', [CoachClientAssignmentController::class, 'store'])->name('admin.assignments.store');
+    Route::post('/admin/assignments/{assignmentId}/end', [CoachClientAssignmentController::class, 'end'])->name('admin.assignments.end');
 });
