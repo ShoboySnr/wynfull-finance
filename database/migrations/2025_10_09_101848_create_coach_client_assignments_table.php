@@ -8,31 +8,29 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('coach_client_assignments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('coach_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('client_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('coach_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
-            $table->boolean('is_primary')->default(true);
-            $table->enum('status', ['active', 'ended', 'pending'])->default('active');
-            $table->timestamp('assigned_at')->nullable();
-            $table->timestamp('ended_at')->nullable();
+            $table->foreignId('client_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
-            // audit
-            $table->foreignId('assigned_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->text('notes')->nullable();
+            // who performed the assignment (admin or privileged user)
+            $table->foreignId('assigned_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
 
-            // subscription linkage (future)
-            $table->foreignId('subscription_id')->nullable()->constrained()->nullOnDelete();
-
+            $table->timestamp('assigned_at')->useCurrent();
+            $table->string('status', 20)->default('active'); // active|ended (future-proof)
             $table->timestamps();
 
-            //  - Only one row per (client_id, is_primary=1) via unique
-            //  - When “multi-coach” arrives, set is_primary=0 for additional coaches.
-            $table->unique(['client_id', 'is_primary']);
+            // prevent duplicates at DB level
+            $table->unique(['coach_id', 'client_id']);
 
-            // frequently queried pairs
-            $table->index(['coach_id', 'client_id']);
-            $table->index(['client_id', 'status']);
+            $table->index('coach_id');
+            $table->index('client_id');
         });
     }
 

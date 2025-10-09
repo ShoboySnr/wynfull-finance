@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AssignCoachToClientRequest;
+use App\Http\Requests\UnassignCoachFromClientRequest;
 use App\Models\User;
-use App\Services\Assignments\AssignClientToCoachService;
+use App\Services\Assignments\CoachClientAssignmentService;
 use DB;
 use Illuminate\Http\Request;
 
 class CoachClientAssignmentController extends Controller
 {
+
+    public function __construct(private readonly CoachClientAssignmentService $service)
+    {
+    }
+
     public function create()
     {
         $coaches = User::role('coach')->select('id', 'name', 'email')->orderBy('name')->get();
@@ -18,53 +25,48 @@ class CoachClientAssignmentController extends Controller
         return view('admin.assignments.create', compact('coaches', 'clients'));
     }
 
-    public function store(Request $request, AssignClientToCoachService $action)
+    // POST /admin/coach-client-assignments
+    public function store(AssignCoachToClientRequest $request)
     {
-        $data = $request->validate([
-            'coach_id'        => ['required', 'exists:users,id'],
-            'client_id'       => ['required', 'exists:users,id'],
-            'make_primary'    => ['sometimes', 'boolean'],
-            'replace_primary' => ['sometimes', 'boolean'],
-            'notes'           => ['nullable', 'string', 'max:2000'],
-            'subscription_id' => ['nullable', 'exists:subscriptions,id'],
-        ]);
+        $data = $this->service->assign(
+            coachId: (int) $request->integer('coach_id'),
+            clientId: (int) $request->integer('client_id'),
+            actorUserId: $request->user()?->id
+        );
 
-        $admin  = $request->user();
-        $coach  = User::findOrFail($data['coach_id']);
-        $client = User::findOrFail($data['client_id']);
-
-        $action->handle($admin, $client, $coach, $data);
-
-        return back()->with('status', 'Client assigned to coach successfully.');
+        return response()->json([
+            'message' => 'Coach assigned to client successfully.',
+            'data'    => $data,
+        ], 201);
     }
 
-    public function index()
+    // DELETE /admin/coach-client-assignments
+    // (Body: coach_id, client_id) – simpler for now than composite URI
+    public function destroy(UnassignCoachFromClientRequest $request)
     {
-        // Simple listing
-        $assignments = DB::table('coach_client_assignments')
-            ->join('users as coaches', 'coaches.id', '=', 'coach_client_assignments.coach_id')
-            ->join('users as clients', 'clients.id', '=', 'coach_client_assignments.client_id')
-            ->select('coach_client_assignments.*', 'coaches.name as coach_name', 'clients.name as client_name')
-            ->latest('coach_client_assignments.created_at')
-            ->paginate(20);
+        $this->service->unassign(
+            coachId: (int) $request->integer('coach_id'),
+            clientId: (int) $request->integer('client_id')
+        );
 
-        return view('admin.assignments.index', compact('assignments'));
+        return response()->json(['message' => 'Coach unassigned from client.']);
     }
 
-    public function end(Request $request, int $assignmentId)
+    // GET /admin/coach-client-assignments?client_id=&coach_id=
+    public function index(Request $request)
     {
-        $request->validate(['notes' => ['nullable', 'string', 'max:2000']]);
+        if ($request->filled('client_id')) {
+            $coaches = $this->service->listCoachesForClient((int) $request->integer('client_id'));
+            return response()->json(['data' => $coaches]);
+        }
 
-        DB::table('coach_client_assignments')
-            ->where('id', $assignmentId)
-            ->update(['status' => 'ended', 'ended_at' => now(), 'notes' => $request->notes]);
+        if ($request->filled('coach_id')) {
+            $clients = $this->service->listClientsForCoach((int) $request->integer('coach_id'));
+            return response()->json(['data' => $clients]);
+        }
 
-        activity()
-            ->causedBy($request->user())
-            ->withProperties(['assignment_id' => $assignmentId])
-            ->event('admin.ended_assignment')
-            ->log('Admin ended coach-client assignment');
-
-        return back()->with('status', 'Assignment ended.');
+        return response()->json([
+            'message' => 'Provide client_id to list coaches or coach_id to list clients.',
+        ], 422);
     }
 }

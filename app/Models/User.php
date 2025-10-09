@@ -79,27 +79,25 @@ class User extends Authenticatable
     }
 
 
-    // app/Models/User.php
-    public function clients(): BelongsToMany // for a coach
+    public function coaches(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'coach_client_assignments', 'coach_id', 'client_id')
-            ->withPivot(['is_primary', 'status', 'assigned_at', 'ended_at', 'assigned_by', 'subscription_id', 'notes'])
-            ->withTimestamps();
+        return $this->belongsToMany(
+            User::class,
+            'coach_client_assignments',
+            'client_id',
+            'coach_id'
+        )->withTimestamps()
+            ->withPivot(['assigned_by', 'assigned_at', 'status', 'id']);
     }
 
-    public function coaches(): BelongsToMany // for a client
+    public function clients(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'coach_client_assignments', 'client_id', 'coach_id')
-            ->withPivot(['is_primary', 'status', 'assigned_at', 'ended_at', 'assigned_by', 'subscription_id', 'notes'])
-            ->withTimestamps();
+        return $this->belongsToMany(
+            User::class,
+            'coach_client_assignments',
+            'coach_id',
+            'client_id'
+        )->withTimestamps()
+            ->withPivot(['assigned_by', 'assigned_at', 'status', 'id']);
     }
-
-    public function primaryCoach(): BelongsToMany // client -> current primary coach
-    {
-        return $this->belongsToMany(User::class, 'coach_client_assignments', 'client_id', 'coach_id')
-            ->wherePivot('is_primary', true)
-            ->wherePivot('status', 'active')
-            ->limit(1);
-    }
-
 }
