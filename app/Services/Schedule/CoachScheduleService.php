@@ -196,6 +196,7 @@ class CoachScheduleService
                 'time'   => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),    // e.g. 10:00 AM
                 'client' => $s->client?->name ?? '—',
                 'type'   => $s->type ?? 'Session',
+                'title' => $s->title,
             ];
         })->values()->all();
     }

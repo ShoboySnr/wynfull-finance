@@ -148,13 +148,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const sessionDate = session.date.split('T')[0]; // Expects YYYY-MM-DD
             const dayEl = document.querySelector(`.calendar-day[data-date="${sessionDate}"]`);
 
+            console.log(session);
             if (dayEl) {
                 const sessionsContainer = dayEl.querySelector('.day-sessions');
                 if (sessionsContainer) {
                     sessionsContainer.innerHTML += `
                         <div class="session-block" title="${session.type}">
+                            <div class="session-time">${session.type}</div>
                             <div class="session-time">${session.time}</div>
-                            <div class="session-client">${session.client_name}</div>
+                            <div class="session-client">${session.client}</div>
                         </div>
                     `;
                 }
