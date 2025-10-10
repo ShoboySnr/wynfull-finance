@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // IMPORTANT: Replace '/api/sessions' with your actual API endpoint.
-            const response = await fetch(`{{ route('coach.sessions.feed') }}?start=${start}&end=${end}`, );
+            const response = await fetch(`/coach/schedule/feed?start=${start}&end=${end}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

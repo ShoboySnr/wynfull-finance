@@ -46,7 +46,7 @@ class ScheduleController extends Controller
     {
         try {
             $session = $this->service->create(
-                $request->validated(),
+                $request->validated() + ['coach_id' => (int)$request->user()->id],
                 actorId: (int)$request->user()->id
             );
 
