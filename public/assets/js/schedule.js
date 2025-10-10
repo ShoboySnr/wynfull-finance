@@ -198,33 +198,61 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target === newSessionModal) closeModal();
     });
 
-    // New Session Form Submission
     newSessionForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const formData = new FormData(this);
         const action = this.getAttribute('action');
+        const csrfToken = formData.get('_token');
+
+        // Construct the payload object based on backend requirements
+        const dateValue = formData.get('session_date');
+        const startTimeValue = formData.get('session_start_time');
+        const endTimeValue = formData.get('session_end_time');
+
+        if (!dateValue || !startTimeValue || !endTimeValue) {
+            alert('Please select a date, start time, and end time.');
+            return;
+        }
+
+        const startsAt = new Date(`${dateValue}T${startTimeValue}`);
+        const endsAt = new Date(`${dateValue}T${endTimeValue}`);
+
+        if (startsAt >= endsAt) {
+            alert('The end time must be after the start time.');
+            return;
+        }
+
+        const payload = {
+            client_id: formData.get('client_id'),
+            title: formData.get('session_type'),
+            type: 'Coaching',
+            location_url: formData.get('meeting_link'),
+            notes: formData.get('session_notes'),
+            starts_at: startsAt.toISOString(),
+            ends_at: endsAt.toISOString(),
+        };
 
         try {
             const response = await fetch(action, {
                 method: 'POST',
-                body: formData,
+                body: JSON.stringify(payload),
                 headers: {
-                    'X-CSRF-TOKEN': formData.get('_token'),
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                     'Accept': 'application/json',
                 }
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
-
                 alert(`Error: ${errorData.message || 'Could not create session.'}`);
                 return;
             }
 
             closeModal();
             this.reset();
-            await renderCalendar(); // Refresh the calendar to show the new event
+            await renderCalendar();
 
         } catch (error) {
             console.error('Error submitting form:', error);

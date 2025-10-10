@@ -45,7 +45,6 @@
     <!-- New Session Modal -->
     <div class="modal-overlay" id="newSessionModal">
         <div class="modal-content">
-            {{-- This form now points to a named route and has an ID for the JS to target --}}
             <form action="{{ route('coach.schedule.store') }}" method="POST" id="newSessionForm">
                 @csrf
                 <div class="modal-header">
@@ -72,8 +71,12 @@
                             <input type="date" id="sessionDate" name="session_date">
                         </div>
                         <div class="form-group">
-                            <label for="sessionTime">Time</label>
-                            <input type="time" id="sessionTime" name="session_time">
+                            <label for="sessionStartTime">Start Time</label>
+                            <input type="time" id="sessionStartTime" name="session_start_time">
+                        </div>
+                        <div class="form-group">
+                            <label for="sessionEndTime">End Time</label>
+                            <input type="time" id="sessionEndTime" name="session_end_time">
                         </div>
 
                         <div class="form-group full-width">
