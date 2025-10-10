@@ -13,38 +13,26 @@
     </div>
 
     <nav class="nav-menu">
-        <li class="nav-item {{ request()->routeIs('coach.dashboard') ? 'active' : '' }}">
-            <a href="{{ route('coach.dashboard') }}" class="nav-link">
+        <li class="nav-item {{ request()->routeIs('adin.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('coach.clients') ? 'active' : '' }}">
-            <a href="{{ route('coach.clients') }}" class="nav-link">
-                <i class="fas fa-users"></i>
-                <span>My Clients</span>
-            </a>
-        </li>
-        <li class="nav-item {{ request()->routeIs('coach.messages') ? 'active' : '' }}">
-            <a href="{{ route('coach.messages') }}" class="nav-link">
-                <i class="fas fa-comments"></i>
-                <span>Messages</span>
-            </a>
-        </li>
-        <li class="nav-item {{ request()->routeIs('coach.schedule') ? 'active' : '' }}">
-            <a href="{{ route('coach.schedule') }}" class="nav-link">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Schedule</span>
-            </a>
-        </li>
-        <li class="nav-item {{ request()->routeIs('coach.resources') ? 'active' : '' }}">
-            <a href="{{ route('coach.resources') }}" class="nav-link">
+        <li class="nav-item {{ request()->routeIs('admin.resources') ? 'active' : '' }}">
+            <a href="{{ route('admin.resources') }}" class="nav-link">
                 <i class="fas fa-folder-open"></i>
                 <span>Resources</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('coach.profile') ? 'active' : '' }}">
-            <a href="{{ route('coach.profile') }}" class="nav-link">
+        <li class="nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}">
+            <a href="{{ route('admin.users') }}" class="nav-link">
+                <i class="fas fa-user-group"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
+            <a href="{{ route('admin.profiles') }}" class="nav-link">
                 <i class="fas fa-user-cog"></i>
                 <span>Profile</span>
             </a>
@@ -52,7 +40,7 @@
     </nav>
 
     <div class="sidebar-footer">
-        <a href="{{ route('coach.profile') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
+        <a href="{{ route('admin.profiles') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
             <div class="user-details">
                 <span class="user-name">{{ $authUser->name ?? 'Coach Name' }}</span>

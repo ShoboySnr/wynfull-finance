@@ -31,7 +31,7 @@ class RolesSeeder extends Seeder
         // --- Admin (activated + verified) ---
         /** @var User $admin */
         $admin = User::query()->firstOrCreate(
-            ['email' => 'admin@wynfull.test'],
+            ['email' => 'admin@wynfull.com'],
             [
                 'name'                    => 'Admin User',
                 'email_verified_at'       => $now,
@@ -54,7 +54,7 @@ class RolesSeeder extends Seeder
         $coaches = collect();
         foreach (range(1, 3) as $i) {
             $coach = User::query()->firstOrCreate(
-                ['email' => "coach{$i}@wynfull.test"],
+                ['email' => "coach{$i}@wynfull.com"],
                 [
                     'name'                    => "Coach {$i}",
                     'email_verified_at'       => $now,
@@ -75,7 +75,7 @@ class RolesSeeder extends Seeder
         $clients = collect();
         foreach (range(1, 5) as $i) {
             $client = User::query()->firstOrCreate(
-                ['email' => "client{$i}@wynfull.test"],
+                ['email' => "client{$i}@wynfull.com"],
                 [
                     'name'                    => "Client {$i}",
                     'email_verified_at'       => $now,
@@ -171,8 +171,8 @@ class RolesSeeder extends Seeder
         // Console hints
         $this->command->info('Seeded: 1 Admin, 3 Coaches, 5 Clients (activated & verified, guard:web).');
         $this->command->warn('Login with password: "password" for all seeded users (dev only).');
-        $this->command->line('Admin:   admin@wynfull.test');
-        $this->command->line('Coaches: coach1@wynfull.test, coach2@wynfull.test, coach3@wynfull.test');
-        $this->command->line('Clients: client1@wynfull.test ... client5@wynfull.test');
+        $this->command->line('Admin:   admin@wynfull.com');
+        $this->command->line('Coaches: coach1@wynfull.com, coach2@wynfull.com, coach3@wynfull.com');
+        $this->command->line('Clients: client1@wynfull.com ... client5@wynfull.com');
     }
 }

@@ -11,36 +11,36 @@ function initializeCoachDashboard() {
     const pages = document.querySelectorAll('.page');
     const menuToggle = document.querySelector('#mobileMenuToggle');
     const sidebar = document.querySelector('.sidebar');
-    
+
     // Initialize resource filtering
     initializeResourceFiltering();
 
     // Handle navigation
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Remove active class from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Add active class to clicked nav item
-            this.parentElement.classList.add('active');
-            
-            // Hide all pages
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show selected page
-            const targetPage = this.getAttribute('data-page');
-            const targetElement = document.getElementById(targetPage);
-            if (targetElement) {
-                targetElement.classList.add('active');
-            }
-        });
-    });
+    // navLinks.forEach(link => {
+    //     link.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //
+    //         // Remove active class from all nav items
+    //         document.querySelectorAll('.nav-item').forEach(item => {
+    //             item.classList.remove('active');
+    //         });
+    //
+    //         // Add active class to clicked nav item
+    //         this.parentElement.classList.add('active');
+    //
+    //         // Hide all pages
+    //         pages.forEach(page => {
+    //             page.classList.remove('active');
+    //         });
+    //
+    //         // Show selected page
+    //         const targetPage = this.getAttribute('data-page');
+    //         const targetElement = document.getElementById(targetPage);
+    //         if (targetElement) {
+    //             targetElement.classList.add('active');
+    //         }
+    //     });
+    // });
 
     // Mobile menu toggle
     if (menuToggle) {
@@ -62,13 +62,13 @@ function initializeCoachDashboard() {
         btn.addEventListener('click', function() {
             const card = this.closest('.quick-action-card');
             const title = card.querySelector('h3').textContent;
-            
+
             // Add visual feedback
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = '';
             }, 150);
-            
+
             console.log(`Coach action: ${title} clicked`);
         });
     });
@@ -79,13 +79,13 @@ function initializeCoachDashboard() {
         btn.addEventListener('click', function() {
             const scheduleItem = this.closest('.schedule-item');
             const clientName = scheduleItem.querySelector('h4').textContent;
-            
+
             // Add visual feedback
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = '';
             }, 150);
-            
+
             console.log(`Schedule action for: ${clientName}`);
         });
     });
@@ -96,13 +96,13 @@ function initializeCoachDashboard() {
         btn.addEventListener('click', function() {
             const activityItem = this.closest('.activity-item');
             const clientAction = activityItem.querySelector('h4').textContent;
-            
+
             // Add visual feedback
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = '';
             }, 150);
-            
+
             console.log(`Activity action for: ${clientAction}`);
         });
     });
@@ -123,19 +123,19 @@ function initializeCoachDashboard() {
 function initializeCoachTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
-    
+
     // Load saved theme or default to light
     const savedTheme = localStorage.getItem('wynfullTheme') || 'light';
     body.setAttribute('data-theme', savedTheme);
-    
+
     if (themeToggle) {
         // Update icon based on current theme
         updateThemeIcon(savedTheme);
-        
+
         themeToggle.addEventListener('click', function() {
             const currentTheme = body.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
+
             body.setAttribute('data-theme', newTheme);
             localStorage.setItem('wynfullTheme', newTheme);
             updateThemeIcon(newTheme);
@@ -159,18 +159,18 @@ function updateThemeIcon(theme) {
 function initializeResourceFiltering() {
     const resourceTabs = document.querySelectorAll('.resource-tab');
     const resourceItems = document.querySelectorAll('.resource-item');
-    
+
     // Add click event to all resource tabs
     resourceTabs.forEach(tab => {
         tab.addEventListener('click', function() {
             const filter = this.dataset.filter;
-            
+
             // Remove active class from all tabs
             resourceTabs.forEach(t => t.classList.remove('active'));
-            
+
             // Add active class to clicked tab
             this.classList.add('active');
-            
+
             // Filter resources
             filterResources(filter, resourceItems);
         });
@@ -180,7 +180,7 @@ function initializeResourceFiltering() {
 function filterResources(filter, resourceItems) {
     resourceItems.forEach(item => {
         const itemType = item.dataset.type;
-        
+
         if (filter === 'all') {
             // Show all items
             item.style.display = 'flex';

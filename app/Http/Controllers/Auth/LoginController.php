@@ -14,6 +14,7 @@ class LoginController extends Controller
 {
     public function store(Request $request)
     {
+        dd('here');
         $credentials = $request->validate([
             'email'    => ['required', 'email:rfc,dns'],
             'password' => ['required', 'string'],
@@ -85,8 +86,10 @@ class LoginController extends Controller
 
     protected function redirectPathFor($user): string
     {
+        dd($user->roles->pluck('name')->toArray());
+
         if ($user->hasRole('coach')) {
-            return route('dashboard.coach');
+            return route('coach.dashboard');
         }
 
         if ($user->hasRole('client')) {
@@ -94,10 +97,10 @@ class LoginController extends Controller
         }
 
         if ($user->hasRole('admin')) {
-            return route('dashboard.admin');
+            return route('admin.dashboard');
         }
 
-        return route('home'); // fallback
+        return route('home');
     }
 
     protected function throttleKey(Request $request): string
