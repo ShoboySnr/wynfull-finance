@@ -5,6 +5,13 @@
 
 @section('content')
     <div class="profile-page-container">
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="profile-main-card">
             <div class="profile-header">
                 <div class="profile-avatar-large-container">
@@ -64,7 +71,7 @@
                 <div class="stat-icon"><i class="fas fa-history"></i></div>
                 <div class="stat-content">
                     <h3>Last Active</h3>
-                    <p class="stat-value">2 days ago</p>
+                    <p class="stat-value">{{ $lastActiveAt }}</p>
                 </div>
             </div>
             <div class="stat-card">
@@ -148,35 +155,38 @@
 
         <!-- Assign Coach Modal -->
         <div class="modal-overlay" id="assignCoachModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Assign Coach to {{ $user->name }}</h3>
-                    <button class="modal-close" id="closeAssignCoachModal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>Select a coach from the list below to assign to this client.</p>
-                    <div class="coach-list">
-                        @forelse($coaches as $coach)
-                            <div class="coach-list-item">
-                                <img
-                                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format"
-                                    alt="{{ $coach->name }}" class="user-avatar-small">
-                                <div class="coach-details">
-                                    <span class="coach-name">{{ $coach->name }}</span>
-                                    <span class="coach-email">{{ $coach->email }}</span>
-                                </div>
-                                <input type="radio" name="assigned_coach" value="{{ $coach->id }}">
-                            </div>
-                        @empty
-                            <p>No coaches available to assign.</p>
-                        @endforelse
+            <form method="POST" action="{{ route('admin.assignments.store') }}">
+                @csrf
+                <input type="hidden" name="client_id" value="{{ $user->id }}">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Assign Coach to {{ $user->name }}</h3>
+                        <button type="button" class="modal-close" id="closeAssignCoachModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Select a coach from the list below to assign to this client.</p>
+                        <div class="coach-list">
+                            @forelse($coaches as $coach)
+                                <label class="coach-list-item">
+                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="{{ $coach->name }}" class="user-avatar-small">
+                                    <div class="coach-details">
+                                        <span class="coach-name">{{ $coach->name }}</span>
+                                        <span class="coach-email">{{ $coach->email }}</span>
+                                    </div>
+                                    <input type="radio" name="coach_id" value="{{ $coach->id }}">
+                                </label>
+                            @empty
+                                <p>No coaches available to assign.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="cancelAssignCoach">Cancel</button>
+                        <button type="submit" class="btn-primary">Assign Coach</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary" id="cancelAssignCoach">Cancel</button>
-                    <button class="btn-primary">Assign Coach</button>
-                </div>
-            </div>
+            </form>
         </div>
         @endsection
 

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Assignments\CoachClientAssignmentService;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CoachClientAssignmentController extends Controller
 {
@@ -28,16 +29,31 @@ class CoachClientAssignmentController extends Controller
     // POST /admin/coach-client-assignments
     public function store(AssignCoachToClientRequest $request)
     {
-        $data = $this->service->assign(
-            coachId: (int) $request->integer('coach_id'),
-            clientId: (int) $request->integer('client_id'),
-            actorUserId: $request->user()?->id
-        );
+        try {
+            $data = $this->service->assign(
+                coachId: (int) $request->integer('coach_id'),
+                clientId: (int) $request->integer('client_id'),
+                actorUserId: $request->user()?->id
+            );
 
-        return response()->json([
-            'message' => 'Coach assigned to client successfully.',
-            'data'    => $data,
-        ], 201);
+            // Optional: personalize the message with names
+            $coach  = User::find($data['coach_id']);
+            $client = User::find($data['client_id']);
+
+            return back()->with('success',
+                sprintf(
+                    'Coach %s was assigned to %s successfully.',
+                    $coach?->name ?? 'ID '.$data['coach_id'],
+                    $client?->name ?? 'ID '.$data['client_id']
+                )
+            );
+
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Throwable $e) {
+            report($e);
+            return back()->with('error', 'Sorry, we could not assign the coach. Please try again.');
+        }
     }
 
     // DELETE /admin/coach-client-assignments
