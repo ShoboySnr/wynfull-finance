@@ -46,7 +46,10 @@
                         <button class="btn-secondary" id="assignCoachBtn"><i class="fas fa-user-plus"></i> Assign Coach
                         </button>
                     @endif
-                    <button class="btn-primary"><i class="fas fa-pencil-alt"></i> Edit Profile</button>
+                    <form action="{{ route('admin.users.activate', $user->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button class="btn-primary" disabled="{{ $user->is_active }}"> Activate</button>
+                    </form>
                 </div>
             </div>
         </div>

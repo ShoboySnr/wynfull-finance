@@ -43,6 +43,6 @@ class UserActivationController extends Controller
             ->withProperties(['notification' => 'YourAccountActivatedNotification'])
             ->log('notification_dispatched');
 
-        return back()->with('status', 'User activated.');
+        return back()->with('success', 'User activated.');
     }
 }
