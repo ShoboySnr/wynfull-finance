@@ -185,4 +185,31 @@ class CoachScheduleService
             ],
         };
     }
+
+    public function formatForCalendar(Collection $sessions, ?string $tz = null): array
+    {
+        $tz = $tz ?: config('app.timezone', 'UTC');
+
+        return $sessions->map(function ($s) use ($tz) {
+            return [
+                'date'   => $s->starts_at->clone()->setTimezone($tz)->toDateString(),     // e.g. 2025-10-13
+                'time'   => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),    // e.g. 10:00 AM
+                'client' => $s->client?->name ?? '—',
+                'type'   => $s->type ?? 'Session',
+            ];
+        })->values()->all();
+    }
+
+    public function listForCoachBetween(int $coachId, $from, $to): Collection
+    {
+        $from = Carbon::parse($from)->utc()->startOfSecond();
+        $to   = Carbon::parse($to)->utc()->endOfSecond();
+
+        return CoachingSession::query()
+            ->with(['client:id,name,email'])
+            ->where('coach_id', $coachId)
+            ->whereBetween('starts_at', [$from, $to])
+            ->orderBy('starts_at')
+            ->get();
+    }
 }

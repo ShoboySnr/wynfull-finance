@@ -69,4 +69,30 @@ class ScheduleController extends Controller
 
         return back()->with('success', 'Session cancelled.');
     }
+
+    public function feed(Request $request)
+    {
+        $coachId = (int) ($request->query('coach_id') ?: auth()->id());
+        $tz      = $request->query('tz');
+
+        $start = $request->query('start'); // ISO date or datetime
+        $end   = $request->query('end');   // ISO date or datetime
+
+        try {
+            if ($start && $end) {
+                $sessions = $this->service->listForCoachBetween($coachId, $start, $end);
+            } else {
+                // Back-compat: view + optional base start
+                $view  = $request->query('view', 'week');
+                $base  = $request->query('start');
+                $sessions = $this->service->listForCoach($coachId, $view, $base);
+            }
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'Invalid date parameters.'], 422);
+        }
+
+        $payload = $this->service->formatForCalendar($sessions, $tz);
+
+        return response()->json($payload);
+    }
 }

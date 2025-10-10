@@ -44,8 +44,9 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::get('/messages', [CoachMessagesController::class, 'index'])->name('messages');
 
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
-    Route::post('/coach/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
-    Route::post('/coach/schedule/{session}/cancel', [ScheduleController::class, 'cancel'])->name('schedule.cancel');
+    Route::post('/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
+    Route::get('/schedule/feed', [ScheduleController::class, 'feed'])->name('schedule.feed');
+    Route::post('/schedule/{session}/cancel', [ScheduleController::class, 'cancel'])->name('schedule.cancel');
 
     Route::get('/resources', [CoachResourcesController::class, 'index'])->name('resources');
     Route::get('/profile', [CoachProfileController::class, 'index'])->name('profile');
