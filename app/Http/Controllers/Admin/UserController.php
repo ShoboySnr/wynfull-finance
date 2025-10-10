@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\Admin\UserAdminService;
+use App\Services\Admin\ViewUserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserAdminService $service)
+    public function __construct(
+        private readonly UserAdminService $service,
+        private readonly ViewUserService $viewService
+    )
     {
     }
 
@@ -32,6 +37,21 @@ class UserController extends Controller
             'activeClients' => $stats['activeClients'],
             'totalCoaches'  => $stats['totalCoaches'],
             'users'         => $users,
+        ]);
+    }
+
+    public function show(User $user)
+    {
+        [$user, $context] = $this->viewService->getUserWithContext($user->id);
+
+        $coaches = $this->viewService->listAssignableCoaches($user);
+
+        return view('admin.users.show', [
+            'user'    => $user,
+            'coaches' => $coaches,
+            'lastActiveAt'  => $context['lastActiveAt'],
+            'totalSessions' => $context['totalSessions'],
+            'assignedCoachIds' => $context['assignedCoachIds'],
         ]);
     }
 }

@@ -91,7 +91,9 @@
                         <td data-label="Joined">{{ $user->created_at->format('M d, Y') }}</td>
                         <td data-label="Actions">
                             <div class="action-buttons">
-                                <button class="action-btn view" title="View Profile"><i class="fas fa-eye"></i></button>
+                                <a href="{{ route('admin.users.show', $user->id) }}" class="action-btn view" title="View Profile">
+                                    <i class="fas fa-eye"></i>
+                                </a>
                                 <button class="action-btn edit" title="Edit User"><i class="fas fa-pencil-alt"></i></button>
                                 <button class="action-btn delete" title="Delete User"><i class="fas fa-trash"></i></button>
                             </div>

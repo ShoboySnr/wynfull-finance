@@ -61,6 +61,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('users', [UserController::class, 'index'])
         ->name('users');
 
+    Route::get('users/{user}', [UserController::class, 'show'])
+        ->name('users.show');
+
     Route::post('/users/{user}/activate', UserActivationController::class)
         ->name('users.activate');
 
