@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\ResourceLibraryController;
 use App\Http\Controllers\ClientOnboardingController;
 use App\Http\Controllers\Coach\CoachClientsController;
 use App\Http\Controllers\Coach\CoachMessagesController;
@@ -56,8 +57,17 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::get('/dashboard/client', [ClientDashboardController::class, 'index'])
         ->name('dashboard.client');
 
+    Route::get('/resources/library', [ResourceLibraryController::class, 'index'])->name('resources.library');
+    Route::get('/ai/client', [\App\Http\Controllers\Client\AI::class, 'index'])->name('ai.client');
+    Route::get('/coaching/client', [\App\Http\Controllers\Client\CoachingController::class, 'index'])->name('coaching.client');
+    Route::get('/messages/client', [\App\Http\Controllers\Client\MessagingController::class, 'index'])->name('messages.client');
+    Route::get('/plans/client', [\App\Http\Controllers\Client\PlansController::class, 'index'])->name('plans.client');
+    Route::get('/account/client', [\App\Http\Controllers\Client\AccountController::class, 'index'])->name('account.client');
+
     Route::post('/onboarding/complete', [ClientOnboardingController::class, 'store'])
         ->name('onboarding.complete');
+
+
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

@@ -19,31 +19,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
 
     // Handle navigation
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            // Remove active class from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Add active class to clicked nav item
-            this.parentElement.classList.add('active');
-
-            // Hide all pages
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-
-            // Show selected page
-            const targetPage = this.getAttribute('data-page');
-            const targetElement = document.getElementById(targetPage);
-            if (targetElement) {
-                targetElement.classList.add('active');
-            }
-        });
-    });
+    // navLinks.forEach(link => {
+    //     link.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //
+    //         // Remove active class from all nav items
+    //         document.querySelectorAll('.nav-item').forEach(item => {
+    //             item.classList.remove('active');
+    //         });
+    //
+    //         // Add active class to clicked nav item
+    //         this.parentElement.classList.add('active');
+    //
+    //         // Hide all pages
+    //         pages.forEach(page => {
+    //             page.classList.remove('active');
+    //         });
+    //
+    //         // Show selected page
+    //         const targetPage = this.getAttribute('data-page');
+    //         const targetElement = document.getElementById(targetPage);
+    //         if (targetElement) {
+    //             targetElement.classList.add('active');
+    //         }
+    //     });
+    // });
 
     // Mobile menu toggle
     if (menuToggle) {
