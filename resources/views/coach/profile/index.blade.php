@@ -3,7 +3,7 @@
 
 @section('content')
     <!-- Coach Profile Page -->
-    <div class="page" id="coach-profile">
+    <div class="" id="coach-profile">
         <div class="page-content">
             <div class="page-header">
                 <h1>Coach Profile</h1>

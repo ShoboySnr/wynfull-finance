@@ -3,7 +3,7 @@
 
 @section('content')
     <!-- Resources Page -->
-    <div class="page" id="resources">
+    <div class="" id="resources">
         <div class="page-content">
             <div class="page-header">
                 <h1>Resources</h1>
