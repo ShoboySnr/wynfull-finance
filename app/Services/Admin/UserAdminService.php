@@ -7,9 +7,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserAdminService
 {
-    /**
-     * Get top-line stats for the Users page.
-     */
     public function getStats(): array
     {
         $totalUsers    = User::count();
@@ -27,33 +24,36 @@ class UserAdminService
     }
 
     /**
-     * Paginated users list with optional search/filters.
-     *
-     * @param  array{q?:string,role?:string,status?:string,per_page?:int,sort?:string,dir?:'asc'|'desc'} $filters
+     * @param array{q?:string,role?:string,status?:string,per_page?:int,sort?:string,dir?:string} $filters
      */
     public function listUsers(array $filters = []): LengthAwarePaginator
     {
-        $q        = $filters['q']        ?? null;                 // search term
-        $role     = $filters['role']     ?? null;                 // 'admin'|'coach'|'client'
-        $status   = $filters['status']   ?? null;                 // 'active'|'inactive'
+        $q        = $filters['q']   ?? null;
+        $role     = $filters['role'] ?? null;
+        $status   = $filters['status'] ?? null;
+
         $perPage  = (int)($filters['per_page'] ?? 15);
-        $sort     = $filters['sort']     ?? 'created_at';
-        $dir      = strtolower($filters['dir'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+        if ($perPage < 5)   $perPage = 15;
+        if ($perPage > 100) $perPage = 100;
+
+        // whitelist sortable columns
+        $allowedSorts = ['created_at', 'name', 'email', 'is_active'];
+        $sortInput    = $filters['sort'] ?? '';
+        $sort         = in_array($sortInput, $allowedSorts, true) ? $sortInput : 'created_at';
+
+        // only asc|desc
+        $dirInput = strtolower($filters['dir'] ?? '');
+        $dir      = $dirInput === 'asc' ? 'asc' : 'desc';
 
         $query = User::query()
-            ->with(['roles']) // eager-load to avoid N+1
-            ->when($q, function ($builder) use ($q) {
-                $builder->where(function ($b) use ($q) {
-                    $b->where('name', 'like', "%{$q}%")
-                        ->orWhere('email', 'like', "%{$q}%");
-                });
-            })
-            ->when($role, function ($builder) use ($role) {
-                $builder->whereHas('roles', fn($r) => $r->where('name', $role)->where('guard_name', 'web'));
-            })
-            ->when($status, function ($builder) use ($status) {
-                $builder->where('is_active', $status === 'active');
-            })
+            ->with('roles')
+            ->when($q, fn($b) => $b->where(function ($w) use ($q) {
+                $w->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            }))
+            ->when($role, fn($b) => $b->whereHas('roles', fn($r) => $r
+                ->where('name', $role)->where('guard_name', 'web')))
+            ->when($status, fn($b) => $b->where('is_active', $status === 'active'))
             ->orderBy($sort, $dir);
 
         return $query->paginate($perPage)->withQueryString();

@@ -16,7 +16,6 @@
             <div class="stat-content">
                 <h3>Total Users</h3>
                 <p class="stat-value">{{ $totalUsers ?? 152 }}</p>
-                <span class="stat-change positive">+12 this month</span>
             </div>
         </div>
         <div class="stat-card">
@@ -24,7 +23,6 @@
             <div class="stat-content">
                 <h3>Active Clients</h3>
                 <p class="stat-value">{{ $activeClients ?? 124 }}</p>
-                <span class="stat-change neutral">89% of total</span>
             </div>
         </div>
         <div class="stat-card">
@@ -32,7 +30,6 @@
             <div class="stat-content">
                 <h3>Coaches</h3>
                 <p class="stat-value">{{ $totalCoaches ?? 8 }}</p>
-                <span class="stat-change">2 admins</span>
             </div>
         </div>
     </div>
@@ -53,62 +50,65 @@
             </div>
         </div>
 
-        <table>
-            <thead>
-            <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Joined Date</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($users as $user)
+        <div class="responsive-table-wrapper">
+            <table>
+                <thead>
                 <tr>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face&auto=format" alt="{{ $user->name }}" class="user-avatar-small">
-                            <div>
-                                <div class="user-name">{{ $user->name }}</div>
-                                <div class="user-email">{{ $user->email }}</div>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Joined Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($users as $user)
+                    <tr>
+                        <td data-label="User">
+                            <div class="user-cell">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=40&h=40&fit=crop&crop=face&auto=format" alt="{{ $user->name }}" class="user-avatar-small">
+                                <div>
+                                    <div class="user-name">{{ $user->name }}</div>
+                                    <div class="user-email">{{ $user->email }}</div>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        @php
-                            $role = 'Client'; // Default role
-                            if (isset($user->role)) $role = $user->role; // Check for a 'role' property
-                            $roleClass = 'badge-' . strtolower($role);
-                        @endphp
-                        <span class="badge {{ $roleClass }}">{{ $role }}</span>
-                    </td>
-                    <td>
-                        @if($user->is_active)
-                            <span class="badge badge-active">Active</span>
-                        @else
-                            <span class="badge badge-inactive">Inactive</span>
-                        @endif
-                    </td>
-                    <td>{{ $user->created_at->format('M d, Y') }}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn view" title="View Profile"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn edit" title="Edit User"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="action-btn delete" title="Delete User"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 2rem;">No users found.</td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
+                        </td>
+                        <td data-label="Role">
+                            @php
+                                $role = 'Client';
+                                if (isset($user->roles)) $role = $user->roles->pluck('name')->first();
+                                $roleClass = 'badge-' . strtolower($role);
+                            @endphp
+                            <span class="badge {{ $roleClass }}">{{ $role }}</span>
+                        </td>
+                        <td data-label="Status">
+                            @if($user->is_active)
+                                <span class="badge badge-active">Active</span>
+                            @else
+                                <span class="badge badge-inactive">Inactive</span>
+                            @endif
+                        </td>
+                        <td data-label="Joined">{{ $user->created_at->format('M d, Y') }}</td>
+                        <td data-label="Actions">
+                            <div class="action-buttons">
+                                <button class="action-btn view" title="View Profile"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit" title="Edit User"><i class="fas fa-pencil-alt"></i></button>
+                                <button class="action-btn delete" title="Delete User"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 2rem;">No users found.</td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <div class="table-pagination">
             {{ $users->links() }}
         </div>
     </div>
 @endsection
+

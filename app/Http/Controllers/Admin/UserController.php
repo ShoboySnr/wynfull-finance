@@ -16,14 +16,16 @@ class UserController extends Controller
     {
         $stats = $this->service->getStats();
 
-        $users = $this->service->listUsers([
-            'q'        => $request->string('q')->toString(),
-            'role'     => $request->string('role')->toString(),     // 'admin'|'coach'|'client'
-            'status'   => $request->string('status')->toString(),   // 'active'|'inactive'
-            'per_page' => $request->integer('per_page') ?: 15,
-            'sort'     => $request->string('sort')->toString(),     // e.g. 'created_at'|'name'|'email'
-            'dir'      => $request->string('dir')->toString(),      // 'asc'|'desc'
-        ]);
+        $filters = [
+            'q'        => trim((string) $request->query('q', '')),
+            'role'     => trim((string) $request->query('role', '')),
+            'status'   => trim((string) $request->query('status', '')),
+            'per_page' => (int) $request->query('per_page', 15),
+            'sort'     => trim((string) $request->query('sort', '')),
+            'dir'      => trim((string) $request->query('dir', '')),
+        ];
+
+        $users = $this->service->listUsers($filters);
 
         return view('admin.users.index', [
             'totalUsers'    => $stats['totalUsers'],
