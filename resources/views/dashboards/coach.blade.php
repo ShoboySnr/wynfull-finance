@@ -2,97 +2,6 @@
 @section('title', 'Coach Dashboard')
 
 @section('content')
-    <!-- Sidebar -->
-    <aside class="sidebar coach-sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="logo-text">
-                    <h2>Wynfull</h2>
-                    <span>Finance Platform</span>
-                </div>
-                <span class="coach-badge">Coach Portal</span>
-            </div>
-        </div>
-
-        <nav class="nav-menu">
-            <li class="nav-item active">
-                <a href="#" class="nav-link" data-page="coach-dashboard">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="clients">
-                    <i class="fas fa-users"></i>
-                    <span>My Clients</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="coach-messages">
-                    <i class="fas fa-comments"></i>
-                    <span>Messages</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="schedule">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Schedule</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="resources">
-                    <i class="fas fa-folder-open"></i>
-                    <span>Resources</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="coach-profile">
-                    <i class="fas fa-user-cog"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-info" onclick="showPage('coach-profile')" style="cursor: pointer;">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
-                <div class="user-details">
-                    <span class="user-name">{{ $user->name }}</span>
-                    <span class="user-role">{{ $specialtiesCsv }}</span>
-                </div>
-                <button class="role-switch-btn" id="clientViewBtn" title="Switch to Client View">
-                    <i class="fas fa-user"></i>
-                </button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Top Header -->
-        <header class="top-header">
-            <div class="header-left">
-                <h1 class="page-title">Coach Dashboard</h1>
-            </div>
-            <div class="header-right">
-                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="notification-btn" id="notificationBtn">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">5</span>
-                </button>
-            </div>
-        </header>
-
         <!-- Coach Dashboard Page -->
         <div class="page active" id="coach-dashboard">
             <div class="page-content">
@@ -1027,7 +936,7 @@
                 </div>
             </div>
         </div>
-    </main>
+
 @endsection
 
 @push('scripts')

@@ -14,6 +14,7 @@ use App\Http\Controllers\Coach\CoachMessagesController;
 use App\Http\Controllers\Coach\CoachProfileController;
 use App\Http\Controllers\Coach\CoachResourcesController;
 use App\Http\Controllers\Coach\CoachScheduleController;
+use App\Http\Controllers\Coach\ScheduleController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\ClientDashboardController;
@@ -41,7 +42,11 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
     Route::get('/clients', [CoachClientsController::class, 'index'])->name('clients');
     Route::get('/messages', [CoachMessagesController::class, 'index'])->name('messages');
-    Route::get('/schedule', [CoachScheduleController::class, 'index'])->name('schedule');
+
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::post('/coach/schedule', [ScheduleController::class, 'store'])->name('schedule.store');
+    Route::post('/coach/schedule/{session}/cancel', [ScheduleController::class, 'cancel'])->name('schedule.cancel');
+
     Route::get('/resources', [CoachResourcesController::class, 'index'])->name('resources');
     Route::get('/profile', [CoachProfileController::class, 'index'])->name('profile');
 });

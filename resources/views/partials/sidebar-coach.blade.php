@@ -49,6 +49,17 @@
                 <span>Profile</span>
             </a>
         </li>
+
+        <!-- Logout Button -->
+        <li class="nav-item nav-item-logout">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </li>
     </nav>
 
     <div class="sidebar-footer">

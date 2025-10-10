@@ -8,6 +8,6 @@ class CoachMessagesController extends Controller
 {
     public function index()
     {
-
+        return view('coach.messages.index');
     }
 }
