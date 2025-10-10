@@ -34,9 +34,9 @@ class ViewUserService
         return [
             $user,
             [
-                'lastActiveAt'    => $lastActiveAt,    // \Carbon\CarbonInterface|null
-                'totalSessions'   => $totalSessions,   // int
-                'assignedCoachIds'=> $assignedCoachIds // int[]
+                'lastActiveAt'    => $lastActiveAt,
+                'totalSessions'   => $totalSessions,
+                'assignedCoachIds'=> $assignedCoachIds
             ],
         ];
     }
