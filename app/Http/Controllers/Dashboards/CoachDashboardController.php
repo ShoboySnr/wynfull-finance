@@ -35,8 +35,9 @@ class CoachDashboardController extends Controller
         $weeklyScheduleEntries = $this->service->formatSessionsForDashboard($weeklySessions);
 
         // Recent activities by this coach
-        $recentActivities = $this->service->recentActivitiesForCoach($coachId, 10);
+        $recentActivities = $this->service->recentActivitiesForCoach($coachId, 3);
 
+//        dd($recentActivities);
         return view('dashboards.coach', [
             'user'                  => $user,
             'specialtiesCsv'        => $specialtiesCsv,

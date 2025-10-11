@@ -87,6 +87,7 @@ class CoachDashboardService
                 'join_url'  => $s->location_url,
                 'starts_at' => $start->format('ga'),     // e.g., "10am"
                 'ends_at'   => $end->format('ga'),
+                'notes'     => $s->notes ?? '',
             ];
         })->values()->all();
     }

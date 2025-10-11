@@ -52,10 +52,12 @@ class LoginController extends Controller
 
         // Spatie activity log
         activity()
+            ->useLog('auth')
+            ->performedOn($user)
             ->causedBy($user)
             ->event('login')
             ->withProperties([
-                'ip' => $request->ip(),
+                'ip'         => $request->ip(),
                 'user_agent' => substr((string) $request->userAgent(), 0, 255),
             ])
             ->log('User logged in');
@@ -67,10 +69,12 @@ class LoginController extends Controller
     {
         if ($user = $request->user()) {
             activity()
+                ->useLog('auth')
+                ->performedOn($user)
                 ->causedBy($user)
                 ->event('logout')
                 ->withProperties([
-                    'ip' => $request->ip(),
+                    'ip'         => $request->ip(),
                     'user_agent' => substr((string) $request->userAgent(), 0, 255),
                 ])
                 ->log('User logged out');

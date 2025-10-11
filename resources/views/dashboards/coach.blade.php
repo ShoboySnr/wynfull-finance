@@ -50,19 +50,21 @@
                                 <div class="schedule-item">
                                     <div class="schedule-time">
                                         <span class="time">{{ $schedule['date'] }}</span>
-                                        <span class="duration">{{ $schedule['starts_at'] }}</span>
+                                        <span class="duration">{{ $schedule['starts_at'] }} - {{ $schedule['ends_at'] }}</span>
                                     </div>
                                     <div class="schedule-details">
-                                        <h4>John Doe - Financial Review</h4>
-                                        <p>Quarterly portfolio assessment and goal adjustment</p>
+                                        <h4>{{ $schedule['client'] }} - {{ $schedule['title'] }}</h4>
+                                        <p>{{ $schedule['notes'] }}</p>
                                         <div class="client-tags">
-                                            <span class="tag">Premium</span>
-                                            <span class="tag">Investment Focus</span>
+                                            <span class="tag">{{ $schedule['type'] }}</span>
                                         </div>
                                     </div>
-                                    <div class="schedule-actions">
-                                        <button class="btn-secondary">Join Call</button>
-                                    </div>
+                                    @if($schedule['join_url'])
+                                        <div class="schedule-actions">
+                                            <a href="{{ $schedule['join_url'] }}" class="btn-secondary" style="text-decoration: none">Join Call</a>
+                                        </div>
+                                    @endif
+
                                 </div>
                             @endforeach
 
@@ -73,41 +75,20 @@
                     <div class="client-activity">
                         <h2>Recent Client Activity</h2>
                         <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-avatar">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" alt="John Doe">
+                            @foreach($recentActivities as $activity)
+                                <div class="activity-item">
+                                    <div class="activity-avatar">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" alt="John Doe">
+                                    </div>
+                                    <div class="activity-content">
+                                        <h4>{{ $activity->description }}</h4>
+{{--                                        <p>Calculated $12,000 target for 6-month emergency fund</p>--}}
+                                        <span class="activity-time">{{ $activity->created_at }}</span>
+                                    </div>
+                                    <button class="activity-action">Review</button>
                                 </div>
-                                <div class="activity-content">
-                                    <h4>John Doe completed Emergency Fund worksheet</h4>
-                                    <p>Calculated $12,000 target for 6-month emergency fund</p>
-                                    <span class="activity-time">2 hours ago</span>
-                                </div>
-                                <button class="activity-action">Review</button>
-                            </div>
+                            @endforeach
 
-                            <div class="activity-item">
-                                <div class="activity-avatar">
-                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face&auto=format" alt="Lisa Wang">
-                                </div>
-                                <div class="activity-content">
-                                    <h4>Lisa Wang sent a message</h4>
-                                    <p>"Should I start looking at pre-approval options?"</p>
-                                    <span class="activity-time">4 hours ago</span>
-                                </div>
-                                <button class="activity-action">Reply</button>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-avatar">
-                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format" alt="David Kim">
-                                </div>
-                                <div class="activity-content">
-                                    <h4>David Kim uploaded business plan</h4>
-                                    <p>Business_Plan_v2.pdf ready for review</p>
-                                    <span class="activity-time">Yesterday</span>
-                                </div>
-                                <button class="activity-action">View</button>
-                            </div>
                         </div>
                     </div>
                 </div>
