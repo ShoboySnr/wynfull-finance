@@ -71,6 +71,10 @@ class CoachDashboardService
         $tz = $tz ?: config('app.timezone', 'UTC');
 
         return $sessions->map(function ($s) use ($tz) {
+
+            $start = $s->starts_at->clone()->setTimezone($tz);
+            $end   = $s->ends_at->clone()->setTimezone($tz);
+
             return [
                 'id'        => $s->id,
                 'date'      => $s->starts_at->clone()->setTimezone($tz)->toDateString(),
@@ -81,8 +85,8 @@ class CoachDashboardService
                 'type'      => $s->type ?? 'Session',
                 'status'    => $s->status,
                 'join_url'  => $s->location_url,
-                'starts_at' => $s->starts_at->clone()->setTimezone($tz)->toIso8601String(),
-                'ends_at'   => $s->ends_at->clone()->setTimezone($tz)->toIso8601String(),
+                'starts_at' => $start->format('ga'),     // e.g., "10am"
+                'ends_at'   => $end->format('ga'),
             ];
         })->values()->all();
     }
