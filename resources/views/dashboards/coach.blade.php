@@ -18,8 +18,7 @@
                         </div>
                         <div class="stat-content">
                             <h3>Active Clients</h3>
-                            <p class="stat-value">24</p>
-                            <span class="stat-change positive">+3 this month</span>
+                            <p class="stat-value">{{ $activeClientsCount }}</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -28,8 +27,7 @@
                         </div>
                         <div class="stat-content">
                             <h3>Sessions This Week</h3>
-                            <p class="stat-value">12</p>
-                            <span class="stat-change neutral">3 remaining</span>
+                            <p class="stat-value">{{ $weeklySessionsCount }}</p>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -39,7 +37,6 @@
                         <div class="stat-content">
                             <h3>Unread Messages</h3>
                             <p class="stat-value">8</p>
-                            <span class="stat-change">From 6 clients</span>
                         </div>
                     </div>
                 </div>
@@ -47,61 +44,28 @@
                 <!-- Today's Schedule -->
                 <div class="coach-sections">
                     <div class="today-schedule">
-                        <h2>Today's Schedule</h2>
+                        <h2>This week Schedule</h2>
                         <div class="schedule-list">
-                            <div class="schedule-item">
-                                <div class="schedule-time">
-                                    <span class="time">10:00 AM</span>
-                                    <span class="duration">60 min</span>
-                                </div>
-                                <div class="schedule-details">
-                                    <h4>John Doe - Financial Review</h4>
-                                    <p>Quarterly portfolio assessment and goal adjustment</p>
-                                    <div class="client-tags">
-                                        <span class="tag">Premium</span>
-                                        <span class="tag">Investment Focus</span>
+                            @foreach($weeklyScheduleEntries as $schedule)
+                                <div class="schedule-item">
+                                    <div class="schedule-time">
+                                        <span class="time">{{ $schedule['date'] }}</span>
+                                        <span class="duration">{{ $schedule['starts_at'] }}</span>
+                                    </div>
+                                    <div class="schedule-details">
+                                        <h4>John Doe - Financial Review</h4>
+                                        <p>Quarterly portfolio assessment and goal adjustment</p>
+                                        <div class="client-tags">
+                                            <span class="tag">Premium</span>
+                                            <span class="tag">Investment Focus</span>
+                                        </div>
+                                    </div>
+                                    <div class="schedule-actions">
+                                        <button class="btn-secondary">Join Call</button>
                                     </div>
                                 </div>
-                                <div class="schedule-actions">
-                                    <button class="btn-secondary">Join Call</button>
-                                </div>
-                            </div>
+                            @endforeach
 
-                            <div class="schedule-item">
-                                <div class="schedule-time">
-                                    <span class="time">2:00 PM</span>
-                                    <span class="duration">45 min</span>
-                                </div>
-                                <div class="schedule-details">
-                                    <h4>Maria Rodriguez - Debt Strategy</h4>
-                                    <p>Review debt consolidation plan and next steps</p>
-                                    <div class="client-tags">
-                                        <span class="tag">Growth</span>
-                                        <span class="tag">Debt Management</span>
-                                    </div>
-                                </div>
-                                <div class="schedule-actions">
-                                    <button class="btn-secondary">Join Call</button>
-                                </div>
-                            </div>
-
-                            <div class="schedule-item upcoming">
-                                <div class="schedule-time">
-                                    <span class="time">4:30 PM</span>
-                                    <span class="duration">30 min</span>
-                                </div>
-                                <div class="schedule-details">
-                                    <h4>David Kim - Business Planning</h4>
-                                    <p>S-Corp vs LLC discussion and tax implications</p>
-                                    <div class="client-tags">
-                                        <span class="tag">Premium</span>
-                                        <span class="tag">Business</span>
-                                    </div>
-                                </div>
-                                <div class="schedule-actions">
-                                    <button class="btn-primary">Join Call</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
