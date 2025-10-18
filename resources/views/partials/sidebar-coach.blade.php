@@ -8,7 +8,7 @@
                 <h2>Wynfull</h2>
                 <span>Finance Platform</span>
             </div>
-            <span class="coach-badge">Admin Portal</span>
+            <span class="coach-badge">Coach Portal</span>
         </div>
     </div>
 

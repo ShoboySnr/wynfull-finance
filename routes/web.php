@@ -20,6 +20,7 @@ use App\Http\Controllers\CoachController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\ClientDashboardController;
 use App\Http\Controllers\Dashboards\CoachDashboardController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('home');
@@ -38,6 +39,11 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 Route::post('/register/client', [RegisterController::class,'registerClient'])->name('register.client');
 Route::post('/register/coach',  [RegisterController::class,'registerCoach'])->name('register.coach');
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/me/profile', [ProfileController::class, 'show']);
+    Route::match(['put', 'patch'], '/me/profile', [ProfileController::class, 'update']);
+    Route::patch('/me/profile/avatar', [ProfileController::class, 'updateAvatar']);
+});
 
 Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->group(function () {
     Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
@@ -50,6 +56,8 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::post('/schedule/{session}/cancel', [ScheduleController::class, 'cancel'])->name('schedule.cancel');
 
     Route::get('/resources', [CoachResourcesController::class, 'index'])->name('resources');
+    Route::post('/resources', [CoachResourcesController::class, 'store'])->name('resources.store');
+    Route::put('/resources/{resource}', [CoachResourcesController::class, 'update'])->name('resources.update');
     Route::get('/profile', [CoachProfileController::class, 'index'])->name('profile');
 });
 

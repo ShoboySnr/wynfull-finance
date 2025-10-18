@@ -100,4 +100,9 @@ class User extends Authenticatable
         )->withTimestamps()
             ->withPivot(['assigned_by', 'assigned_at', 'status', 'id']);
     }
+
+    public function profile(): HasOne
+    {
+        return $this->hasOne(Profile::class);
+    }
 }

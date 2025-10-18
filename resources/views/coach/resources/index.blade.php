@@ -1,293 +1,213 @@
 @extends('layouts.app')
-@section('title', 'Coach Dashboard')
+
+@section('title', 'My Resources')
 
 @section('content')
-    <!-- Resources Page -->
-    <div class="" id="resources">
-        <div class="page-content">
-            <div class="page-header">
-                <h1>Resources</h1>
-                <p>Manage educational materials and templates for your clients</p>
+    <div class="page-content" id="resources">
+        <div class="page-header">
+            <h1>Resources</h1>
+            <p>Manage educational materials and templates for your clients</p>
+        </div>
+
+        {{-- START: Success and Error Messages --}}
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
             </div>
+        @endif
 
-            <div class="resources-controls">
-                <div class="resource-tabs">
-                    <button class="resource-tab active" data-filter="all">All Resources</button>
-                    <button class="resource-tab" data-filter="templates">Templates</button>
-                    <button class="resource-tab" data-filter="word">Word</button>
-                    <button class="resource-tab" data-filter="pdf">PDF</button>
-                    <button class="resource-tab" data-filter="excel">Excel</button>
-                    <button class="resource-tab" data-filter="videos">Videos</button>
-                </div>
-                <button class="btn-primary">
-                    <i class="fas fa-upload"></i>
-                    Upload Resource
-                </button>
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <strong class="font-bold">Oops! Something went wrong.</strong>
+                <ul class="mt-2 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
+        {{-- END: Success and Error Messages --}}
 
-            <div class="resources-grid">
-                <!-- Templates -->
-                <div class="resource-item" data-type="templates">
+
+        <div class="resources-controls">
+            <div class="resource-tabs">
+                <a href="{{ route('coach.resources') }}" class="resource-tab {{ !request('filter') || request('filter') === 'all' ? 'active' : '' }}">All Resources</a>
+                <a href="{{ route('coach.resources', ['filter' => 'template']) }}" class="resource-tab {{ request('filter') == 'template' ? 'active' : '' }}">Templates</a>
+                <a href="{{ route('coach.resources', ['filter' => 'word']) }}" class="resource-tab {{ request('filter') == 'word' ? 'active' : '' }}">Word</a>
+                <a href="{{ route('coach.resources', ['filter' => 'pdf']) }}" class="resource-tab {{ request('filter') == 'pdf' ? 'active' : '' }}">PDF</a>
+                <a href="{{ route('coach.resources', ['filter' => 'excel']) }}" class="resource-tab {{ request('filter') == 'excel' ? 'active' : '' }}">Excel</a>
+                <a href="{{ route('coach.resources', ['filter' => 'video']) }}" class="resource-tab {{ request('filter') == 'video' ? 'active' : '' }}">Videos</a>
+            </div>
+            <button class="btn-primary" id="addResourceBtn">
+                <i class="fas fa-plus"></i>
+                Add Resource
+            </button>
+        </div>
+
+        <div class="resources-grid">
+            @forelse ($resources as $resource)
+                <div class="resource-item" data-type="{{ $resource->type }}">
                     <div class="resource-icon">
-                        <i class="fas fa-file-excel"></i>
+                        <i class="fas {{ $resource->icon_class }}"></i>
                     </div>
                     <div class="resource-info">
-                        <h3>Budget Tracker Template</h3>
-                        <p>Comprehensive Excel template for monthly budgeting</p>
+                        <h3>{{ $resource->title }}</h3>
+                        <p>{{ Str::limit($resource->description, 100) }}</p>
                         <div class="resource-meta">
-                            <span class="resource-type">Excel Template</span>
-                            <span class="resource-usage">Used by 18 clients</span>
+                            <span class="resource-type">{{ Str::ucfirst($resource->type) }}</span>
+                            <span class="status-badge status-{{ $resource->status }}">{{ Str::ucfirst($resource->status) }}</span>
                         </div>
                     </div>
                     <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
+                        <button class="btn-secondary editResourceBtn"
+                                data-id="{{ $resource->id }}"
+                                data-title="{{ $resource->title }}"
+                                data-description="{{ $resource->description }}"
+                                data-type="{{ $resource->type }}"
+                                data-video_link="{{ $resource->video_link }}"
+                                data-action="{{ route('coach.resources.update', $resource) }}">
+                            Edit
+                        </button>
+                        {{-- Add a share button if needed --}}
                     </div>
                 </div>
+            @empty
+                <div class="no-resources-message">
+                    <p>You haven't uploaded any resources yet. Click "Add Resource" to get started!</p>
+                </div>
+            @endforelse
+        </div>
 
-                <div class="resource-item" data-type="templates">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-excel"></i>
+        {{-- Pagination Links --}}
+        <div class="pagination-container">
+            {{ $resources->links() }}
+        </div>
+    </div>
+
+
+    <!-- START: Add Resource Modal -->
+    <div class="modal-overlay" id="addResourceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Resource</h2>
+                <button class="modal-close" id="addResourceModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('coach.resources.store') }}" method="POST" enctype="multipart/form-data" id="addResourceForm">
+                    @csrf
+
+                    {{-- START: Hidden input to detect validation errors --}}
+                    @if ($errors->any())
+                        <input type="hidden" name="has_add_errors" value="true">
+                    @endif
+                    {{-- END: Hidden input to detect validation errors --}}
+
+                    <div class="form-group">
+                        <label for="add_title">Title</label>
+                        <input type="text" id="add_title" name="title" class="form-input" placeholder="e.g., Monthly Budget Template" value="{{ old('title') }}" required>
                     </div>
-                    <div class="resource-info">
-                        <h3>Debt Payoff Calculator</h3>
-                        <p>Excel template for debt elimination planning</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Excel Template</span>
-                            <span class="resource-usage">Used by 22 clients</span>
+                    <div class="form-group">
+                        <label for="add_description">Description</label>
+                        <textarea id="add_description" name="description" class="form-textarea" rows="3" placeholder="A brief summary of what this resource is for.">{{ old('description') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_type">Resource Type</label>
+                        <select id="add_type" name="type" class="form-select" required>
+                            <option value="template" {{ old('type') == 'template' ? 'selected' : '' }}>Template</option>
+                            <option value="word" {{ old('type') == 'word' ? 'selected' : '' }}>Word Document</option>
+                            <option value="pdf" {{ old('type') == 'pdf' ? 'selected' : '' }}>PDF</option>
+                            <option value="excel" {{ old('type') == 'excel' ? 'selected' : '' }}>Excel</option>
+                            <option value="video" {{ old('type') == 'video' ? 'selected' : '' }}>Video</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group file-field-container">
+                        <label for="add_file">Upload File</label>
+                        <div class="file-drop-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop your file here, or <span class="file-browse-link">browse</span></p>
+                            <input type="file" id="add_file" name="file" class="file-input">
+                            <p class="file-name-display"></p>
                         </div>
                     </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
+                    <div class="form-group video-link-field-container" style="display: none;">
+                        <label for="add_video_link">Video Link</label>
+                        <input type="url" id="add_video_link" name="video_link" class="form-input" placeholder="https://youtube.com/watch?v=..." value="{{ old('video_link') }}">
                     </div>
-                </div>
 
-                <div class="resource-item" data-type="templates">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-alt"></i>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="addResourceModalCancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Upload Resource</button>
                     </div>
-                    <div class="resource-info">
-                        <h3>Financial Goals Worksheet</h3>
-                        <p>Template for setting and tracking SMART financial goals</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Word Template</span>
-                            <span class="resource-usage">Used by 16 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <!-- Word Documents -->
-                <div class="resource-item" data-type="word">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-word"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Investment Strategy Guide</h3>
-                        <p>Comprehensive guide to investment planning and strategies</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Word Document</span>
-                            <span class="resource-usage">Used by 14 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="word">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-word"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Retirement Planning Workbook</h3>
-                        <p>Step-by-step workbook for retirement preparation</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Word Document</span>
-                            <span class="resource-usage">Used by 19 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <!-- PDF Documents -->
-                <div class="resource-item" data-type="pdf">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Debt Elimination Guide</h3>
-                        <p>Step-by-step guide for paying off debt efficiently</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">PDF Guide</span>
-                            <span class="resource-usage">Used by 12 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="pdf">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Emergency Fund Essentials</h3>
-                        <p>Complete guide to building and maintaining emergency funds</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">PDF Guide</span>
-                            <span class="resource-usage">Used by 25 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="pdf">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Tax Planning Checklist</h3>
-                        <p>Annual tax planning and optimization strategies</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">PDF Checklist</span>
-                            <span class="resource-usage">Used by 11 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <!-- Excel Documents -->
-                <div class="resource-item" data-type="excel">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-excel"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Investment Growth Calculator</h3>
-                        <p>Calculate compound growth and retirement projections</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Excel Calculator</span>
-                            <span class="resource-usage">Used by 24 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="excel">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-excel"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Portfolio Tracker</h3>
-                        <p>Track investment performance and asset allocation</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Excel Spreadsheet</span>
-                            <span class="resource-usage">Used by 17 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="excel">
-                    <div class="resource-icon">
-                        <i class="fas fa-file-excel"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Cash Flow Analyzer</h3>
-                        <p>Analyze monthly cash flow and identify optimization opportunities</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Excel Tool</span>
-                            <span class="resource-usage">Used by 13 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <!-- Videos -->
-                <div class="resource-item" data-type="videos">
-                    <div class="resource-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Emergency Fund Basics</h3>
-                        <p>Video tutorial on building emergency funds</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Video Tutorial</span>
-                            <span class="resource-usage">Used by 15 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="videos">
-                    <div class="resource-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Budget Creation Masterclass</h3>
-                        <p>Complete video course on creating effective budgets</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Video Course</span>
-                            <span class="resource-usage">Used by 28 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
-
-                <div class="resource-item" data-type="videos">
-                    <div class="resource-icon">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="resource-info">
-                        <h3>Investment Fundamentals</h3>
-                        <p>Introduction to investing concepts and strategies</p>
-                        <div class="resource-meta">
-                            <span class="resource-type">Video Series</span>
-                            <span class="resource-usage">Used by 21 clients</span>
-                        </div>
-                    </div>
-                    <div class="resource-actions">
-                        <button class="btn-secondary">Share</button>
-                        <button class="btn-secondary">Edit</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+    <!-- END: Add Resource Modal -->
+
+    <!-- START: Edit Resource Modal -->
+    <div class="modal-overlay" id="editResourceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Resource</h2>
+                <button class="modal-close" id="editResourceModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data" id="editResourceForm">
+                    @csrf
+                    @method('PUT')
+
+                    {{-- START: Hidden input to detect validation errors --}}
+                    @if ($errors->any())
+                        <input type="hidden" name="has_edit_errors" value="true">
+                    @endif
+                    {{-- END: Hidden input to detect validation errors --}}
+
+                    <div class="form-group">
+                        <label for="edit_title">Title</label>
+                        <input type="text" id="edit_title" name="title" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_description">Description</label>
+                        <textarea id="edit_description" name="description" class="form-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_type">Resource Type</label>
+                        <select id="edit_type" name="type" class="form-select" required>
+                            <option value="template">Template</option>
+                            <option value="word">Word Document</option>
+                            <option value="pdf">PDF</option>
+                            <option value="excel">Excel</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group file-field-container">
+                        <label for="edit_file">Upload New File (Optional)</label>
+                        <div class="file-drop-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop a new file, or <span class="file-browse-link">browse</span> to replace</p>
+                            <input type="file" id="edit_file" name="file" class="file-input">
+                            <p class="file-name-display"></p>
+                        </div>
+                    </div>
+                    <div class="form-group video-link-field-container" style="display: none;">
+                        <label for="edit_video_link">Video Link</label>
+                        <input type="url" id="edit_video_link" name="video_link" class="form-input" placeholder="https://youtube.com/watch?v=...">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="editResourceModalCancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END: Edit Resource Modal -->
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="{{ asset('assets/js/coach-script.js') }}"></script>
+{{--    <script src="{{ asset('assets/js/coach-script.js') }}"></script>--}}
+    <script src="{{ asset('assets/js/resources.js') }}"></script>
 @endpush
+
