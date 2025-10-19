@@ -33,11 +33,11 @@
                         <div class="primary-goals-card">
                             <h2>Primary Goals</h2>
                             <ul class="goals-list">
-                                <li>Pay off or reduce debt</li>
-                                <li>Build an emergency fund</li>
-                                <li>Save for a big purchase</li>
-                                <li>Start investing or invest more</li>
-                                <li>Grow wealth for retirement/financial independence</li>
+                                @forelse($pickedGoals as $goal)
+                                    <li>{{ $goal }}</li>
+                                @empty
+                                    <li>No goal selected yet</li>
+                                @endforelse
                             </ul>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             <h3>Confidence Score</h3>
                             <div class="confidence-circle">
                                 <div class="confidence-progress">
-                                    <span class="confidence-value">120</span>
+                                    <span class="confidence-value">{{ $confidence['score'] }}</span>
                                 </div>
                             </div>
                         </div>
