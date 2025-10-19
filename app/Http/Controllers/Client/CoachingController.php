@@ -3,11 +3,38 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class CoachingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('client.coaching.index');
+        $client = $request->user();
+
+        // Fetch most-recent ACTIVE coach assignment (future-proof for multi-coach)
+        $coach = $client->coaches()
+            ->with([
+                'profile:id,user_id,avatar_path,first_name,last_name,professional_title,specialities,phone,bio',
+                'settings:id,coach_id,work_start_local,work_end_local,timezone,session_duration_minutes',
+            ])
+            ->wherePivot('status', 'active')
+            ->orderByDesc('pivot_assigned_at')
+            ->first();
+
+        // Log the view
+        activity()
+            ->useLog('clients')
+            ->performedOn($client)
+            ->causedBy($client)
+            ->event('client.coach.view')
+            ->withProperties([
+                'ip' => $request->ip(),
+                'user_agent' => substr((string)$request->userAgent(), 0, 255),
+                'coach_id' => $coach?->id,
+                'assignment_id' => $coach?->pivot?->id,
+            ])
+            ->log('Viewed assigned coach');
+
+        return view('client.coaching.index', ['coach' => $coach]);
     }
 }

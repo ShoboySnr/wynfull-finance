@@ -1001,7 +1001,7 @@ function updateDashboardFromOnboarding(data) {
     updateConfidenceScoreCard(data.confidenceLevel);
 
     // Update Investing Knowledge Card
-    updateInvestingKnowledgeCard(data.investingExperience);
+    // updateInvestingKnowledgeCard(data.investingExperience);
 
     // Update Debt Progress Card
     // updateDebtProgressCard(data.debtFeeling);

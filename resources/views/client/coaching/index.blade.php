@@ -17,11 +17,10 @@
                     <h2>1:1 Coaching Sessions</h2>
                     <div class="session-card">
                         <div class="coach-info">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face&auto=format" alt="Coach" class="coach-avatar">
+                            <img src="{{ $coach->profile->avatar_url }}" alt="Coach" class="coach-avatar">
                             <div class="coach-details">
-                                <h3>Sarah Chen,</h3>
-                                <p>Experienced coach with a proven track record of guiding clients through
-                                    personal and <br />professional growth, accountability, and mindset shifts.</p>
+                                <h3>{{ $coach->name }},</h3>
+                                <p>{{ $coach->profile->bio }}</p>
                             </div>
                         </div>
                         <button class="btn-primary">Book Session</button>
