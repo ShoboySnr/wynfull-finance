@@ -105,4 +105,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
+    public function settings(): HasOne
+    {
+        return $this->hasOne(CoachAvailabilitySetting::class, 'coach_id');
+    }
 }

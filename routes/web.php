@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\ResourceLibraryController;
 use App\Http\Controllers\ClientOnboardingController;
+use App\Http\Controllers\Coach\CoachAvailabilityController;
 use App\Http\Controllers\Coach\CoachClientsController;
 use App\Http\Controllers\Coach\CoachMessagesController;
 use App\Http\Controllers\Coach\CoachProfileController;
@@ -60,6 +61,9 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::post('/resources', [CoachResourcesController::class, 'store'])->name('resources.store');
     Route::put('/resources/{resource}', [CoachResourcesController::class, 'update'])->name('resources.update');
     Route::get('/profile', [CoachProfileController::class, 'index'])->name('profile');
+
+    Route::post('/availability', [CoachAvailabilityController::class, 'update'])
+        ->name('availability.update');
 });
 
 Route::middleware(['auth', 'role:client'])->group(function () {

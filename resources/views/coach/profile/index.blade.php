@@ -73,33 +73,36 @@
 
                 <div class="profile-section">
                     <h2>Availability Settings</h2>
-                    <div class="availability-settings">
-                        <div class="availability-item">
-                            <label>Working Hours</label>
-                            <div class="time-inputs">
-                                <input type="time" value="09:00">
-                                <span>to</span>
-                                <input type="time" value="17:00">
+                    <form action="{{ route('coach.availability.update') }}" method="POST"  >
+                        @csrf
+                        <div class="availability-settings">
+                            <div class="availability-item">
+                                <label>Working Hours</label>
+                                <div class="time-inputs">
+                                    <input type="time" name="work_start_local" value="{{ old('work_start_local', optional($settings?->work_start_local)->format('H:i')) }}">
+                                    @error('work_start_local') <div class="text-danger">{{ $message }}</div> @enderror
+                                    <span>to</span>
+                                    <input type="time" name="work_end_local" value="{{ old('work_end_local', optional($settings?->work_end_local)->format('H:i')) }}">
+                                    @error('work_end_local') <div class="text-danger">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+                            <div class="availability-item">
+                                <label>Time Zone</label>
+                                <input type="text" name="timezone"
+                                       value="{{ old('timezone', $settings->timezone ?? config('app.timezone')) }}"
+                                       placeholder="e.g. Europe/Amsterdam">
+                                @error('timezone') <div class="text-danger">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="availability-item">
+                                <label>Session Duration</label>
+                                <input type="number" min="15" step="5" max="240" name="session_duration_minutes" class="form-control"
+                                value="{{ old('session_duration_minutes', $settings->session_duration_minutes ?? 60) }}">
+                                @error('session_duration_minutes') <div class="text-danger">{{ $message }}</div> @enderror
                             </div>
                         </div>
-                        <div class="availability-item">
-                            <label>Time Zone</label>
-                            <select>
-                                <option>Eastern Time (ET)</option>
-                                <option>Central Time (CT)</option>
-                                <option>Mountain Time (MT)</option>
-                                <option>Pacific Time (PT)</option>
-                            </select>
-                        </div>
-                        <div class="availability-item">
-                            <label>Session Duration</label>
-                            <select>
-                                <option>30 minutes</option>
-                                <option selected>60 minutes</option>
-                                <option>90 minutes</option>
-                            </select>
-                        </div>
-                    </div>
+
+                        <button class="btn-primary" style="margin-top: 15px">Update</button>
+                    </form>
                 </div>
 
                 <div class="profile-section">

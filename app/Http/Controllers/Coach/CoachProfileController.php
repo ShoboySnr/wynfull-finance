@@ -14,6 +14,7 @@ class CoachProfileController extends Controller
     {
         $profile = $this->profiles->getFor($request->user());
         $data = (new ProfileResource($profile))->toArray($request);
-        return view('coach.profile.index', ['profile' => $data]);
+        $settings = $request->user()->settings;
+        return view('coach.profile.index', ['profile' => $data, 'settings' => $settings]);
     }
 }
