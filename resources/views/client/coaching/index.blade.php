@@ -71,41 +71,38 @@
     <div class="modal-overlay" id="bookSessionModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Book a Session</h2>
+                <h2>Book a Session with {{ $coach->name ?? 'your coach' }}</h2>
                 <button class="modal-close" id="bookSessionModalClose">&times;</button>
             </div>
             <div class="modal-body">
-                {{-- This form will submit to your new endpoint --}}
-                <form action="#" method="POST" id="bookSessionForm">
+                <form action="{{ route('client.booking.store', $coach->id) }}" method="POST" id="bookSessionForm">
                     @csrf
                     @if($coach)
                         <input type="hidden" name="coach_id" value="{{ $coach->id }}">
                     @endif
+                    <input type="hidden" name="starts_at" id="starts_at_utc">
+                    <input type="hidden" name="ends_at" id="ends_at_utc">
 
                     <div class="form-group">
-                        <label for="session_title">Session Title (Optional)</label>
-                        <input type="text" id="session_title" name="title" class="form-input" placeholder="e.g., Quarterly Review">
+                        <label for="session_date">1. Select a Date</label>
+                        <input type="date" id="session_date" name="date" class="form-input" required>
                     </div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="session_date">Date</label>
-                            <input type="date" id="session_date" name="date" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="session_time">Time</label>
-                            <input type="time" id="session_time" name="time" class="form-input" required>
+                    <div class="form-group">
+                        <label>2. Select an Available Time</label>
+                        <div class="time-slots-container" id="timeSlotsContainer">
+                            <p class="time-slot-placeholder">Please select a date to see available times.</p>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="session_notes">Notes for your coach (Optional)</label>
-                        <textarea id="session_notes" name="notes" class="form-textarea" rows="4" placeholder="What would you like to discuss?"></textarea>
+                        <label for="session_notes">3. Notes for your coach (Optional)</label>
+                        <textarea id="session_notes" name="notes" class="form-textarea" rows="3" placeholder="What would you like to discuss?"></textarea>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn-secondary" id="bookSessionModalCancel">Cancel</button>
-                        <button type="submit" class="btn-primary">Request Session</button>
+                        <button type="submit" class="btn-primary" id="requestSessionBtn" disabled>Request Session</button>
                     </div>
                 </form>
             </div>
@@ -115,5 +112,8 @@
 @endsection
 
 @push('scripts')
+    <script>
+        const coachAvailability = @json($availability ?? []);
+    </script>
     <script src="{{ asset('assets/js/client-coaching.js') }}"></script>
 @endpush

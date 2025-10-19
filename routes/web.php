@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Client\ResourceLibraryController;
 use App\Http\Controllers\ClientOnboardingController;
 use App\Http\Controllers\Coach\CoachAvailabilityController;
@@ -80,7 +81,7 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::post('/onboarding/complete', [ClientOnboardingController::class, 'store'])
         ->name('onboarding.complete');
 
-
+    Route::post('/coach/{coach}/book', [BookingController::class, 'store'])->name('client.booking.store');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

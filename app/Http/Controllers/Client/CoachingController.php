@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\CoachingSession;
+use App\Services\Schedule\ClientBookingService;
 use Illuminate\Http\Request;
 
 class CoachingController extends Controller
 {
+    public function __construct(private readonly ClientBookingService $clientBookingService)
+    {
+    }
     public function index(Request $request)
     {
         $client = $request->user();
@@ -41,6 +45,27 @@ class CoachingController extends Controller
             ->upcoming()
             ->get();
 
-        return view('client.coaching.index', ['coach' => $coach, 'upcoming' => $upcoming]);
+
+        // Fetch slots based on coach availability settings
+        $tz   = optional($coach->availabilitySetting)->timezone ?? config('app.timezone');
+        $date = now($tz)->toDateString();
+
+        $slots = $this->clientBookingService->generateSlots($coach, $date);
+
+        activity()->useLog('clients')
+            ->performedOn($request->user())
+            ->causedBy($request->user())
+            ->event('client.booking.view')
+            ->withProperties([
+                'ip' => $request->ip(),
+                'user_agent' => substr((string)$request->userAgent(), 0, 255),
+                'coach_id' => $coach->id,
+            ])->log('Viewed booking form');
+
+        return view('client.coaching.index', [
+            'coach' => $coach,
+            'upcoming' => $upcoming,
+            'availability' => $slots,
+        ]);
     }
 }
