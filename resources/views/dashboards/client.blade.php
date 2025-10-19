@@ -9,7 +9,7 @@
             <div class="active" id="dashboard">
                 <div class="page-content">
                     <div class="page-header">
-                        <h1>Welcome back, Femi! 👋</h1>
+                        <h1>Welcome back, {{ $user->name }}! 👋</h1>
                         <p>Ready to continue your financial journey?</p>
                     </div>
 
