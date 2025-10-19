@@ -1004,7 +1004,7 @@ function updateDashboardFromOnboarding(data) {
     updateInvestingKnowledgeCard(data.investingExperience);
 
     // Update Debt Progress Card
-    updateDebtProgressCard(data.debtFeeling);
+    // updateDebtProgressCard(data.debtFeeling);
 
     // Update Phase Progress based on financial situation
     updatePhaseProgress(data.financialSituation);

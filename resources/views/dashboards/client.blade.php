@@ -59,11 +59,11 @@
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                                 <div class="debt-content">
-                                    <span class="debt-text">Taking control</span>
+                                    <span class="debt-text">{{ $journey['label'] }}</span>
                                     <div class="debt-progress-bar">
-                                        <div class="debt-progress-fill" style="width: 35%"></div>
+                                        <div class="debt-progress-fill" style="width: {{ $journey['score'] }}%"></div>
                                     </div>
-                                    <span class="debt-subtitle">You're making progress</span>
+                                    <span class="debt-subtitle">{{ $journey['badge']['text'] }}</span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                         <i class="fas fa-brain"></i>
                                     </div>
                                     <div class="knowledge-info">
-                                        <span class="knowledge-text">Intermediate</span>
+                                        <span class="knowledge-text">{{ $financialKnowledge['experience_label'] }}</span>
                                         <div class="knowledge-progress">
                                             <div class="knowledge-dots">
                                                 <span class="dot active"></span>
