@@ -17,18 +17,25 @@ class ProfileService
 
     public function update(User $user, array $data): Profile
     {
-        $profile = $this->getFor($user);
+        // Normalize specialities to CSV regardless of how FE sends it
+        if (array_key_exists('specialities', $data)) {
+            $csv = $data['specialities'];
 
-        // ensure array for specialities
-        if (array_key_exists('specialities', $data) && is_string($data['specialities'])) {
-            $data['specialities'] = collect(explode(',', $data['specialities']))
-                ->map(fn ($s) => trim($s))
+            // If FE ever sends an array by mistake, still handle it gracefully
+            if (is_array($csv)) {
+                $csv = implode(',', $csv);
+            }
+
+            $parts = collect(explode(',', (string)$csv))
+                ->map(fn($s) => trim($s))
                 ->filter()
                 ->unique()
-                ->values()
-                ->all();
+                ->values();
+
+            $data['specialities'] = $parts->implode(', ');
         }
 
+        $profile = $this->getFor($user);
         $profile->fill($data)->save();
 
         return $profile->refresh();

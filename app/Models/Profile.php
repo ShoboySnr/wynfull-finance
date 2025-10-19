@@ -51,16 +51,19 @@ class Profile extends Model
         );
     }
 
-    // Guard against null -> []
-    protected function specialities(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($v) => $v ?: [],
-        );
-    }
-
     public function getAvatarUrlAttribute(): ?string
     {
         return $this->avatar_path ? Storage::url($this->avatar_path) : null;
+    }
+
+    public function getSpecialitiesArrayAttribute(): array
+    {
+        if (!is_string($this->specialities) || $this->specialities === '') return [];
+        return collect(explode(',', $this->specialities))
+            ->map(fn($s) => trim($s))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 }

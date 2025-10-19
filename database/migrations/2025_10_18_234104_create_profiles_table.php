@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('professional_title')->nullable();
-            $table->json('specialities')->nullable(); // stored as JSON array
+            $table->text('specialities')->nullable();
             $table->string('email')->nullable();      // profile contact email (can differ from users.email)
             $table->string('phone')->nullable();
             $table->text('bio')->nullable();

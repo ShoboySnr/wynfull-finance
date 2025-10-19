@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Coach;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfileResource;
+use App\Services\ProfileService;
+use Illuminate\Http\Request;
 
 class CoachProfileController extends Controller
 {
-    public function index()
+    public function __construct(private readonly ProfileService $profiles) {}
+    public function index(Request $request)
     {
-        return view('coach.profile.index');
+        $profile = $this->profiles->getFor($request->user());
+        $data = (new ProfileResource($profile))->toArray($request);
+        return view('coach.profile.index', ['profile' => $data]);
     }
 }

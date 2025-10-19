@@ -21,32 +21,32 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" value="{{ $profile->first_name }}">
+                                <input type="text" name="first_name" value="{{ $profile['first_name'] }}">
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" value="{{ $profile->last_name }}">
+                                <input type="text" name="last_name" value="{{ $profile['last_name'] }}">
                             </div>
                             <div class="form-group">
                                 <label>Professional Title</label>
-                                <input type="text" value="Certified Financial Planner">
+                                <input type="text" name="professional_title" value="{{ $profile['professional_title'] }}">
                             </div>
                             <div class="form-group">
                                 <label>Specialties</label>
-                                <input type="text" value="Debt Management, Investment Planning">
+                                <input type="text" name="specialities" value="{{ $profile['specialities'] }}">
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" value="sarah.chen@wynfull.com">
+                                <input type="email" name="email" value="{{ $profile['specialities'] }}">
                             </div>
                             <div class="form-group">
                                 <label>Phone</label>
-                                <input type="tel" value="+1 (555) 123-4567">
+                                <input type="tel" value="{{ $profile['phone'] }}" name="phone">
                             </div>
                         </div>
                         <div class="form-group full-width">
                             <label>Bio</label>
-                            <textarea rows="4" placeholder="Tell clients about your background and expertise...">With over 8 years of experience in financial planning, I specialize in helping clients eliminate debt and build long-term wealth through strategic investment planning.</textarea>
+                            <textarea rows="4" name="bio" placeholder="Tell clients about your background and expertise...">{{ $profile['bio'] }}</textarea>
                         </div>
                         <button class="btn-primary">Save Changes</button>
                     </div>
