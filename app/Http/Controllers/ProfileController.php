@@ -15,7 +15,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $profile = $this->profiles->getFor($request->user());
-        return new ProfileResource($profile);
+        return view('coach.profile.index', ['profile' => new ProfileResource($profile)]);
     }
 
     public function update(UpdateProfileRequest $request)

@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('email')->nullable();      // profile contact email (can differ from users.email)
             $table->string('phone')->nullable();
             $table->text('bio')->nullable();
-            $table->string('avatar_url')->nullable();
+            $table->string('avatar_path')->nullable();
             $table->timestamps();
 
             $table->index('last_name');

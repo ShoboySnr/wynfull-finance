@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProfileService
 {
@@ -31,10 +34,21 @@ class ProfileService
         return $profile->refresh();
     }
 
-    public function updateAvatar(User $user, string $avatarUrl): Profile
+    public function updateAvatar(User $user, UploadedFile $file): Profile
     {
         $profile = $this->getFor($user);
-        $profile->avatar_url = trim($avatarUrl);
+
+        // delete old avatar if present
+        if ($profile->avatar_path && Storage::disk('public')->exists($profile->avatar_path)) {
+            Storage::disk('public')->delete($profile->avatar_path);
+        }
+
+        // store new avatar
+        $ext = $file->getClientOriginalExtension() ?: $file->extension();
+        $name = 'avatar_'.now()->timestamp.'_'.Str::random(6).'.'.$ext;
+        $path = $file->storeAs("avatars/{$user->id}", $name, 'public');
+
+        $profile->avatar_path = $path;
         $profile->save();
 
         return $profile->refresh();

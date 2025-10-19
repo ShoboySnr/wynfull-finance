@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Model
 {
     protected $fillable = [
         'first_name', 'last_name', 'professional_title',
-        'specialities', 'email', 'phone', 'bio', 'avatar_url',
+        'specialities', 'email', 'phone', 'bio', 'avatar_path',
     ];
 
     protected $casts = [
@@ -56,5 +57,10 @@ class Profile extends Model
         return Attribute::make(
             get: fn ($v) => $v ?: [],
         );
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar_path ? Storage::url($this->avatar_path) : null;
     }
 }

@@ -21,11 +21,11 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" value="Sarah">
+                                <input type="text" value="{{ $profile->first_name }}">
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" value="Chen">
+                                <input type="text" value="{{ $profile->last_name }}">
                             </div>
                             <div class="form-group">
                                 <label>Professional Title</label>
