@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\CoachingSession;
 use Illuminate\Http\Request;
 
 class CoachingController extends Controller
@@ -35,6 +36,11 @@ class CoachingController extends Controller
             ])
             ->log('Viewed assigned coach');
 
-        return view('client.coaching.index', ['coach' => $coach]);
+        $upcoming = CoachingSession::query()
+            ->betweenCoachAndClient($coach->id, $client->id)
+            ->upcoming()
+            ->get();
+
+        return view('client.coaching.index', ['coach' => $coach, 'upcoming' => $upcoming]);
     }
 }

@@ -31,4 +31,25 @@ class CoachingSession extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function scopeBetweenCoachAndClient($q, int $coachId, int $clientId)
+    {
+        return $q->where('coach_id', $coachId)->where('client_id', $clientId);
+    }
+
+    public function scopeUpcoming($q)
+    {
+        return $q->where('starts_at', '>=', now())->orderBy('starts_at');
+    }
+
+    public function scopePast($q)
+    {
+        return $q->where('starts_at', '<', now())->orderByDesc('starts_at');
+    }
+
+    public function scopeType($q, string $type)
+    {
+        return $q->where('type', $type);
+    }
+
 }
