@@ -22,8 +22,7 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request)
     {
         $profile = $this->profiles->update($request->user(), $request->validated());
-        return (new ProfileResource($profile))
-            ->additional(['message' => 'Profile updated']);
+        return redirect()->back();
     }
 
 
@@ -31,10 +30,9 @@ class ProfileController extends Controller
     {
         $profile = $this->profiles->updateAvatar(
             $request->user(),
-            $request->validated('avatar_url')
+            $request->validated('avatar')
         );
 
-        return (new ProfileResource($profile))
-            ->additional(['message' => 'Avatar updated']);
+        return redirect()->back();
     }
 }

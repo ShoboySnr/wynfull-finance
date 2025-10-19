@@ -19,15 +19,15 @@ class UpdateProfileRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('specialities') && is_string($this->specialities)) {
-            $this->merge([
-                'specialities' => collect(explode(',', $this->specialities))
-                    ->map(fn($s) => trim($s))->filter()->unique()->values()->all()
-            ]);
-        }
-    }
+//    protected function prepareForValidation(): void
+//    {
+//        if ($this->has('specialities') && is_string($this->specialities)) {
+//            $this->merge([
+//                'specialities' => collect(explode(',', $this->specialities))
+//                    ->map(fn($s) => trim($s))->filter()->unique()->values()->all()
+//            ]);
+//        }
+//    }
 
     public function authorize(): bool
     {

@@ -39,10 +39,11 @@ Route::post('/logout', [LoginController::class, 'destroy'])
 Route::post('/register/client', [RegisterController::class,'registerClient'])->name('register.client');
 Route::post('/register/coach',  [RegisterController::class,'registerCoach'])->name('register.coach');
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/me/profile', [ProfileController::class, 'show']);
-    Route::match(['put', 'patch'], '/me/profile', [ProfileController::class, 'update']);
-    Route::patch('/me/profile/avatar', [ProfileController::class, 'updateAvatar']);
+    Route::match(['put', 'patch'], '/me/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/me/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+
 });
 
 Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->group(function () {
