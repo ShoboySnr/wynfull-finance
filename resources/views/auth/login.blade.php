@@ -147,6 +147,10 @@
             display: grid; place-items: center; overflow: hidden;
             box-shadow: var(--shadow-md); margin: 0 auto 16px;
         }
+
+        .card-head .logo img {
+            width: 56px;
+        }
         .card-head h2 { margin: 0; font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
         .card-head p { margin: 8px 0 0; color: var(--text-secondary); }
 
