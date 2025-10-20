@@ -46,6 +46,7 @@ class CoachingController extends Controller
             ->get();
 
 
+//        dd($upcoming);
         // Fetch slots based on coach availability settings
         $tz   = optional($coach->availabilitySetting)->timezone ?? config('app.timezone');
         $date = now($tz)->toDateString();

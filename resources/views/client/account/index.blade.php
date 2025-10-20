@@ -15,31 +15,59 @@
             <div class="account-sections">
                 <div class="account-section">
                     <h2>Profile Information</h2>
-                    <div class="profile-form">
-                        <div class="profile-avatar-section">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format" alt="Profile" class="profile-avatar">
-                            <button class="btn-secondary">Change Photo</button>
-                        </div>
+
+                    {{-- Success flash --}}
+                    @if (session('status'))
+                        <div class="alert alert-success mb-3">{{ session('status') }}</div>
+                    @endif
+
+                    <div class="profile-avatar-section">
+                        <img src="{{ $profile->avatar_url ?? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format' }}"
+                             alt="Profile" class="profile-avatar">
+                        <label class="btn-secondary mb-0" for="avatar">Change Photo</label>
+{{--                        <input id="avatar" name="avatar" type="file" accept="image/*" class="d-none">--}}
+                        @error('avatar') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                    </div>
+
+                    <form class="profile-form"
+                          method="POST"
+                          action="{{ route('profile.update') }}"
+                          enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" value="Femi">
+                                <label for="first_name">First Name</label>
+                                <input id="first_name" name="first_name" type="text"
+                                       value="{{ old('first_name', $profile->first_name) }}">
+                                @error('first_name') <div class="text-danger small">{{ $message }}</div> @enderror
                             </div>
+
                             <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" value="Agboola">
+                                <label for="last_name">Last Name</label>
+                                <input id="last_name" name="last_name" type="text"
+                                       value="{{ old('last_name', $profile->last_name) }}">
+                                @error('last_name') <div class="text-danger small">{{ $message }}</div> @enderror
                             </div>
+
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" value="femi.agboola@wynfull.com">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email"
+                                       value="{{ old('email', $profile->email) }}">
+                                @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
                             </div>
+
                             <div class="form-group">
-                                <label>Phone</label>
-                                <input type="tel" value="+1 (555) 123-4567">
+                                <label for="phone">Phone</label>
+                                <input id="phone" name="phone" type="tel"
+                                       value="{{ old('phone', $profile->phone) }}">
+                                @error('phone') <div class="text-danger small">{{ $message }}</div> @enderror
                             </div>
                         </div>
-                        <button class="btn-primary">Save Changes</button>
-                    </div>
+
+                        <button class="btn-primary mt-3" type="submit">Save Changes</button>
+                    </form>
                 </div>
 
                 <div class="account-section">

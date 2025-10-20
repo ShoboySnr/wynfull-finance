@@ -36,17 +36,33 @@
                 <div class="coaching-section">
                     <h2>Group Workshops</h2>
                     <div class="workshop-list">
-                        <div class="workshop-item">
-                            <div class="workshop-info">
-                                <h3>Retirement Planning Masterclass</h3>
-                                <p>Learn advanced strategies for retirement savings</p>
-                                <div class="workshop-meta">
-                                    <span><i class="fas fa-calendar"></i> March 15, 2024</span>
-                                    <span><i class="fas fa-clock"></i> 2:00 PM EST</span>
+                        @foreach($upcoming as $session)
+                            @php
+                                $tz = optional($session->coach->availabilitySetting)->timezone ?? config('app.timezone');
+
+                                $dateStr = $session->starts_at
+                                    ? $session->starts_at->clone()->setTimezone($tz)->format('F j, Y')
+                                    : '—';
+
+                                $timeStr = $session->starts_at
+                                    ? $session->starts_at->clone()->setTimezone($tz)->format('g:i A T')
+                                    : '—';
+                            @endphp
+                            <div class="workshop-item">
+                                <div class="workshop-info">
+                                    <h3>{{ $session->title ?? 'Requested Session' }}</h3>
+                                    <p>{{ $session->notes ?? '' }}</p>
+                                    <div class="workshop-meta">
+                                        <span><i class="fas fa-calendar"></i> {{ $dateStr }}</span>
+                                        <span><i class="fas fa-clock"></i> {{ $timeStr }}</span>
+                                    </div>
                                 </div>
+                                @if (!empty($session->location_url))
+                                    <a class="btn-secondary" href="{{ $session->location_url }}" target="_blank" rel="noopener">Join</a>
+                                @endif
                             </div>
-                            <button class="btn-secondary">Join</button>
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
 

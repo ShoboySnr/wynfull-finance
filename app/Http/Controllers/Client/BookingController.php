@@ -36,9 +36,8 @@ class BookingController extends Controller
 //        return view('client.booking.create', compact('coach','slots','date','tz'));
     }
 
-    public function store(Request $request, int $coachId)
+    public function store(BookSessionRequest $request, int $coachId)
     {
-        dd($request->all());
         $client = $request->user();
 
         $session = $this->clientBookingService->book([
@@ -62,7 +61,7 @@ class BookingController extends Controller
                 'starts_at'  => $session->starts_at,
             ])->log('Client created a session');
 
-        return redirect()->route('client.sessions.index')
+        return redirect()->back()
             ->with('status', 'Session booked successfully.');
     }
 }

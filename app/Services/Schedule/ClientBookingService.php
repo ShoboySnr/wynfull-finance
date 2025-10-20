@@ -31,7 +31,7 @@ class ClientBookingService
 
         // Get coach availability
         /** @var CoachAvailabilitySetting|null $avail */
-        $avail = CoachAvailabilitySetting::where('user_id', $coach->id)->first();
+        $avail = CoachAvailabilitySetting::where('coach_id', $coach->id)->first();
         if (!$avail) {
             throw ValidationException::withMessages(['coach_id' => ['Coach has no availability set.']]);
         }
