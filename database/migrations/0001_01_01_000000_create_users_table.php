@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreignId('activated_by_id')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('onboarding_completed')->default(false);
             $table->timestamp('onboarding_completed_at')->nullable();
+            $table->timestamp('password_changed_at')->nullable();
             $table->timestamps();
         });
 

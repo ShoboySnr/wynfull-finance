@@ -60,6 +60,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'onboarding_completed' => 'boolean',
             'onboarding_completed_at' => 'datetime',
+            'password_changed_at' => 'datetime',
         ];
     }
 

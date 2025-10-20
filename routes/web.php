@@ -77,6 +77,7 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::get('/messages/client', [\App\Http\Controllers\Client\MessagingController::class, 'index'])->name('messages.client');
     Route::get('/plans/client', [\App\Http\Controllers\Client\PlansController::class, 'index'])->name('plans.client');
     Route::get('/account/client', [\App\Http\Controllers\Client\AccountController::class, 'index'])->name('account.client');
+    Route::put('/account/client', [\App\Http\Controllers\Client\AccountController::class, 'updatePassword'])->name('account.client.update.password');
 
     Route::post('/onboarding/complete', [ClientOnboardingController::class, 'store'])
         ->name('onboarding.complete');

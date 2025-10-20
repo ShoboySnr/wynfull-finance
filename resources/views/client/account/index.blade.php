@@ -12,6 +12,13 @@
                 <p>Manage your profile and preferences</p>
             </div>
 
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
+            @endif
+
             <div class="account-sections">
                 <div class="account-section">
                     <h2>Profile Information</h2>
@@ -78,7 +85,7 @@
                                 <h3>Password</h3>
                                 <p>Last changed 3 months ago</p>
                             </div>
-                            <button class="btn-secondary">Change Password</button>
+                            <button class="btn-secondary" id="changePasswordBtn">Change Password</button>
                         </div>
                         <div class="security-item">
                             <div class="security-info">
@@ -137,5 +144,45 @@
             </div>
         </div>
     </div>
+
+    {{-- START: New Change Password Modal --}}
+    <div class="modal-overlay" id="changePasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="modal-close" id="changePasswordModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('account.client.update.password') }}" method="POST" id="changePasswordForm">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <label for="current_password">Current Password</label>
+                        <input type="password" id="current_password" name="current_password" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">New Password</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation">Confirm New Password</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" required>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="changePasswordModalCancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- END: New Change Password Modal --}}
 @endsection
 
+@push('scripts')
+    <script src="{{ asset('assets/js/client-account.js') }}"></script>
+@endpush
