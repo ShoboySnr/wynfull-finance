@@ -26,4 +26,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     // END: Change Password Modal Logic
+
+
+    // START: 2FA Modal Logic
+    const manage2faBtn = document.getElementById('manage2faBtn');
+    const twoFactorModal = document.getElementById('twoFactorModal');
+
+    if (manage2faBtn && twoFactorModal) {
+        const closeBtn = twoFactorModal.querySelector('.modal-close');
+
+        const openModal = () => twoFactorModal.classList.add('active');
+        const closeModal = () => twoFactorModal.classList.remove('active');
+
+        manage2faBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        // Optional: Close modal if background is clicked
+        twoFactorModal.addEventListener('click', function(event) {
+            if (event.target === twoFactorModal) {
+                closeModal();
+            }
+        });
+    }
+    // END: 2FA Modal Logic
 });

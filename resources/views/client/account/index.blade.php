@@ -90,9 +90,15 @@
                         <div class="security-item">
                             <div class="security-info">
                                 <h3>Two-Factor Authentication</h3>
-                                <p>Add an extra layer of security</p>
+                                @if (auth()->user()->two_factor_secret)
+                                    <p>2FA is currently <span class="status-enabled">Enabled</span> on your account.</p>
+                                @else
+                                    <p>Add an extra layer of security to protect your account.</p>
+                                @endif
                             </div>
-                            <button class="btn-secondary">Enable 2FA</button>
+                            <button class="btn-secondary" id="manage2faBtn">
+                                {{ auth()->user()->two_factor_secret ? 'Manage 2FA' : 'Enable 2FA' }}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -181,6 +187,21 @@
         </div>
     </div>
     {{-- END: New Change Password Modal --}}
+
+    {{-- START: New Two-Factor Authentication Modal --}}
+    <div class="modal-overlay" id="twoFactorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Two-Factor Authentication</h2>
+                <button class="modal-close" id="twoFactorModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                {{-- The content for 2FA settings will be loaded here from a partial --}}
+                @include('client.partials._two-factor-settings')
+            </div>
+        </div>
+    </div>
+    {{-- END: New Two-Factor Authentication Modal --}}
 @endsection
 
 @push('scripts')

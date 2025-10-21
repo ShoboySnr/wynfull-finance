@@ -1,7 +1,7 @@
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Check if onboarding has been completed
-    checkOnboardingStatus();
+    // checkOnboardingStatus();
 
     // Initialize download popup functionality
     initializeDownloadPopup();
@@ -2059,6 +2059,7 @@ function getToolData(toolId) {
 (function () {
     if (!window.WYNFULL || window.WYNFULL.onboardingCompleted !== false) return;
 
+    console.log(window.WYNFULL.onboardingCompleted)
     // Open the modal immediately for first-time clients
     const modal = document.getElementById('onboardingModal');
     if (modal) {
