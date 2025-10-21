@@ -6346,3 +6346,169 @@ button.join-call {
     transform: scale(1.05);
 }
 /* END: Styles for Booking Availability Time Slots */
+
+/* START: Two-Factor Authentication Styles */
+.status-enabled {
+    color: var(--success-green);
+    font-weight: 600;
+}
+
+.two-factor-setup, .two-factor-enabled {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.two-factor-setup h3, .two-factor-enabled h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.two-factor-setup p, .two-factor-enabled p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+}
+
+.qr-code-section, .recovery-codes-section, .disable-2fa-section {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.disable-2fa-section {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.qr-code-container {
+    background: var(--white);
+    padding: 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.qr-code-container svg {
+    display: block;
+    max-width: 200px;
+    height: auto;
+}
+
+.recovery-codes-list ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+}
+
+.recovery-codes-list li {
+    background: var(--background-light);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+    border: 1px solid var(--border-light);
+}
+
+/* 2FA Challenge Page Styles */
+.auth-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    background: var(--background-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.auth-card-header {
+    padding: 2rem 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.auth-card-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.auth-card-header p {
+    color: var(--text-secondary);
+}
+
+.auth-card-body {
+    padding: 2rem;
+}
+
+.form-divider {
+    text-align: center;
+    color: var(--text-light);
+    margin: 1rem 0;
+}
+/* END: Two-Factor Authentication Styles */
+
+/* START: Auth Layout Styles */
+.auth-body {
+    background: linear-gradient(135deg, #F5F7FA, #EBF0FF);
+}
+
+.auth-layout-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.auth-brand-header {
+    margin-bottom: 2rem;
+}
+
+.auth-brand-header .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.auth-brand-header .brand-logo {
+    width: 56px;
+    height: 56px;
+}
+
+.auth-brand-header .brand-text h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--wynfull-blue);
+}
+
+.auth-brand-header .brand-text small {
+    display: block;
+    margin-top: 2px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+/* END: Auth Layout Styles */
+
+.mt-4 {
+    margin-top: 8px;
+}
+
+.w-full {
+    width: 100%;
+}
