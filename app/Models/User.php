@@ -33,6 +33,8 @@ class User extends Authenticatable
         'activated_by_id',
         'onboarding_completed',
         'onboarding_completed_at',
+        'email_notifications_enabled',
+        'goal_reminders_enabled'
     ];
 
     protected static array $logAttributes = ['name', 'email'];
@@ -62,6 +64,8 @@ class User extends Authenticatable
             'onboarding_completed' => 'boolean',
             'onboarding_completed_at' => 'datetime',
             'password_changed_at' => 'datetime',
+            'email_notifications_enabled' => 'boolean',
+            'goal_reminders_enabled'      => 'boolean',
         ];
     }
 

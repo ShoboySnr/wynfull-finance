@@ -23,6 +23,7 @@ use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\ClientDashboardController;
 use App\Http\Controllers\Dashboards\CoachDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Settings\NotificationPreferencesController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('home');
@@ -83,6 +84,11 @@ Route::middleware(['auth', 'role:client'])->group(function () {
         ->name('onboarding.complete');
 
     Route::post('/coach/{coach}/book', [BookingController::class, 'store'])->name('client.booking.store');
+
+    Route::get('/settings/notifications', [NotificationPreferencesController::class, 'edit'])
+        ->name('settings.notifications.edit');
+    Route::patch('/settings/notifications', [NotificationPreferencesController::class, 'update'])
+        ->name('settings.notifications.update');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

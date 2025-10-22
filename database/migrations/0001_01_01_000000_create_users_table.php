@@ -24,6 +24,8 @@ return new class extends Migration
             $table->boolean('onboarding_completed')->default(false);
             $table->timestamp('onboarding_completed_at')->nullable();
             $table->timestamp('password_changed_at')->nullable();
+            $table->boolean('email_notifications_enabled')->default(true);
+            $table->boolean('goal_reminders_enabled')->default(true);
             $table->timestamps();
         });
 
