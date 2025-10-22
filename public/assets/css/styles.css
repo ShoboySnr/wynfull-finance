@@ -6512,3 +6512,24 @@ button.join-call {
 .w-full {
     width: 100%;
 }
+
+/* START: 2FA Confirmation Section Styles */
+.confirm-2fa-section {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.confirm-2fa-section .qr-code-container {
+    margin: 1rem 0;
+}
+
+.confirm-2fa-section form {
+    width: 100%;
+    max-width: 300px;
+}
+/* END: 2FA Confirmation Section Styles */
+
