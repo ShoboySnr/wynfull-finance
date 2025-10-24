@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Services\Clients\GoalScoringService;
 use App\Services\Onboarding\ComputeAndStoreConfidenceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CoachClientsController extends Controller
 {
@@ -24,7 +26,14 @@ class CoachClientsController extends Controller
         $q = $coach->clients()
             ->select('users.id', 'users.name', 'users.email', 'users.created_at')
             ->withPivot(['id', 'assigned_by', 'assigned_at', 'status'])
-            ->with(['profile:id,user_id,avatar_path']);
+            ->with(['profile:id,user_id,avatar_path'])
+            ->addSelect([
+                'last_activity_at' => DB::table('activity_log')
+                    ->select('created_at')
+                    ->whereColumn('activity_log.causer_id', 'users.id')
+                    ->orderByDesc('activity_log.created_at')
+                    ->limit(1),
+            ]);
 
         if ($s = trim((string)$request->query('search'))) {
             $q->where(fn($w) => $w->where('users.name', 'like', "%{$s}%")
@@ -39,11 +48,17 @@ class CoachClientsController extends Controller
 
         $data = collect($paginator->items())->map(function (User $client) use ($includeMetrics) {
             $avatarPath = optional($client->profile)->avatar_path;
+            $lastAt = $client->last_activity_at
+                ? Carbon::parse($client->last_activity_at)
+                : null;
+
             $row = [
                 'id' => $client->id,
                 'name' => $client->name,
                 'email' => $client->email,
                 'avatar_path'=> $avatarPath,
+                'last_activity_at'  => $lastAt?->toIso8601String(),   // e.g. "2025-10-24T10:32:11+01:00"
+                'last_activity_ago' => $lastAt?->diffForHumans(),
                 'assigned' => [
                     'id' => $client->pivot->id ?? null,
                     'status' => $client->pivot->status ?? null,
@@ -64,6 +79,7 @@ class CoachClientsController extends Controller
                 $row['goal_metric_label'] = $goal['goal_metric_label'];
                 $row['confidence_score'] = $conf['score'] ?? null;
                 $row['confidence_band'] = $conf['band'] ?? null;
+                $row['plan_name'] = 'Beginner';
             }
 
             return $row;

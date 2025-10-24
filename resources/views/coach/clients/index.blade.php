@@ -35,26 +35,26 @@
         <div class="clients-grid">
             @forelse ($clients as $client)
                 @php
-                    $statusClass = match($client->status ?? 'active') {
+                    $statusClass = match($client['status'] ?? 'active') {
                         'active' => 'online',
                         'inactive' => 'offline',
                         'away' => 'away',
                         default => 'offline'
                     };
-                    $planClass = strtolower($client->plan_name ?? '');
+                    $planClass = strtolower($client['plan_name'] ?? '');
                 @endphp
 
                 <div class="client-card" data-plan="{{ $planClass }}">
                     <div class="client-header">
-                        <img src="{{ $client->profile->avatar_path ? asset('storage/' . $client->profile->avatar_path) : 'https://placehold.co/60x60/EBF0FF/0E4DA4?text=' . strtoupper(substr($client->name, 0, 1)) }}" alt="{{ $client->name }}">
+                        <img src="{{ $client['avatar_path'] ? asset('storage/' . $client['avatar_path']) : 'https://placehold.co/60x60/EBF0FF/0E4DA4?text=' . strtoupper(substr($client['name'], 0, 1)) }}" alt="{{ $client['name'] }}">
                         <div class="client-info">
-                            <h3>{{ $client->name }}</h3>
-                            <p>{{ $client->plan_name ?? 'N/A' }} • {{ Str::ucfirst($client->status ?? 'Active') }}</p>
+                            <h3>{{ $client['name'] }}</h3>
+                            <p>{{ $client['plan_name'] ?? 'N/A' }} • {{ Str::ucfirst($client['status'] ?? 'Active') }}</p>
                             <div class="client-tags">
-                                @if($client->plan_name)
-                                    <span class="tag tag-{{ $planClass }}">{{ $client->plan_name }}</span>
+                                @if($client['plan_name'])
+                                    <span class="tag tag-{{ $planClass }}">{{ $client['plan_name'] }}</span>
                                 @endif
-                                {{-- <span class="tag">Investment Focus</span> --}}
+                                 <span class="tag">{{ $client['primary_goal_label'] }}</span>
                             </div>
                         </div>
                         <div class="client-status {{ $statusClass }}"></div>
@@ -62,20 +62,20 @@
                     <div class="client-stats">
                         <div class="stat">
                             <span class="label">Confidence</span> {{-- Example Stat --}}
-                            <span class="value">{{ $client->confidence_score ?? 'N/A' }}%</span>
+                            <span class="value">{{ $client['confidence_score'] ?? 'N/A' }}%</span>
                         </div>
                         <div class="stat">
                             <span class="label">Goal Progress</span> {{-- Example Stat --}}
-                            <span class="value">{{ $client->goal_progress ?? 'N/A' }}%</span>
+                            <span class="value">{{ $client['goal_score'] ?? 'N/A' }}%</span>
                         </div>
                         <div class="stat">
                             <span class="label">Last Activity</span> {{-- Example Stat --}}
-                            <span class="value">{{ $client->last_activity ? $client->last_activity->diffForHumans() : 'N/A' }}</span>
+                            <span class="value">{{ $client['last_activity_ago'] ? $client['last_activity_ago'] : 'N/A' }}</span>
                         </div>
                     </div>
                     <div class="client-actions">
                         <a href="#" class="btn-secondary btn-sm"><i class="fas fa-comment-dots"></i> Message</a>
-                        <a href="{{ route('admin.users.show', $client) }}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
+                        <a href="{{-- route('admin.users.show', $client) --}}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
                     </div>
                 </div>
             @empty
@@ -88,7 +88,7 @@
 
         {{-- Pagination Links --}}
         <div class="pagination-container mt-4">
-            {{ $clients->appends(request()->query())->links() }}
+{{--            {{ $clients->appends(request()->query())->links() }}--}}
         </div>
 
     </div>
