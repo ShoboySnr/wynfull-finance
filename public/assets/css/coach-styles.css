@@ -2681,3 +2681,251 @@ input:checked + .slider:before {
 
 /* END: Coach Messaging */
 
+.clients-controls { /* Renamed from clients-filters for clarity */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 1.5rem; /* Increased gap */
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--background-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.75rem; /* Increased gap */
+    flex-wrap: wrap; /* Allow tabs to wrap */
+}
+
+.filter-tab { /* Now using <a> tags */
+    padding: 0.6rem 1.2rem; /* Adjusted padding */
+    background: var(--background-light);
+    border: 1px solid var(--border-light);
+    border-radius: 20px; /* Pill shape */
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500; /* Slightly bolder */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none; /* Remove underline from links */
+}
+.filter-tab:hover {
+    background: var(--white);
+    border-color: var(--wynfull-blue);
+    color: var(--wynfull-blue);
+}
+.filter-tab.active {
+    background: var(--wynfull-blue);
+    color: white;
+    border-color: var(--wynfull-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+.clients-search {
+    position: relative;
+    min-width: 280px; /* Give search more space */
+}
+
+.clients-search form {
+    display: flex; /* Ensure input and icon align */
+    align-items: center;
+    position: relative;
+}
+
+.clients-search i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    pointer-events: none; /* Allow clicking through icon */
+}
+
+.clients-search input {
+    width: 100%;
+    padding: 0.7rem 1rem 0.7rem 2.5rem; /* Adjusted padding */
+    border: 1px solid var(--border-light);
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.9rem;
+    background: var(--white); /* White background */
+}
+.clients-search input:focus {
+    outline: none;
+    border-color: var(--wynfull-blue);
+    box-shadow: 0 0 0 2px rgba(14, 77, 164, 0.1);
+}
+
+.clients-grid {
+    display: grid;
+    /* Responsive columns: 1 on small, 2 on medium, 3 on large */
+    grid-template-columns: 1fr;
+    gap: 1.5rem; /* Consistent gap */
+}
+
+/* Medium screens and up */
+@media (min-width: 768px) {
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* Large screens and up */
+@media (min-width: 1024px) {
+    .clients-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+.client-card {
+    background: var(--background-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+}
+.client-card:hover {
+    transform: translateY(-3px); /* Slightly more lift */
+    box-shadow: var(--shadow-md);
+}
+
+.client-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 1rem; /* Space before stats */
+    border-bottom: 1px solid var(--border-light); /* Separator */
+}
+.client-header img {
+    width: 50px; /* Slightly smaller image */
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.client-info {
+    flex: 1;
+}
+.client-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+.client-info p {
+    font-size: 0.8rem; /* Smaller text */
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+}
+
+.client-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem; /* Space above tags */
+}
+/* Refined Tag Styles (assuming .tag exists) */
+.tag {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.tag-premium { /* Specific class for premium */
+    background: rgba(147, 51, 234, 0.1);
+    color: #9333ea;
+}
+.tag-growth { /* Specific class for growth */
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+.tag-attention { /* Example for attention */
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.client-status { /* Keep status styles */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 2px solid var(--background-primary); /* Add border */
+}
+/* ... existing online/away/offline styles ... */
+.client-status.online { background: #22c55e; }
+.client-status.away { background: #f59e0b; }
+.client-status.offline { background: #6b7280; }
+
+
+.client-stats {
+    display: grid; /* Use grid for stats */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 1rem;
+    margin-bottom: 1.5rem; /* Space before actions */
+    text-align: center;
+}
+.client-stats .stat {
+    /* No extra styling needed */
+}
+.client-stats .label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase; /* Uppercase labels */
+    letter-spacing: 0.5px;
+}
+.client-stats .value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.client-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto; /* Push actions to bottom */
+}
+.client-actions .btn-sm { /* Use btn-sm class */
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    flex: 1; /* Make buttons share space */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.no-clients-message {
+    grid-column: 1 / -1; /* Span full grid width */
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    background: var(--background-light);
+    border: 1px dashed var(--border-light);
+    border-radius: 8px;
+}
+
+/* Pagination Styles (Basic - Enhance if needed) */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* Center pagination links */
+    margin-top: 2rem;
+}
+
+/* END: Coach Clients Page  */
+
+
+

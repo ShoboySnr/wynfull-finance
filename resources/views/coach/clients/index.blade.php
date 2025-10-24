@@ -1,123 +1,100 @@
-@extends('layouts.app')
-@section('title', 'Coach Dashboard')
+@extends('layouts.app') {{-- Assuming coach layout --}}
+
+@section('title', 'My Clients')
 
 @section('content')
-    <!-- My Clients Page -->
-    <div class="" id="clients">
-        <div class="page-content">
-            <div class="page-header">
-                <h1>My Clients</h1>
-                <p>Manage and track your client relationships</p>
-            </div>
+    <div class="page-content" id="clients">
+        <div class="page-header">
+            <h1>My Clients</h1>
+            <p>Manage and track your client relationships</p>
+        </div>
 
-            <div class="clients-filters">
-                <div class="filter-tabs">
-                    <button class="filter-tab active" data-filter="all">All Clients (24)</button>
-                    <button class="filter-tab" data-filter="active">Active (18)</button>
-                    <button class="filter-tab" data-filter="premium">Premium (8)</button>
-                    <button class="filter-tab" data-filter="growth">Growth (10)</button>
-                    <button class="filter-tab" data-filter="needs-attention">Needs Attention (3)</button>
-                </div>
-                <div class="clients-search">
+        {{-- START: Filters and Search (Using Links for Filters) --}}
+        <div class="clients-controls">
+            <div class="filter-tabs">
+                {{-- Adjust counts dynamically later if needed --}}
+                <a href="{{ route('coach.clients') }}" class="filter-tab {{ !request('filter') ? 'active' : '' }}">All Clients</a>
+                <a href="{{ route('coach.clients', ['filter' => 'active']) }}" class="filter-tab {{ request('filter') == 'active' ? 'active' : '' }}">Active</a>
+                <a href="{{ route('coach.clients', ['filter' => 'premium']) }}" class="filter-tab {{ request('filter') == 'premium' ? 'active' : '' }}">Premium</a>
+                <a href="{{ route('coach.clients', ['filter' => 'growth']) }}" class="filter-tab {{ request('filter') == 'growth' ? 'active' : '' }}">Growth</a>
+                <a href="{{ route('coach.clients', ['filter' => 'attention']) }}" class="filter-tab {{ request('filter') == 'attention' ? 'active' : '' }}">Needs Attention</a>
+            </div>
+            <div class="clients-search">
+                <form action="{{ route('coach.clients') }}" method="GET">
+                    @if(request('filter'))
+                        <input type="hidden" name="filter" value="{{ request('filter') }}">
+                    @endif
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search clients...">
-                </div>
-            </div>
-
-            <div class="clients-grid">
-                <div class="client-card" data-status="active" data-plan="premium">
-                    <div class="client-header">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face&auto=format" alt="John Doe">
-                        <div class="client-info">
-                            <h3>John Doe</h3>
-                            <p>Premium Plan • Active</p>
-                            <div class="client-tags">
-                                <span class="tag premium">Premium</span>
-                                <span class="tag">Investment Focus</span>
-                            </div>
-                        </div>
-                        <div class="client-status online"></div>
-                    </div>
-                    <div class="client-stats">
-                        <div class="stat">
-                            <span class="label">Confidence Score</span>
-                            <span class="value">$45,230</span>
-                        </div>
-                        <div class="stat">
-                            <span class="label">Goal Progress</span>
-                            <span class="value">67%</span>
-                        </div>
-                    </div>
-                    <div class="client-actions">
-                        <button class="btn-secondary">Message</button>
-                        <button class="btn-primary">View Profile</button>
-                    </div>
-                </div>
-
-                <div class="client-card" data-status="active" data-plan="growth">
-                    <div class="client-header">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face&auto=format" alt="Lisa Wang">
-                        <div class="client-info">
-                            <h3>Lisa Wang</h3>
-                            <p>Growth Plan • Active</p>
-                            <div class="client-tags">
-                                <span class="tag growth">Growth</span>
-                                <span class="tag">Real Estate</span>
-                            </div>
-                        </div>
-                        <div class="client-status away"></div>
-                    </div>
-                    <div class="client-stats">
-                        <div class="stat">
-                            <span class="label">Confidence Score</span>
-                            <span class="value">$28,500</span>
-                        </div>
-                        <div class="stat">
-                            <span class="label">Goal Progress</span>
-                            <span class="value">45%</span>
-                        </div>
-                    </div>
-                    <div class="client-actions">
-                        <button class="btn-secondary">Message</button>
-                        <button class="btn-primary">View Profile</button>
-                    </div>
-                </div>
-
-                <div class="client-card" data-status="needs-attention" data-plan="premium">
-                    <div class="client-header">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face&auto=format" alt="David Kim">
-                        <div class="client-info">
-                            <h3>David Kim</h3>
-                            <p>Premium Plan • Needs Attention</p>
-                            <div class="client-tags">
-                                <span class="tag premium">Premium</span>
-                                <span class="tag attention">Business</span>
-                            </div>
-                        </div>
-                        <div class="client-status offline"></div>
-                    </div>
-                    <div class="client-stats">
-                        <div class="stat">
-                            <span class="label">Confidence Score</span>
-                            <span class="value">$125K</span>
-                        </div>
-                        <div class="stat">
-                            <span class="label">Last Contact</span>
-                            <span class="value">5 days</span>
-                        </div>
-                    </div>
-                    <div class="client-actions">
-                        <button class="btn-secondary">Message</button>
-                        <button class="btn-primary">View Profile</button>
-                    </div>
-                </div>
+                    <input type="text" name="search" placeholder="Search clients..." value="{{ request('search') }}">
+                </form>
             </div>
         </div>
-    </div>
+        {{-- END: Filters and Search --}}
 
+        {{-- START: Dynamic Clients Grid --}}
+        <div class="clients-grid">
+            @forelse ($clients as $client)
+                @php
+                    $statusClass = match($client->status ?? 'active') {
+                        'active' => 'online',
+                        'inactive' => 'offline',
+                        'away' => 'away',
+                        default => 'offline'
+                    };
+                    $planClass = strtolower($client->plan_name ?? '');
+                @endphp
+
+                <div class="client-card" data-plan="{{ $planClass }}">
+                    <div class="client-header">
+                        <img src="{{ $client->profile->avatar_path ? asset('storage/' . $client->profile->avatar_path) : 'https://placehold.co/60x60/EBF0FF/0E4DA4?text=' . strtoupper(substr($client->name, 0, 1)) }}" alt="{{ $client->name }}">
+                        <div class="client-info">
+                            <h3>{{ $client->name }}</h3>
+                            <p>{{ $client->plan_name ?? 'N/A' }} • {{ Str::ucfirst($client->status ?? 'Active') }}</p>
+                            <div class="client-tags">
+                                @if($client->plan_name)
+                                    <span class="tag tag-{{ $planClass }}">{{ $client->plan_name }}</span>
+                                @endif
+                                {{-- <span class="tag">Investment Focus</span> --}}
+                            </div>
+                        </div>
+                        <div class="client-status {{ $statusClass }}"></div>
+                    </div>
+                    <div class="client-stats">
+                        <div class="stat">
+                            <span class="label">Confidence</span> {{-- Example Stat --}}
+                            <span class="value">{{ $client->confidence_score ?? 'N/A' }}%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Goal Progress</span> {{-- Example Stat --}}
+                            <span class="value">{{ $client->goal_progress ?? 'N/A' }}%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Last Activity</span> {{-- Example Stat --}}
+                            <span class="value">{{ $client->last_activity ? $client->last_activity->diffForHumans() : 'N/A' }}</span>
+                        </div>
+                    </div>
+                    <div class="client-actions">
+                        <a href="#" class="btn-secondary btn-sm"><i class="fas fa-comment-dots"></i> Message</a>
+                        <a href="{{ route('admin.users.show', $client) }}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
+                    </div>
+                </div>
+            @empty
+                <div class="no-clients-message">
+                    <p>No clients found matching your criteria.</p>
+                </div>
+            @endforelse
+        </div>
+        {{-- END: Dynamic Clients Grid --}}
+
+        {{-- Pagination Links --}}
+        <div class="pagination-container mt-4">
+            {{ $clients->appends(request()->query())->links() }}
+        </div>
+
+    </div>
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="{{ asset('assets/js/coach-script.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/coach-clients.js') }}"></script> --}}
 @endpush
+
