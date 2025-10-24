@@ -23,7 +23,8 @@ class CoachClientsController extends Controller
 
         $q = $coach->clients()
             ->select('users.id', 'users.name', 'users.email', 'users.created_at')
-            ->withPivot(['id', 'assigned_by', 'assigned_at', 'status']);
+            ->withPivot(['id', 'assigned_by', 'assigned_at', 'status'])
+            ->with(['profile:id,user_id,avatar_path']);
 
         if ($s = trim((string)$request->query('search'))) {
             $q->where(fn($w) => $w->where('users.name', 'like', "%{$s}%")
@@ -37,10 +38,12 @@ class CoachClientsController extends Controller
         $includeMetrics = $request->boolean('metrics', true);
 
         $data = collect($paginator->items())->map(function (User $client) use ($includeMetrics) {
+            $avatarPath = optional($client->profile)->avatar_path;
             $row = [
                 'id' => $client->id,
                 'name' => $client->name,
                 'email' => $client->email,
+                'avatar_path'=> $avatarPath,
                 'assigned' => [
                     'id' => $client->pivot->id ?? null,
                     'status' => $client->pivot->status ?? null,
