@@ -23,6 +23,9 @@ use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\ClientDashboardController;
 use App\Http\Controllers\Dashboards\CoachDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResourceCollectionController;
+use App\Http\Controllers\ResourceModuleApprovalController;
+use App\Http\Controllers\ResourceModuleController;
 use App\Http\Controllers\Settings\NotificationPreferencesController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +65,17 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::get('/resources', [CoachResourcesController::class, 'index'])->name('resources');
     Route::post('/resources', [CoachResourcesController::class, 'store'])->name('resources.store');
     Route::put('/resources/{resource}', [CoachResourcesController::class, 'update'])->name('resources.update');
+
+    Route::post('/resources/collection', [ResourceCollectionController::class, 'store'])->name('resources.collection.store');
+    Route::put('/resources/{resourceCollection}/collection', [ResourceCollectionController::class, 'update'])->name('resources.collection.update');
+    Route::get('/resources/{resourceCollection}/collection', [ResourceCollectionController::class, 'edit'])->name('resources.collection.edit');
+    Route::post('/resources/{resourceCollection}/modules', [ResourceModuleController::class, 'store'])->name('resources.modules.store');
+    Route::put('/resources/{resourceCollection}/modules/{resourceModule}', [ResourceModuleController::class, 'update'])->name('resources.modules.update');
+    Route::delete('/resources/{resourceCollection}/modules/{resourceModule}', [ResourceModuleController::class, 'destroy'])->name('resources.modules.destroy');
+
+
     Route::get('/profile', [CoachProfileController::class, 'index'])->name('profile');
+
 
     Route::post('/availability', [CoachAvailabilityController::class, 'update'])
         ->name('availability.update');
@@ -105,6 +118,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('users.activate');
 
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
+
+    Route::post('/resource-modules/{module}/approve', [ResourceModuleApprovalController::class, 'approve'])->name('resource-modules.approve');
+    Route::post('/resource-modules/{module}/reject', [ResourceModuleApprovalController::class, 'reject'])->name('resource-modules.reject');
 
     Route::get('profiles', [AdminProfileController::class, 'index'])->name('profiles');
 

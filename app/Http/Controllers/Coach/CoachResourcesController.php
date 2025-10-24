@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Coach;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreResourceRequest;
 use App\Models\Resource;
+use App\Models\ResourceCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,15 +18,11 @@ class CoachResourcesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Resource::where('coach_id', Auth::id());
+        $resourceCollections = ResourceCollection::query()
+            ->when($request->user()->hasRole('coach'), fn($q) => $q->where('coach_id', $request->user()->id))
+            ->latest()->paginate(20);
 
-        if ($request->has('filter') && $request->filter !== 'all') {
-            $query->where('type', $request->filter);
-        }
-
-        $resources = $query->latest()->paginate(10);
-
-        return view('coach.resources.index', compact('resources'));
+        return view('coach.resources.index', compact( 'resourceCollections'));
     }
 
     /**

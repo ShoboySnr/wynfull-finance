@@ -580,6 +580,9 @@ function initializeMessaging() {
 function checkOnboardingStatus() {
     const onboardingCompleted = localStorage.getItem('wynfullOnboardingCompleted');
 
+    console.log(window.WYNFULL.onboardingCompleted);
+    if (!window.WYNFULL || window.WYNFULL.onboardingCompleted !== false) return;
+
     if (onboardingCompleted === 'true') {
         // Onboarding already completed, load existing data and update dashboard
         const savedData = localStorage.getItem('wynfullOnboardingData');

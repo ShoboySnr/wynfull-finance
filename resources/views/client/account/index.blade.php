@@ -103,12 +103,16 @@
                     </div>
                 </div>
 
+                {{-- START: Updated Notifications Section --}}
                 <div class="account-section">
                     <h2>Notifications</h2>
                     <div class="notification-preferences">
                         <div class="notification-item">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                {{-- Added ID and checked state --}}
+                                <input type="checkbox" id="emailNotificationsToggle"
+                                       name="email_notifications_enabled"
+                                    {{ $user->email_notifications_enabled ?? true ? 'checked' : '' }}>
                                 <span class="slider"></span>
                             </label>
                             <div class="notification-info">
@@ -118,7 +122,10 @@
                         </div>
                         <div class="notification-item">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                {{-- Added ID and checked state --}}
+                                <input type="checkbox" id="goalRemindersToggle"
+                                       name="goal_reminders_enabled"
+                                    {{ $user->goal_reminders_enabled ?? true ? 'checked' : '' }}>
                                 <span class="slider"></span>
                             </label>
                             <div class="notification-info">
@@ -127,7 +134,10 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Optional: Add a small status message area --}}
+                    <div id="notificationStatus" class="notification-status-message" style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);"></div>
                 </div>
+                {{-- END: Updated Notifications Section --}}
 
                 <div class="account-section danger-zone">
                     <div class="danger-actions">

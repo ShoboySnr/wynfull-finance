@@ -49,4 +49,66 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // END: 2FA Modal Logic
+
+
+    // START: Notification Preferences Logic
+    const emailToggle = document.getElementById('emailNotificationsToggle');
+    const goalToggle = document.getElementById('goalRemindersToggle');
+    const statusMessage = document.getElementById('notificationStatus');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Ensure CSRF meta tag exists in layout
+
+    async function updateNotificationPreference(toggleElement) {
+        if (!toggleElement) return;
+
+        const emailEnabled = emailToggle ? emailToggle.checked : false;
+        const goalEnabled = goalToggle ? goalToggle.checked : false;
+        const payload = {
+            email_notifications_enabled: emailEnabled,
+            goal_reminders_enabled: goalEnabled,
+        };
+
+        // Provide immediate visual feedback (optional)
+        if(statusMessage) statusMessage.textContent = 'Saving...';
+        toggleElement.disabled = true; // Prevent rapid toggling
+
+        try {
+            const response = await fetch('/settings/notifications', { // Using hardcoded URL, consider using named routes via Ziggy or passing from Blade
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update preferences.');
+            }
+
+            // Success feedback
+            if(statusMessage) statusMessage.textContent = 'Preferences saved!';
+            setTimeout(() => { if(statusMessage) statusMessage.textContent = ''; }, 2000); // Clear message after 2 seconds
+
+        } catch (error) {
+            console.error('Error updating notification preferences:', error);
+            // Error feedback and revert toggle state
+            if(statusMessage) statusMessage.textContent = `Error: ${error.message}`;
+            toggleElement.checked = !toggleElement.checked; // Revert visually
+            setTimeout(() => { if(statusMessage) statusMessage.textContent = ''; }, 4000); // Clear error after 4 seconds
+
+        } finally {
+            toggleElement.disabled = false; // Re-enable toggle
+        }
+    }
+
+    if (emailToggle) {
+        emailToggle.addEventListener('change', () => updateNotificationPreference(emailToggle));
+    }
+    if (goalToggle) {
+        goalToggle.addEventListener('change', () => updateNotificationPreference(goalToggle));
+    }
+    // END: Notification Preferences Logic
+
 });

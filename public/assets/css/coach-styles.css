@@ -1858,6 +1858,826 @@ input:checked + .slider:before {
 }
 /* END: Styles for Avatar Upload Modal */
 
+/* START: Resource Collection Card Styles */
+.resource-collection-card {
+    background: var(--background-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    gap: 1rem;
+    transition: all 0.2s ease;
+}
+
+.resource-collection-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.collection-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--background-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start; /* Align icon to the start */
+}
+
+.collection-icon i {
+    font-size: 1.8rem;
+    color: var(--wynfull-blue);
+}
+
+.collection-info {
+    flex: 1; /* Take remaining space */
+}
+
+.collection-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.collection-info p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+}
+
+.collection-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    align-items: center; /* Align items vertically */
+}
+
+.module-count {
+    font-weight: 500;
+}
+
+.collection-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto; /* Push actions to the bottom */
+    padding-top: 1rem; /* Add some space above actions */
+    border-top: 1px solid var(--border-light); /* Separator line */
+}
+
+.collection-actions .btn-primary,
+.collection-actions .btn-secondary {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    flex: 1; /* Make buttons share space */
+    text-align: center;
+    text-decoration: none; /* For the anchor tag */
+}
+/* END: Resource Collection Card Styles */
+
+/* START: Responsive Styles for Manage Modules Page */
+@media (max-width: 768px) {
+    .collection-header-bar {
+        flex-direction: column; /* Stack header elements */
+        align-items: stretch; /* Stretch items full width */
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .back-link {
+        margin-bottom: 0.5rem; /* Reduce space below back link */
+    }
+
+    .collection-info-header {
+        flex-direction: column; /* Stack icon and details */
+        align-items: flex-start; /* Align to the start */
+        gap: 1rem;
+        text-align: left; /* Ensure text aligns left */
+    }
+
+    .collection-icon-large {
+        width: 60px; /* Smaller icon on mobile */
+        height: 60px;
+    }
+
+    .collection-icon-large i {
+        font-size: 2rem;
+    }
+
+    .collection-details-header h1 {
+        font-size: 1.5rem; /* Slightly smaller title */
+    }
+
+    #addModuleBtn {
+        align-self: stretch; /* Make button full width */
+        text-align: center; /* Center button text */
+    }
+
+    .module-item {
+        flex-direction: column; /* Stack module elements vertically */
+        align-items: flex-start; /* Align items to the start */
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .module-icon {
+        align-self: flex-start; /* Keep icon at the start */
+    }
+
+    .module-actions {
+        flex-direction: row; /* Keep actions in a row */
+        align-self: stretch; /* Make actions container full width */
+        justify-content: flex-end; /* Align buttons to the end */
+        margin-top: 0.5rem; /* Add some space above actions */
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-light);
+    }
+
+    .module-actions form {
+        margin: 0;
+    }
+
+    .module-actions button {
+        flex-grow: 0; /* Don't let buttons grow unevenly */
+    }
+}
+
+@media (max-width: 480px) {
+    .collection-details-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .module-info h3 {
+        font-size: 1rem;
+    }
+
+    .module-actions {
+        flex-direction: column; /* Stack actions buttons vertically on very small screens */
+        align-items: stretch; /* Make buttons full width */
+    }
+
+    .module-actions button,
+    .module-actions form button {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* END: Responsive Styles for Manage Modules Page */
+
+/* Style for the icon small text link */
+.modal-body small a {
+    color: var(--wynfull-blue);
+    text-decoration: none;
+}
+.modal-body small a:hover {
+    text-decoration: underline;
+}
+
+/* START: Manage Modules Page Styles */
+.collection-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    gap: 2rem;
+    padding: 1.5rem;
+    background: var(--background-primary);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+}
+
+.back-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 1rem; /* Space below back link */
+    display: inline-block; /* Allow margin */
+    align-self: flex-start; /* Keep at top */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.back-link:hover {
+    color: var(--wynfull-blue);
+}
+
+.back-link i {
+    margin-right: 0.5rem;
+}
+
+.collection-info-header {
+    display: flex;
+    align-items: center; /* Vertically align icon and text */
+    gap: 1.5rem;
+    flex-grow: 1; /* Allow this section to take up space */
+}
+
+.collection-icon-large {
+    width: 80px;
+    height: 80px;
+    background: var(--background-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.collection-icon-large i {
+    font-size: 2.5rem;
+    color: var(--wynfull-blue);
+}
+
+.collection-details-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.collection-details-header p {
+    color: var(--text-secondary);
+    margin: 0 0 1rem 0;
+}
+
+.collection-details-header .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+#addModuleBtn {
+    align-self: flex-start; /* Align button to top */
+    flex-shrink: 0;
+}
+
+.module-list-container {
+    margin-top: 2rem;
+}
+
+.module-list-container h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.module-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.module-item {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--background-primary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    transition: box-shadow 0.2s ease;
+}
+
+.module-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.module-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--background-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.module-icon i {
+    font-size: 1.5rem;
+    color: var(--wynfull-blue);
+}
+
+.module-info {
+    flex-grow: 1; /* Take available space */
+}
+
+.module-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.module-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.module-info .resource-type {
+    display: inline-block; /* Make it behave like a badge */
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    background: rgba(14, 77, 164, 0.1);
+    color: var(--wynfull-blue);
+}
+
+.module-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center; /* Align buttons vertically */
+    flex-shrink: 0;
+}
+
+.module-actions .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    display: inline-flex; /* Align icon and text */
+    align-items: center;
+    gap: 0.3rem;
+}
+.module-actions form {
+    margin: 0; /* Remove default form margin */
+}
+
+.no-modules-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    background: var(--background-light);
+    border: 1px dashed var(--border-light);
+    border-radius: 8px;
+}
+
+/* Adjustments for modal file inputs */
+.current-file-info {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    word-break: break-all;
+}
+
+/* Ensure modal buttons align correctly */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+    margin-top: 1.5rem;
+}
+/* END: Manage Modules Page Styles */
+
+/* Include Edit Collection Modal Styles if not already global */
+/* Add styles for .alert classes if not already global */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
 
 
+/* --- General Messaging Layout --- */
+.page-messaging .page-content {
+    padding: 0; /* Remove default padding for full-height container */
+    height: calc(100vh - 65px); /* Full height minus top header */
+    display: flex;
+    flex-direction: column;
+}
+.page-messaging .page-header {
+    padding: 1.5rem 2rem; /* Restore padding for header */
+    border-bottom: 1px solid var(--border-light);
+    flex-shrink: 0;
+}
+.coach-messaging-container {
+    display: flex;
+    flex-grow: 1; /* Make container fill remaining height */
+    overflow: hidden; /* Prevent container overflow */
+    background: var(--background-primary);
+}
+
+/* --- Conversations Sidebar --- */
+.coach-clients-sidebar {
+    width: 320px; /* Slightly narrower */
+    background: var(--background-light); /* Lighter background for sidebar */
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+.clients-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+.clients-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+.new-message-btn.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.conversation-search {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    position: relative;
+    flex-shrink: 0;
+}
+.conversation-search i {
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.conversation-search input {
+    width: 100%;
+    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+    border: 1px solid var(--border-light);
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.85rem;
+    background: var(--background-primary);
+}
+.conversation-search input:focus {
+    outline: none;
+    border-color: var(--wynfull-blue);
+    box-shadow: 0 0 0 2px rgba(14, 77, 164, 0.1);
+}
+
+.conversations-list {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+.conversation-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background-color 0.15s ease;
+    position: relative;
+}
+.conversation-item:hover {
+    background-color: var(--white);
+}
+.conversation-item.active {
+    background-color: var(--white);
+    box-shadow: inset 3px 0 0 var(--wynfull-blue); /* Use inset shadow instead of border */
+}
+.conversation-avatar {
+    position: relative;
+    flex-shrink: 0;
+}
+.conversation-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.status-dot { /* Keep status dot styles */
+    /* ... existing styles ... */
+    width: 10px;
+    height: 10px;
+    bottom: 1px;
+    right: 1px;
+}
+
+.conversation-details {
+    flex-grow: 1;
+    min-width: 0; /* Prevent overflow */
+}
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.2rem;
+}
+.client-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.message-time {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+.last-message {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conversation-item.active .last-message {
+    color: var(--text-primary); /* Make last message slightly darker when active */
+    font-weight: 500;
+}
+
+.unread-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem; /* Space from details */
+}
+.unread-count {
+    background: var(--wynfull-blue);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* --- Chat Area --- */
+.coach-chat-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--white); /* Main chat area background */
+}
+.chat-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    background: var(--background-primary); /* Slightly different header bg */
+}
+.client-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.client-profile img {
+    width: 40px; /* Smaller avatar in header */
+    height: 40px;
+    border-radius: 50%;
+}
+.client-details h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.1rem 0;
+}
+.client-details p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Generic Icon Button Style */
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-icon:hover {
+    background-color: var(--background-light);
+    color: var(--text-primary);
+}
+
+.coach-messages-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent overflow */
+}
+.messages-list {
+    flex-grow: 1;
+    padding: 1.5rem; /* More padding around messages */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.message-date {
+    text-align: center;
+    margin: 0.5rem 0 1.5rem; /* Adjust spacing */
+    flex-shrink: 0;
+}
+.message-date span {
+    background: var(--background-light);
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem; /* Smaller date text */
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.message {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem; /* Consistent spacing */
+    max-width: 75%; /* Limit bubble width */
+    align-self: flex-start; /* Default align left */
+}
+.message-coach {
+    align-self: flex-end; /* Align coach messages right */
+}
+
+.message-avatar {
+    width: 36px; /* Smaller avatar in chat */
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    align-self: flex-end; /* Align avatar to bottom of bubble */
+    flex-shrink: 0;
+}
+
+.message-bubble {
+    background: var(--background-light); /* Client bubble color */
+    border-radius: 18px; /* More rounded */
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-sm);
+}
+.message-coach .message-bubble {
+    background: var(--wynfull-blue); /* Coach bubble color */
+    color: white;
+}
+.message-client .message-bubble {
+    border-bottom-left-radius: 4px; /* Tail effect */
+}
+.message-coach .message-bubble {
+    border-bottom-right-radius: 4px; /* Tail effect */
+}
+
+.message-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.3rem; /* Space between text and time */
+    word-wrap: break-word;
+}
+.message-time {
+    font-size: 0.7rem; /* Smaller time */
+    text-align: right;
+    opacity: 0.7;
+}
+.message-client .message-time {
+    color: var(--text-secondary);
+}
+.message-coach .message-time {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Message Input Area */
+.message-input-container {
+    padding: 0.75rem 1.5rem; /* Adjust padding */
+    border-top: 1px solid var(--border-light);
+    background: var(--background-light); /* Match sidebar background */
+    flex-shrink: 0;
+}
+.message-input-area {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 0.5rem;
+    background: var(--white); /* White background for input area */
+    border: 1px solid var(--border-light);
+    border-radius: 24px; /* Pill shape */
+    padding: 0.5rem;
+}
+.message-input {
+    flex-grow: 1;
+    border: none;
+    background: none;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-height: 100px; /* Limit height */
+    padding: 0.4rem 0.5rem; /* Adjust input padding */
+    align-self: center; /* Vertically center text */
+}
+.message-input::placeholder {
+    color: var(--text-light);
+}
+.attachment-btn, .send-btn { /* Style both icon buttons */
+    flex-shrink: 0;
+    font-size: 1rem; /* Slightly smaller icons */
+}
+.send-btn {
+    background-color: var(--wynfull-blue);
+    color: white;
+}
+.send-btn:hover {
+    background-color: var(--wynfull-blue-dark);
+    color: white;
+}
+.send-btn:disabled { /* Style for disabled send button */
+    background-color: var(--border-light);
+    color: var(--text-light);
+    cursor: not-allowed;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .coach-clients-sidebar {
+        width: 280px; /* Narrow sidebar */
+    }
+}
+
+@media (max-width: 768px) {
+    .page-messaging .page-content {
+        height: calc(100vh - 60px); /* Adjust for potentially smaller header */
+    }
+    .coach-messaging-container {
+        position: relative; /* Needed for absolute positioning */
+    }
+    .coach-clients-sidebar {
+        position: absolute; /* Overlay sidebar on mobile */
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 85%; /* Take most of the width */
+        max-width: 320px;
+        z-index: 10;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    .coach-clients-sidebar.open {
+        transform: translateX(0);
+    }
+    .coach-chat-area {
+        width: 100%; /* Chat area takes full width */
+    }
+    /* Add a button to toggle the sidebar */
+    .chat-header .client-profile {
+        cursor: pointer; /* Allow clicking profile to open sidebar */
+    }
+    /* Add an overlay for when the sidebar is open */
+    .messaging-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 9;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    .messaging-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message {
+        max-width: 85%; /* Allow slightly wider bubbles on mobile */
+    }
+}
+
+/* END: Coach Messaging */
 

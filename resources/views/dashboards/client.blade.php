@@ -47,7 +47,7 @@
                             <h3>Confidence Score</h3>
                             <div class="confidence-circle">
                                 <div class="confidence-progress">
-                                    <span class="confidence-value">{{ $confidence['score'] }}</span>
+                                    <span class="confidence-value">{{ $confidence['score'] ?? 0 }}</span>
                                 </div>
                             </div>
                         </div>
@@ -59,11 +59,11 @@
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                                 <div class="debt-content">
-                                    <span class="debt-text">{{ $journey['label'] }}</span>
+                                    <span class="debt-text">{{ $journey['label'] ?? '' }}</span>
                                     <div class="debt-progress-bar">
-                                        <div class="debt-progress-fill" style="width: {{ $journey['score'] }}%"></div>
+                                        <div class="debt-progress-fill" style="width: {{ $journey['score'] ?? 0 }}%"></div>
                                     </div>
-                                    <span class="debt-subtitle">{{ $journey['badge']['text'] }}</span>
+                                    <span class="debt-subtitle">{{ $journey['badge']['text'] ?? '' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                         <i class="fas fa-brain"></i>
                                     </div>
                                     <div class="knowledge-info">
-                                        <span class="knowledge-text">{{ $financialKnowledge['experience_label'] }}</span>
+                                        <span class="knowledge-text">{{ $financialKnowledge['experience_label'] ?? '' }}</span>
                                         <x-knowledge-dots :score="$financialKnowledge['score'] ?? 0" />
                                         <span class="knowledge-subtitle">Growing your expertise</span>
                                     </div>
@@ -86,7 +86,7 @@
 
                         <div class="metric-card emergency-fund-card">
                             <h3>Emergency Fund</h3>
-                            <div class="fund-amount">{{ $wealthCards['saved_display'] }}</div>
+                            <div class="fund-amount">{{ $wealthCards['saved_display'] ?? ''}}</div>
                             <div class="fund-progress">
                                 <div class="fund-bar">
                                     <div class="fund-fill"></div>

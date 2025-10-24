@@ -37,6 +37,6 @@ class NotificationPreferencesController extends Controller
                     'ua' => mb_substr((string)$request->userAgent(), 0, 255),
                 ])->log('Notification preferences updated');
 
-        return back()->with('success', 'Notification preferences saved.');
+        return response()->json(['message' => 'Notification preferences updated successfully.']);
     }
 }
