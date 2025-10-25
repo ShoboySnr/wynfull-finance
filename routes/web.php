@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Client\ResourceLibraryController;
 use App\Http\Controllers\ClientOnboardingController;
@@ -50,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::match(['put', 'patch'], '/me/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/me/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 
+    Route::get('/chat/{assignment}', [ChatController::class,'index']);
+    Route::post('/chat/{assignment}', [ChatController::class,'store']);
+    Route::post('/chat/{assignment}/read', [ChatController::class,'markRead']);
 });
 
 Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->group(function () {
