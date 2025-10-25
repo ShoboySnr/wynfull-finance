@@ -10,121 +10,107 @@
             <p>Communicate directly with your clients</p>
         </div>
 
+        <script>
+        const authUserId = {{ auth()->id() }};
+        </script>
+
         <div class="coach-messaging-container">
             <!-- Conversations List Sidebar -->
             <div class="coach-clients-sidebar">
                 <div class="clients-header">
                     <h3>Conversations</h3>
-                    {{-- Consider making this a modal later --}}
-                    <button class="btn-secondary new-message-btn btn-sm">
-                        <i class="fas fa-plus"></i> New
-                    </button>
+                    {{-- <button class="btn-secondary new-message-btn btn-sm"><i class="fas fa-plus"></i> New</button> --}}
                 </div>
-                {{-- START: Added Search Bar --}}
                 <div class="conversation-search">
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search conversations...">
                 </div>
-                {{-- END: Added Search Bar --}}
-                <div class="conversations-list">
-                    {{-- Loop through conversations from backend --}}
-                    {{-- Example Item (Active) --}}
-                    <div class="conversation-item active">
-                        <div class="conversation-avatar">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face&auto=format" alt="John Doe">
-                            <div class="status-dot online"></div>
-                        </div>
-                        <div class="conversation-details"> {{-- Renamed class --}}
-                            <div class="conversation-header">
-                                <h4 class="client-name">John Doe</h4>
-                                <span class="message-time">11:45 AM</span>
+                <div class="conversations-list" id="conversationsList">
+                    {{-- START: Loop through assignments --}}
+                    {{-- Assumes $assignments is passed from the controller --}}
+                    @forelse ($assignments as $assignment)
+                        @php
+                            // Get the client from the assignment
+                            $client = $assignment->client;
+                            $lastMessage = $assignment->latestMessage()->first();
+                            $unreadCount = $assignment->unreadMessagesCount(auth()->id());
+                        @endphp
+                        {{-- Added data attributes for client info --}}
+                        <div class="conversation-item {{-- $loop->first ? 'active' : '' --}}"
+                             data-assignment-id="{{ $assignment->id }}"
+                             data-client-name="{{ $client->name }}"
+                             data-client-avatar="{{ $client->profile->avatar_path ? asset('storage/' . $client->profile->avatar_path) : 'https://placehold.co/50x50/EBF0FF/0E4DA4?text=' . strtoupper(substr($client->name, 0, 1)) }}"
+                             data-client-status="{{-- $client->status ?? 'Online' --}}"
+                             data-client-plan="{{-- $client->plan_name ?? '' --}}"
+                        >
+                            <div class="conversation-avatar">
+                                <img src="{{ $client->profile->avatar_path ? asset('storage/' . $client->profile->avatar_path) : 'https://placehold.co/50x50/EBF0FF/0E4DA4?text=' . strtoupper(substr($client->name, 0, 1)) }}" alt="{{ $client->name }}">
+                                {{-- Add dynamic status dot based on client presence if available --}}
+                                <div class="status-dot online"></div>
                             </div>
-                            <p class="last-message">Thank you! I'll review the plan today...</p>
-                        </div>
-                        <div class="unread-indicator"> {{-- Renamed class --}}
-                            <span class="unread-count">2</span>
-                        </div>
-                    </div>
-                    {{-- Example Item (Inactive) --}}
-                    <div class="conversation-item">
-                        <div class="conversation-avatar">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face&auto=format" alt="Lisa Wang">
-                            <div class="status-dot away"></div>
-                        </div>
-                        <div class="conversation-details">
-                            <div class="conversation-header">
-                                <h4 class="client-name">Lisa Wang</h4>
-                                <span class="message-time">Yesterday</span>
+                            <div class="conversation-details">
+                                <div class="conversation-header">
+                                    <h4 class="client-name">{{ $client->name }}</h4>
+                                    <span class="message-time">{{ $lastMessage?->created_at->diffForHumans() }}</span>
+                                </div>
+                                <p class="last-message">{{ Str::limit($lastMessage?->body, 30) ?: 'No messages yet' }}</p>
                             </div>
-                            <p class="last-message">Should I start looking at pre-approval...</p>
+                            @if($unreadCount > 0)
+                                <div class="unread-indicator">
+                                    <span class="unread-count">{{ $unreadCount }}</span>
+                                </div>
+                            @endif
                         </div>
-                        {{-- No unread indicator needed here --}}
-                    </div>
-                    {{-- More items... --}}
+                    @empty
+                        <p class="no-conversations">No active client assignments.</p>
+                    @endforelse
+                    {{-- END: Loop through assignments --}}
                 </div>
             </div>
 
             <!-- Chat Area -->
             <div class="coach-chat-area">
-                {{-- Chat Header remains mostly the same --}}
-                <div class="chat-header">
-                    <div class="client-profile">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face&auto=format" alt="John Doe">
-                        <div class="client-details">
-                            <h3>John Doe</h3>
-                            <p>Premium Plan • Online</p> {{-- Consider making status dynamic --}}
-                        </div>
-                    </div>
-                    <div class="chat-actions">
-                        {{-- Removed Schedule button - better placed elsewhere? --}}
-                        <button class="btn-icon" title="More options">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
+                {{-- START: Updated Chat Header Placeholder --}}
+                <div class="chat-header" id="chatHeader">
+                    <div class="client-profile-placeholder">
+                        Select a conversation to start chatting.
                     </div>
                 </div>
+                {{-- END: Updated Chat Header Placeholder --}}
 
                 <div class="coach-messages-area">
-                    {{-- Messages List - Refined Structure --}}
+                    {{-- START: Updated Messages List Placeholder --}}
                     <div class="messages-list" id="messagesList">
-                        {{-- Messages will be loaded here dynamically or from backend --}}
-                        <div class="message-date"><span>Today</span></div>
-
-                        {{-- Client Message Example --}}
-                        <div class="message message-client">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format" alt="John Doe" class="message-avatar">
-                            <div class="message-bubble">
-                                <div class="message-text">Thank you! I'll review the plan today. Quick question - should I prioritize the credit card with 18% APR or the personal loan at 12%?</div>
-                                <div class="message-time">11:15 AM</div>
-                            </div>
-                        </div>
-
-                        {{-- Coach Message Example --}}
-                        <div class="message message-coach">
-                            {{-- No avatar needed for self --}}
-                            <div class="message-bubble">
-                                <div class="message-text">Great question! Always prioritize the highest interest rate first. Focus on the 18% credit card while maintaining minimum payments on the personal loan. This will save you more money in the long run.</div>
-                                <div class="message-time">11:45 AM</div>
-                            </div>
-                        </div>
-                        {{-- More messages... --}}
-                    </div>
-
-                    {{-- Message Input Area - Refined Structure --}}
-                    <div class="message-input-container">
-                        <div class="message-input-area">
-                            <button class="btn-icon attachment-btn" title="Attach file">
-                                <i class="fas fa-paperclip"></i>
-                            </button>
-                            <textarea placeholder="Type your message to John..." class="message-input" rows="1"></textarea>
-                            <button class="btn-icon send-btn" title="Send message">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
+                        <div class="no-conversation-selected">
+                            <i class="fas fa-comments"></i>
+                            <p>Select a client conversation from the left sidebar.</p>
                         </div>
                     </div>
+                    {{-- END: Updated Messages List Placeholder --}}
+
+                    {{-- START: Message Input - Hidden Initially --}}
+                    <div class="message-input-container" id="messageInputContainer" style="display: none;">
+                        <form id="messageForm"> {{-- Wrap input in a form --}}
+                            <div class="message-input-area">
+                                <button type="button" class="btn-icon attachment-btn" title="Attach file">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <textarea placeholder="Type your message..." class="message-input" id="messageInput" name="body" rows="1"></textarea>
+                                <button type="submit" class="btn-icon send-btn" id="sendBtn" title="Send message" disabled>
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            {{-- Add input for attachments later if needed --}}
+                            {{-- <input type="file" name="attachment" style="display:none;" id="attachmentInput"> --}}
+                        </form>
+                    </div>
+                    {{-- END: Message Input - Hidden Initially --}}
                 </div>
             </div>
         </div>
+        <div class="messaging-overlay"></div>
     </div>
+
 @endsection
 
 @push('scripts')

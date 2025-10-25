@@ -2928,4 +2928,47 @@ input:checked + .slider:before {
 /* END: Coach Clients Page  */
 
 
+/* START: Coach Messaging Placeholders */
+.no-conversation-selected,
+.loading-messages,
+.error-messages,
+.no-messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2rem;
+}
 
+.no-conversation-selected i,
+.loading-messages i, /* Optional: add loading spinner */
+.error-messages i, /* Optional: add error icon */
+.no-messages i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--border-light);
+}
+
+.client-profile-placeholder {
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 1.2rem 0; /* Match approximate height */
+}
+/* END: Coach Messaging Placeholders */
+
+.message.message-failed .message-bubble {
+    opacity: 0.7;
+    border: 1px dashed var(--error-red);
+}
+
+.message.message-failed::after { /* Optional: Add an error icon */
+    content: '\f071'; /* Font Awesome exclamation-triangle */
+    font-family: 'Font Awesome 6 Free', serif;
+    font-weight: 900;
+    color: var(--error-red);
+    margin-left: 0.5rem;
+    align-self: center; /* Align icon with bubble */
+}

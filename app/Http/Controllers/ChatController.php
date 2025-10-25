@@ -26,6 +26,7 @@ class ChatController extends Controller
 
         return response()->json([
             'ok' => true,
+            'client' => $assignment->client()->with('profile')->first(),
             'data' => $messages->items(),
             'meta' => [
                 'current_page' => $messages->currentPage(),

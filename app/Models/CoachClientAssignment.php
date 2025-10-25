@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CoachClientAssignment extends Model
 {
@@ -50,5 +51,22 @@ class CoachClientAssignment extends Model
     public function scopeWithStatus($query, string $status)
     {
         return $query->where('status', $status);
+    }
+
+    /** Messages in this conversation */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'coach_client_assignment_id');
+    }
+
+    public function latestMessage() {
+        return $this->hasOne(Message::class, 'coach_client_assignment_id')->latestOfMany();
+    }
+
+    public function unreadMessagesCount(int $userId): int {
+        return $this->hasMany(Message::class)
+            ->where('sender_id', '!=', $userId)
+            ->whereNull('read_at')
+            ->count();
     }
 }
