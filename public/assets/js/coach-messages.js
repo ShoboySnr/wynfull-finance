@@ -266,9 +266,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to send a message (using FormData for potential attachments)
     const sendMessage = async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         const messageBody = messageInput.value.trim();
-        // Add check for attachment later
         if (!messageBody || !currentAssignmentId) return;
 
         sendBtn.disabled = true;
