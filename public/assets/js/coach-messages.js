@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json(); // Expecting { ok: true, data: messages[], meta: {...} }
 
             // Render Messages
-            renderMessages(data.data); // data.data contains the messages array
+            renderMessages(data.data);
 
             // Leave previous Echo channel
             if (currentChannelName) {
@@ -202,29 +202,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Join new Echo channel
-            // ** IMPORTANT: Ensure this matches your Event's broadcastOn channel **
             currentChannelName = `chat.assignment.${assignmentId}`;
 
             console.log(`Joining channel: ${currentChannelName}`);
             window.Echo.private(currentChannelName)
-                .listen('.MessageSent', (event) => { // Match event name
+                .listen('.message.sent', (event) => {
                     console.log('Message received via Echo:', event);
-                    if (event.message.coach_client_assignment_id == currentAssignmentId && event.message.sender_id !== authUserId) {
-                        renderMessage(event.message, false);
+
+                    const message = { /* Map eventData to message object */
+                        id: event.id, sender_id: event.sender_id, body: event.body,
+                        attachment_path: event.attachment, created_at: event.created_at,
+                        coach_client_assignment_id: assignmentId
+                    };
+
+                    if (message.coach_client_assignment_id == currentAssignmentId && message.sender_id !== authUserId) {
+                        renderMessage(message, false);
                         scrollToBottom();
                         // Mark as read immediately if the conversation is open
                         markMessagesRead(currentAssignmentId);
                     }
                     // Update preview regardless of active chat
                     updateConversationPreview(
-                        event.message.coach_client_assignment_id,
-                        event.message.body || 'Attachment', // Show 'Attachment' if no body
-                        event.message.created_at
+                        message.coach_client_assignment_id,
+                        message.body || 'Attachment',
+                        message.created_at
                     );
 
                     // Show unread indicator if the conversation is NOT active
-                    if (event.message.coach_client_assignment_id != currentAssignmentId && event.message.sender_id !== authUserId) {
-                        const targetConvItem = conversationsList.querySelector(`.conversation-item[data-assignment-id="${event.message.coach_client_assignment_id}"]`);
+                    if (message.coach_client_assignment_id != currentAssignmentId && message.sender_id !== authUserId) {
+                        const targetConvItem = conversationsList.querySelector(`.conversation-item[data-assignment-id="${message.coach_client_assignment_id}"]`);
                         let indicator = targetConvItem?.querySelector('.unread-indicator');
                         let countEl = targetConvItem?.querySelector('.unread-count');
 

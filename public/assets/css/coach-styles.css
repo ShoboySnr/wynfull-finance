@@ -2540,13 +2540,15 @@ input:checked + .slider:before {
     border-radius: 18px; /* More rounded */
     padding: 0.75rem 1rem;
     box-shadow: var(--shadow-sm);
+    width: 450px;
 }
 .message-coach .message-bubble {
     background: var(--wynfull-blue); /* Coach bubble color */
     color: white;
 }
 .message-client .message-bubble {
-    border-bottom-left-radius: 4px; /* Tail effect */
+    border-bottom-left-radius: 4px;
+    color: var(--text-secondary)
 }
 .message-coach .message-bubble {
     border-bottom-right-radius: 4px; /* Tail effect */
@@ -2557,6 +2559,10 @@ input:checked + .slider:before {
     line-height: 1.5;
     margin-bottom: 0.3rem; /* Space between text and time */
     word-wrap: break-word;
+}
+
+.message-coach .message-bubble .message-text {
+    color: white;
 }
 .message-time {
     font-size: 0.7rem; /* Smaller time */

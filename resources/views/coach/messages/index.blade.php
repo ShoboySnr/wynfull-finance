@@ -3,8 +3,7 @@
 @section('title', 'Messages')
 
 @section('content')
-    <div class="page-content page-messaging" id="coach-messages"> {{-- Added page-messaging class --}}
-        {{-- Page Header remains the same --}}
+    <div class="page-content page-messaging" id="coach-messages">
         <div class="page-header">
             <h1>Messages</h1>
             <p>Communicate directly with your clients</p>
@@ -27,7 +26,6 @@
                 </div>
                 <div class="conversations-list" id="conversationsList">
                     {{-- START: Loop through assignments --}}
-                    {{-- Assumes $assignments is passed from the controller --}}
                     @forelse ($assignments as $assignment)
                         @php
                             // Get the client from the assignment
@@ -35,7 +33,6 @@
                             $lastMessage = $assignment->latestMessage()->first();
                             $unreadCount = $assignment->unreadMessagesCount(auth()->id());
                         @endphp
-                        {{-- Added data attributes for client info --}}
                         <div class="conversation-item {{-- $loop->first ? 'active' : '' --}}"
                              data-assignment-id="{{ $assignment->id }}"
                              data-client-name="{{ $client->name }}"
@@ -100,8 +97,7 @@
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             </div>
-                            {{-- Add input for attachments later if needed --}}
-                            {{-- <input type="file" name="attachment" style="display:none;" id="attachmentInput"> --}}
+{{--                             <input type="file" name="attachment" style="display:none;" id="attachmentInput">--}}
                         </form>
                     </div>
                     {{-- END: Message Input - Hidden Initially --}}
