@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ResourceModule extends Model
@@ -42,5 +43,24 @@ class ResourceModule extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function completions(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'resource_module_users')
+            ->withTimestamps('completed_at');
+    }
+
+
+    public function completers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'resource_module_users')
+            ->withPivot(['completed_at'])
+            ->withTimestamps();
+    }
+
+    public function scopeCompletedBy($query, int $userId)
+    {
+        return $query->whereHas('completers', fn($q) => $q->where('users.id', $userId)->whereNotNull('resource_module_users.completed_at'));
     }
 }

@@ -121,4 +121,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(CoachAvailabilitySetting::class, 'coach_id');
     }
+
+    public function moduleCompletions(): BelongsToMany
+    {
+        return $this->belongsToMany(ResourceModule::class, 'resource_module_users')
+            ->withPivot(['completed_at'])
+            ->withTimestamps();
+    }
+
+    public function completedModules(): BelongsToMany
+    {
+        return $this->moduleCompletions()->wherePivotNotNull('completed_at');
+    }
+
+    public function hasCompletedModule(int $moduleId): bool
+    {
+        return $this->completedModules()->where('resource_module_id', $moduleId)->exists();
+    }
 }

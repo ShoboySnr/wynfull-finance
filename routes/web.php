@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Client\BookingController;
+use App\Http\Controllers\Client\ModuleCompletionController;
 use App\Http\Controllers\Client\ResourceLibraryController;
 use App\Http\Controllers\ClientOnboardingController;
 use App\Http\Controllers\Coach\CoachAvailabilityController;
@@ -108,6 +109,10 @@ Route::middleware(['auth', 'role:client'])->group(function () {
         ->name('settings.notifications.edit');
     Route::patch('/settings/notifications', [NotificationPreferencesController::class, 'update'])
         ->name('settings.notifications.update');
+
+
+    Route::post('modules/{resourceModule}/complete', [ModuleCompletionController::class, 'store'])
+        ->name('client.modules.complete');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
