@@ -53,18 +53,33 @@
                         <strong>Modules:</strong>
                         @if($collection->modules->count() > 0)
                             <ul>
-                                @foreach($collection->modules->take(3) as $module) {{-- Show first 3 --}}
-                                <li><i class="fas {{ $module->icon_class }}"></i> {{ Str::limit($module->title, 30) }}</li>
+                                @foreach($collection->modules as $module)
+                                    @php
+                                        // Determine icon
+                                        $iconClass = match ($module->type) {
+                                            'template' => 'fa-file-alt', 'pdf' => 'fa-file-pdf',
+                                            'word' => 'fa-file-word', 'excel' => 'fa-file-excel',
+                                            'video' => 'fa-video', default => 'fa-file',
+                                        };
+                                        // Determine link URL
+                                        $linkUrl = '#'; // Default
+                                        if ($module->type === 'video' && $module->video_link) {
+                                            $linkUrl = $module->video_link;
+                                        } elseif ($module->file_path) {
+                                            $linkUrl = asset('storage/' . $module->file_path);
+                                        }
+                                    @endphp
+
+                                <li><i class="fas {{ $iconClass }}"></i>
+                                    <a href="{{ $linkUrl }}" target="_blank" rel="noopener noreferrer" title="Open {{ $module->type }}">
+                                        {{ Str::limit($module->title, 35) }}
+                                    </a>
+                                </li>
                                 @endforeach
-                                @if($collection->modules->count() > 3)
-                                    <li>... and {{ $collection->modules->count() - 3 }} more</li>
-                                @endif
                             </ul>
                         @else
                             <p>No modules added yet.</p>
                         @endif
-                        {{-- Add a link to view all modules if needed --}}
-                        {{-- <a href="{{ route('admin.resources.modules', $collection->id) }}">View All Modules</a> --}}
                     </div>
                     {{-- Display rejection reason if applicable --}}
                     @if($collection->status === 'rejected' && $collection->rejection_reason)
@@ -95,8 +110,6 @@
                             <i class="fas fa-times"></i> Reject
                         </button>
                     @endif
-                    {{-- Optional: View Modules Button --}}
-                    {{-- <a href="{{ route('admin.resources.modules', $collection->id) }}" class="btn-secondary btn-sm">View Modules</a> --}}
                 </div>
             </div>
         @empty

@@ -24,4 +24,33 @@ class ResourceCollection extends Model
     {
         return $this->hasMany(ResourceModule::class);
     }
+
+    public function scopeApproved($query)
+    {
+        return $query->whereNotNull('approved_at');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->whereNull('approved_at')
+            ->whereNull('rejection_reason');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->whereNull('approved_at')
+            ->whereNotNull('rejection_reason');
+    }
+
+    /** Optional: computed status for display */
+    public function getStatusAttribute(): string
+    {
+        if (! is_null($this->approved_at)) {
+            return 'approved';
+        }
+        if (! is_null($this->rejection_reason)) {
+            return 'rejected';
+        }
+        return 'pending';
+    }
 }

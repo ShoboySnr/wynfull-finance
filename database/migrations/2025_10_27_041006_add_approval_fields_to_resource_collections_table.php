@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->timestamp('approved_at')->nullable()->after('approved_by');
             $table->text('rejection_reason')->nullable()->after('approved_at');
+            $table->string('status')->default('pending')->after('approved_at');
 
             $table->index('approved_by');
             $table->index('approved_at');
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->dropForeign(['approved_by']);
             $table->dropIndex(['approved_by']);
             $table->dropIndex(['approved_at']);
+            $table->dropColumn('status');
 
             $table->dropColumn(['approved_by', 'approved_at', 'rejection_reason']);
         });
