@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminResourcesController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
+use App\Http\Controllers\Admin\ResourceCollectionApprovalController;
 use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserDeactivationController;
@@ -123,6 +124,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
 
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
+    Route::patch('resources/{resourceCollection}/approve', [ResourceCollectionApprovalController::class, 'approve'])->name('resources.approve');
+    Route::patch('resources/{resourceCollection}/reject', [ResourceCollectionApprovalController::class, 'reject'])->name('resources.reject');
 
     Route::post('/resource-modules/{module}/approve', [ResourceModuleApprovalController::class, 'approve'])->name('resource-modules.approve');
     Route::post('/resource-modules/{module}/reject', [ResourceModuleApprovalController::class, 'reject'])->name('resource-modules.reject');
