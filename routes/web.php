@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
 use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserDeactivationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ChatController;
@@ -118,8 +119,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('users/{user}', [UserController::class, 'show'])
         ->name('users.show');
 
-    Route::post('/users/{user}/activate', UserActivationController::class)
-        ->name('users.activate');
+    Route::post('/users/{user}/activate', UserActivationController::class)->name('users.activate');
+    Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
 
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
 

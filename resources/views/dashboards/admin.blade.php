@@ -18,8 +18,8 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>Active Clients</h3>
-                        <p class="stat-value">24</p>
+                        <h3>Coaches</h3>
+                        <p class="stat-value">{{ $totals['coaches'] }}</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -27,8 +27,8 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>Active Clients</h3>
-                        <p class="stat-value">24</p>
+                        <h3>Clients</h3>
+                        <p class="stat-value">{{ $totals['clients'] }}</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -36,17 +36,18 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>Active Clients</h3>
-                        <p class="stat-value">24</p>
+                        <h3>Admin</h3>
+                        <p class="stat-value">{{ $totals['admins'] }}</p>
                     </div>
                 </div>
             </div>
 
 
-                <!-- Recent Client Activity -->
-                <div class="client-activity">
-                    <h2>Recent Client Activity</h2>
-                    <div class="activity-list">
+            <!-- Recent Client Activity -->
+            <div class="client-activity">
+                <h2>Recent Client Activity</h2>
+                <div class="activity-list">
+                    @foreach($activities as $activity)
                         <div class="activity-item">
                             <div class="activity-avatar">
                                 <img
@@ -54,14 +55,14 @@
                                     alt="John Doe">
                             </div>
                             <div class="activity-content">
-                                <h4>John Doe completed Emergency Fund worksheet</h4>
-                                <p>Calculated $12,000 target for 6-month emergency fund</p>
-                                <span class="activity-time">2 hours ago</span>
+                                <h4>{{ $activity['event'] }}</h4>
+                                <p>{{ $activity['description'] }}</p>
+                                <span class="activity-time">{{ $activity['time_ago'] }}</span>
                             </div>
                         </div>
-
-                    </div>
+                    @endforeach
                 </div>
+            </div>
 
         </div>
     </div>

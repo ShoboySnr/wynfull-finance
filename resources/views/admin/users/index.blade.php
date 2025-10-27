@@ -94,8 +94,6 @@
                                 <a href="{{ route('admin.users.show', $user->id) }}" class="action-btn view" title="View Profile">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <button class="action-btn edit" title="Edit User"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="action-btn delete" title="Delete User"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>

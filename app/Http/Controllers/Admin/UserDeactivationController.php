@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\YourAccountDeactivatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +35,7 @@ class UserDeactivationController extends Controller
                 ->log('user_deactivated');
 
             try {
-//                $user->notify(new YourAccountDeactivatedNotification());
+                $user->notify(new YourAccountDeactivatedNotification());
                 activity()->performedOn($user)->causedBy($request->user())
                     ->withProperties(['notification' => 'YourAccountDeactivatedNotification'])
                     ->log('notification_dispatched');

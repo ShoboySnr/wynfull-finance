@@ -41,58 +41,34 @@
                     </div>
                 </div>
                 <div class="profile-main-actions">
-                    <button class="btn-secondary"><i class="fas fa-comments"></i> Message</button>
                     @if(strtolower($role) === 'client')
                         <button class="btn-secondary" id="assignCoachBtn"><i class="fas fa-user-plus"></i> Assign Coach
                         </button>
                     @endif
-                    <form action="{{ route('admin.users.activate', $user->id) }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button class="btn-primary" disabled="{{ $user->is_active }}"> Activate</button>
-                    </form>
+
+                    @if($user->is_active)
+                        <form action="{{ route('admin.users.deactivate', $user->id) }}" method="POST"
+                              style="display: inline;">
+                            @csrf
+                            <button class="btn-primary">Deactivate</button>
+                        </form>
+                    @else
+                        <form action="{{ route('admin.users.activate', $user->id) }}" method="POST"
+                              style="display: inline;">
+                            @csrf
+                            <button class="btn-primary" >Activate</button>
+                        </form>
+                    @endif
+
                 </div>
             </div>
         </div>
 
-        <!-- Profile Stats Grid -->
-        <div class="profile-stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                <div class="stat-content">
-                    <h3>Financial Confidence</h3>
-                    <p class="stat-value">75/100</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
-                <div class="stat-content">
-                    <h3>Goal Progress</h3>
-                    <p class="stat-value">62%</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-history"></i></div>
-                <div class="stat-content">
-                    <h3>Last Active</h3>
-                    <p class="stat-value">{{ $lastActiveAt }}</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-                <div class="stat-content">
-                    <h3>Total Sessions</h3>
-                    <p class="stat-value">14</p>
-                </div>
-            </div>
-        </div>
 
         <!-- Profile Details Section -->
         <div class="profile-details-section">
             <div class="profile-tabs">
                 <button class="profile-tab active" data-tab="activity">Recent Activity</button>
-                <button class="profile-tab" data-tab="goals">Goals</button>
-                <button class="profile-tab" data-tab="notes">Notes</button>
-                <button class="profile-tab" data-tab="settings">Settings</button>
             </div>
 
             <div class="profile-tab-content active" id="activity">
@@ -106,29 +82,6 @@
                             <p>Identified a $250/month snowball payment.</p>
                             <span class="activity-time">2 hours ago</span>
                         </div>
-                        <button class="activity-action">Review</button>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-avatar">
-                            <i class="fas fa-comment-dots" style="color: #3b82f6;"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Sent a message to their coach</h4>
-                            <p>"I have a question about my 401k options."</p>
-                            <span class="activity-time">1 day ago</span>
-                        </div>
-                        <button class="activity-action">Reply</button>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-avatar">
-                            <i class="fas fa-video" style="color: #9333ea;"></i>
-                        </div>
-                        <div class="activity-content">
-                            <h4>Scheduled a session</h4>
-                            <p>Booked 'Quarterly Check-in' for Oct 15, 2025.</p>
-                            <span class="activity-time">3 days ago</span>
-                        </div>
-                        <button class="activity-action">View</button>
                     </div>
                 </div>
             </div>
@@ -172,7 +125,9 @@
                         <div class="coach-list">
                             @forelse($coaches as $coach)
                                 <label class="coach-list-item">
-                                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="{{ $coach->name }}" class="user-avatar-small">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format"
+                                        alt="{{ $coach->name }}" class="user-avatar-small">
                                     <div class="coach-details">
                                         <span class="coach-name">{{ $coach->name }}</span>
                                         <span class="coach-email">{{ $coach->email }}</span>
