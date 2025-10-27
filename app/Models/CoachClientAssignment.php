@@ -69,4 +69,14 @@ class CoachClientAssignment extends Model
             ->whereNull('read_at')
             ->count();
     }
+
+    public function scopeForClient($query, int $clientId)
+    {
+        return $query->where('client_id', $clientId);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 }
