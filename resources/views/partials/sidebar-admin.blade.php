@@ -31,12 +31,6 @@
                 <span>Users</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
-            <a href="{{ route('admin.profiles') }}" class="nav-link">
-                <i class="fas fa-user-cog"></i>
-                <span>Profile</span>
-            </a>
-        </li>
 
         <!-- Logout Button -->
         <li class="nav-item nav-item-logout">

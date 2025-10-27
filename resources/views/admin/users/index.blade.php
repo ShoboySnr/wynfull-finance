@@ -43,10 +43,10 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search users...">
                 </div>
-                <button class="btn-primary">
-                    <i class="fas fa-plus"></i>
-                    Add New User
-                </button>
+{{--                <button class="btn-primary" id="addUserBtn">--}}
+{{--                    <i class="fas fa-plus"></i>--}}
+{{--                    Add New User--}}
+{{--                </button>--}}
             </div>
         </div>
 
@@ -110,5 +110,65 @@
             {{ $users->links() }}
         </div>
     </div>
-@endsection
 
+    {{-- START: Add New User Modal --}}
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <button class="modal-close" id="addUserModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{-- route('admin.users.store') --}}" method="POST" id="addUserForm">
+                    @csrf
+                    @if ($errors->any())
+                        <input type="hidden" name="has_add_errors" value="true">
+                    @endif
+
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-input" value="{{ old('name') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-input" value="{{ old('email') }}" required>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Assign Role</label>
+                        <select id="role" name="role" class="form-select" required>
+                            <option value="" disabled {{ old('role') ? '' : 'selected' }}>Select a role...</option>
+                            <option value="client" {{ old('role') == 'client' ? 'selected' : '' }}>Client</option>
+                            <option value="coach" {{ old('role') == 'coach' ? 'selected' : '' }}>Coach</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-group-checkbox">
+                        <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                        <label for="is_active">Activate this user immediately</label>
+                        <small class="checkbox-hint">If unchecked, the user will need to be activated later.</small>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="addUserModalCancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Create User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- END: Add New User Modal --}}
+@endsection
+@push('scripts')
+    <script src="{{ asset('assets/js/admin-users.js') }}"></script>
+@endpush

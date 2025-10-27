@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\Admin\UserAdminService;
 use App\Services\Admin\ViewUserService;
 use Illuminate\Http\Request;
+use Spatie\Activitylog\Models\Activity;
 
 class UserController extends Controller
 {
@@ -40,15 +41,39 @@ class UserController extends Controller
         ]);
     }
 
-    public function show(User $user)
+    public function show(User $user, Request $request)
     {
         [$user, $context] = $this->viewService->getUserWithContext($user->id);
 
         $coaches = $this->viewService->listAssignableCoaches($user);
 
+        $activitiesQuery = Activity::query()
+            ->whereCauserId($user->id)
+            ->latest();
+
+        $activities = $activitiesQuery
+            ->select(['event', 'description', 'created_at'])
+            ->limit(6)
+            ->get()
+            ->map(function (Activity $activity) {
+                return [
+                    'event'       => $activity->event,
+                    'description' => $activity->description,
+                    'time_ago'    => optional($activity->created_at)->diffForHumans(),
+                ];
+            });
+
+        activity()->useLog('admin')
+            ->causedBy($request->user())
+            ->event('admin_view_user_details')
+            ->withProperties([
+                'ip'      => $request->ip()
+            ])->log('Admin viewed User profile for ' . $user->name);
+
         return view('admin.users.show', [
             'user'    => $user,
             'coaches' => $coaches,
+            'activities' => $activities,
             'lastActiveAt'  => $context['lastActiveAt'],
             'totalSessions' => $context['totalSessions'],
             'assignedCoachIds' => $context['assignedCoachIds'],

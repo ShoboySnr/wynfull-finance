@@ -6533,3 +6533,273 @@ button.join-call {
 }
 /* END: 2FA Confirmation Section Styles */
 
+form-group-checkbox {
+    display: flex;
+    align-items: center; /* Align checkbox and label vertically */
+    gap: 0.75rem; /* Space between checkbox and label */
+    margin-top: 1rem; /* Add some space above */
+    flex-wrap: wrap; /* Allow hint to wrap */
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--wynfull-blue); /* Style the check color */
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.form-group-checkbox label {
+    margin-bottom: 0; /* Remove default bottom margin from label */
+    font-weight: 500;
+    cursor: pointer;
+    flex-grow: 1; /* Allow label to take space */
+}
+
+.checkbox-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    width: 100%; /* Make hint take full width */
+    padding-left: calc(18px + 0.75rem); /* Align hint under the label text */
+    margin-top: -0.25rem; /* Pull hint slightly closer */
+}
+
+/* START: Admin Resource Management Styles */
+.admin-resource-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.admin-resource-filters .filter-tab {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-light);
+    background: var(--white);
+    color: var(--text-secondary);
+    border-radius: 20px; /* Pill shape */
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.admin-resource-filters .filter-tab:hover {
+    border-color: var(--wynfull-blue);
+    color: var(--wynfull-blue);
+}
+
+.admin-resource-filters .filter-tab.active {
+    background: var(--wynfull-blue);
+    border-color: var(--wynfull-blue);
+    color: var(--white);
+}
+
+
+.admin-resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.admin-resource-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column; /* Stack header, body, footer */
+    transition: box-shadow 0.2s ease;
+}
+
+.admin-resource-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.admin-resource-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--background-light); /* Header background */
+}
+
+.admin-resource-card .collection-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--white);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.admin-resource-card .collection-icon i {
+    font-size: 1.5rem;
+    color: var(--wynfull-blue);
+}
+
+.admin-resource-card .collection-info {
+    flex-grow: 1;
+}
+
+.admin-resource-card .collection-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.admin-resource-card .coach-submitter,
+.admin-resource-card .submission-date {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.admin-resource-card .status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-resource-card .status-badge.status-pending {
+    background-color: rgba(245, 158, 11, 0.1); /* warning-orange */
+    color: #d97706; /* darker orange */
+}
+.admin-resource-card .status-badge.status-approved {
+    background-color: rgba(34, 197, 94, 0.1); /* success-green */
+    color: #15803d; /* darker green */
+}
+.admin-resource-card .status-badge.status-rejected {
+    background-color: rgba(239, 68, 68, 0.1); /* error-red */
+    color: #b91c1c; /* darker red */
+}
+
+.admin-resource-card .card-body {
+    padding: 1.5rem;
+    flex-grow: 1; /* Allow body to fill space */
+}
+
+.admin-resource-card .description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.admin-resource-card .module-preview {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-light);
+}
+.admin-resource-card .module-preview strong {
+    color: var(--text-primary);
+}
+.admin-resource-card .module-preview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+.admin-resource-card .module-preview li {
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.admin-resource-card .module-preview li i {
+    width: 14px; /* Align icons */
+    text-align: center;
+    color: var(--text-light);
+}
+
+
+.admin-resource-card .rejection-reason,
+.admin-resource-card .approval-info {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+.admin-resource-card .rejection-reason {
+    background-color: rgba(239, 68, 68, 0.05); /* Lighter red */
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+}
+.admin-resource-card .rejection-reason strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+.admin-resource-card .approval-info {
+    background-color: rgba(34, 197, 94, 0.05); /* Lighter green */
+    color: #15803d;
+    border: 1px solid rgba(34, 197, 94, 0.1);
+}
+
+
+.admin-resource-card .card-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-light);
+    background: var(--background-light);
+    display: flex;
+    justify-content: flex-end; /* Align buttons right */
+    gap: 0.75rem;
+}
+
+.admin-resource-card .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+/* Adjust success button color if needed */
+.btn-success {
+    background-color: var(--success-green);
+    color: var(--white);
+    border: none;
+}
+.btn-success:hover {
+    background-color: #047857; /* Darker green */
+}
+
+/* Ensure modal styles apply */
+#rejectReasonModal .modal-content {
+    max-width: 500px; /* Adjust width if needed */
+}
+#rejectReasonModal p strong {
+    color: var(--wynfull-blue); /* Highlight collection title */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-resource-filters {
+        justify-content: center;
+    }
+    .admin-resources-grid {
+        grid-template-columns: 1fr; /* Stack cards on mobile */
+    }
+    .admin-resource-card .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .admin-resource-card .status-badge {
+        align-self: flex-start; /* Align badge left below info */
+        margin-top: 0.5rem;
+    }
+    .admin-resource-card .card-footer {
+        flex-direction: column;
+        align-items: stretch; /* Make buttons full width */
+    }
+    .admin-resource-card .card-footer form,
+    .admin-resource-card .card-footer button,
+    .admin-resource-card .card-footer a {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* END: Admin Resource Management Styles */

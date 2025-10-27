@@ -73,16 +73,28 @@
 
             <div class="profile-tab-content active" id="activity">
                 <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-avatar">
-                            <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                    @forelse($activities as $activity)
+                        <div class="activity-item">
+                            <div class="activity-avatar">
+                                <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>{{ $activity['event'] ?? '—' }}</h4>
+                                <p>{{ $activity['description'] ?? 'No description' }}</p>
+                                <span class="activity-time">{{ $activity['time_ago'] ?? '' }}</span>
+                            </div>
                         </div>
-                        <div class="activity-content">
-                            <h4>Completed 'Debt Payoff' worksheet</h4>
-                            <p>Identified a $250/month snowball payment.</p>
-                            <span class="activity-time">2 hours ago</span>
+                    @empty
+                        <div class="activity-empty">
+                            <div class="empty-icon">
+                                <i class="fas fa-inbox" aria-hidden="true"></i>
+                            </div>
+                            <div class="empty-copy">
+                                <h4>No activity yet</h4>
+                            </div>
                         </div>
-                    </div>
+                    @endforelse
+
                 </div>
             </div>
             <div class="profile-tab-content" id="goals">
