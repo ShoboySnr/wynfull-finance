@@ -50,7 +50,7 @@ Route::post('/register/client', [RegisterController::class,'registerClient'])->n
 Route::post('/register/coach',  [RegisterController::class,'registerCoach'])->name('register.coach');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/me/profile', [ProfileController::class, 'show']);
+    Route::get('/me/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::match(['put', 'patch'], '/me/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/me/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 
