@@ -14,11 +14,16 @@ class LoginController extends Controller
 {
     public function store(Request $request)
     {
-        $credentials = $request->validate([
+        $base = $request->validate([
             'email'    => ['required', 'email:rfc'],
             'password' => ['required', 'string'],
+        ]);
+
+        $request->validate([
             'remember' => ['sometimes', 'boolean'],
         ]);
+
+        $remember = filter_var($request->input('remember', false), FILTER_VALIDATE_BOOLEAN);
 
         $key = $this->throttleKey($request);
 
@@ -29,10 +34,9 @@ class LoginController extends Controller
             ]);
         }
 
-        // Fetch user first to check activation early (don’t leak which field failed)
-        $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $base['email'])->first();
 
-        if (! $user || ! Auth::validate($credentials)) {
+        if (! $user || ! Auth::validate($base)) {
             RateLimiter::hit($key, 60);
             throw ValidationException::withMessages([
                 'email' => __('These credentials do not match our records.'),
@@ -46,11 +50,10 @@ class LoginController extends Controller
             ]);
         }
 
-        // Passed checks: clear throttle, log them in
         RateLimiter::clear($key);
-        Auth::login($user, (bool)($credentials['remember'] ?? false));
 
-        // Spatie activity log
+        Auth::login($user, $remember);
+
         activity()
             ->useLog('auth')
             ->performedOn($user)

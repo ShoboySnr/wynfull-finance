@@ -339,7 +339,8 @@
 
                             <div class="form-row" style="margin-bottom: 24px;">
                                 <label class="remember">
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input type="hidden" name="remember" value="0">
+                                    <input type="checkbox" name="remember" value="1" {{ old('remember') ? 'checked' : '' }}>
                                     <span>Remember me</span>
                                 </label>
                                 @if (Route::has('password.request'))
