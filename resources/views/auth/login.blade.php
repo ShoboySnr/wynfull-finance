@@ -139,6 +139,7 @@
             width: 100%; max-width: 440px;
             animation: fadeIn 0.6s ease-out 0.2s;
             animation-fill-mode: both;
+            padding: 40px;
         }
         .card-head { text-align: center; margin-bottom: 32px; }
         .card-head .logo {
@@ -237,6 +238,10 @@
             .auth-card-wrap {
                 padding: 40px 20px;
                 min-height: 100vh;
+            }
+
+            .auth-card {
+                padding: 20px;
             }
         }
     </style>
@@ -364,7 +369,7 @@
                             @if (Route::has('register'))
                                 <div class="meta">
                                     Don’t have an account?
-                                    <a href="{{ route('register') }}">Create one</a>
+                                    <a href="/#contact">Create one</a>
                                 </div>
                             @endif
 
