@@ -53,16 +53,6 @@
                             <span class="phase-label {{ $labelStates['grow-multiply'] }}">Grow</span>
                             <span class="phase-label {{ $labelStates['sustain-scale'] }}">Sustain</span>
                         </div>
-                        {{--                                <div class="phase-bar-container">--}}
-                        {{--                                    <div class="phase-bar reset-rewire"></div>--}}
-                        {{--                                    <div class="phase-bar take-control"></div>--}}
-                        {{--                                    <div class="phase-bar grow-multiply"></div>--}}
-                        {{--                                    <div class="phase-bar sustain-scale"></div>--}}
-                        {{--                                </div>--}}
-                        {{--                                <div class="phase-labels">--}}
-                        {{--                                    <span class="phase-label">Reset & Rewire</span>--}}
-                        {{--                                    <span class="phase-label">Grow & Multiply</span>--}}
-                        {{--                                </div>--}}
                     </div>
                 </div>
 
@@ -105,7 +95,7 @@
                 </div>
 
                 <div class="metric-card knowledge-card">
-                    <h3>Financial Knowledge</h3>
+                    <h3>Investing Knowledge</h3>
                     <div class="knowledge-content">
                         <div class="knowledge-level">
                             <div class="knowledge-icon">
@@ -130,14 +120,23 @@
                     </div>
                 </div>
 
+                @php
+                    $investingWidth = '15%'; // Default for 'Not yet investing'
+                    $investingLabel = $investingStatus['label'] ?? 'Not yet investing';
+                    if ($investingLabel === 'Just starting') {
+                        $investingWidth = '50%';
+                    } elseif ($investingLabel === 'Investing consistently') {
+                        $investingWidth = '100%';
+                    }
+                @endphp
                 <div class="metric-card investing-card">
                     <h3>Investing</h3>
                     <div class="investing-content">
                         <span class="investing-label">Contribution score</span>
-                        <span class="investing-status">Just starting</span>
+                        <span class="investing-status">{{ $investingStatus['label'] }}</span>
                         <div class="investing-progress">
                             <div class="investing-bar">
-                                <div class="investing-fill"></div>
+                                <div class="investing-fill" style="width: {{ $investingWidth }};"></div>
                             </div>
                         </div>
                     </div>

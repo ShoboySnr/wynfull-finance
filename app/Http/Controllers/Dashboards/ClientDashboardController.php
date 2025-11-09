@@ -70,6 +70,8 @@ class ClientDashboardController extends Controller
             ->limit(3)
             ->get(['id','description','event','created_at','log_name','properties']);
 
+        $investingStatus = OnboardingGoals::investingStatusForUser($user->id);
+
         return view('dashboards.client', [
             'user' => $user,
             'pickedGoals' => $picked,
@@ -78,7 +80,8 @@ class ClientDashboardController extends Controller
             'financialKnowledge' => $financialKnowledge,
             'wealthCards' => $wealthCards,
             'activities' => $activities,
-            'financialSituations' => $financialSituations
+            'financialSituations' => $financialSituations,
+            'investingStatus' => $investingStatus
         ]);
     }
 }

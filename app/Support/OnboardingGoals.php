@@ -79,4 +79,36 @@ class OnboardingGoals
         // De-duplicate while preserving order
         return array_values(array_unique($labels));
     }
+
+
+    /**
+     * Returns ['key' => 'not-yet|just-starting|consistently', 'label' => string] or null
+     */
+    public static function investingStatusForUser(int $userId): ?array
+    {
+        $co = ClientOnboarding::where('user_id', $userId)
+            ->orderByDesc('completed_at')
+            ->first();
+
+        if (!$co) {
+            return null;
+        }
+
+        $status = Arr::get($co->answers ?? [], 'investing_status');
+
+        $labels = [
+            'not-yet'       => 'Not yet investing',
+            'just-starting' => 'Just starting',
+            'consistently'  => 'Investing consistently',
+        ];
+
+        if (!is_string($status) || !array_key_exists($status, $labels)) {
+            return null;
+        }
+
+        return [
+            'key'   => $status,
+            'label' => $labels[$status],
+        ];
+    }
 }
