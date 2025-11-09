@@ -43,25 +43,32 @@ class UserController extends Controller
 
     public function show(User $user, Request $request)
     {
+        $user = $user->load('profile');
         [$user, $context] = $this->viewService->getUserWithContext($user->id);
 
         $coaches = $this->viewService->listAssignableCoaches($user);
 
-        $activitiesQuery = Activity::query()
-            ->whereCauserId($user->id)
-            ->latest();
+        $coachAssignments = $user->coachAssignmentsAsClient()
+            ->with([
+                'coach:id,name,email,is_active',              // coach basic
+                'coach.profile:id,user_id,avatar_path,first_name,last_name,professional_title',
+                'assignedBy:id,name,email',         // who assigned
+                'assignedBy.profile:id,user_id,avatar_path,first_name,last_name,professional_title',
+            ])
+            ->latest('assigned_at')
+            ->get();
 
-        $activities = $activitiesQuery
-            ->select(['event', 'description', 'created_at'])
+        $activities = Activity::query()
+            ->whereCauserId($user->id)
+            ->latest()
+            ->select(['event','description','created_at'])
             ->limit(6)
             ->get()
-            ->map(function (Activity $activity) {
-                return [
-                    'event'       => $activity->event,
-                    'description' => $activity->description,
-                    'time_ago'    => optional($activity->created_at)->diffForHumans(),
-                ];
-            });
+            ->map(fn(Activity $a) => [
+                'event'       => $a->event,
+                'description' => $a->description,
+                'time_ago'    => optional($a->created_at)->diffForHumans(),
+            ]);
 
         activity()->useLog('admin')
             ->causedBy($request->user())
@@ -70,6 +77,7 @@ class UserController extends Controller
                 'ip'      => $request->ip()
             ])->log('Admin viewed User profile for ' . $user->name);
 
+//        dd($coachAssignments);
         return view('admin.users.show', [
             'user'    => $user,
             'coaches' => $coaches,
@@ -77,7 +85,9 @@ class UserController extends Controller
             'lastActiveAt'  => $context['lastActiveAt'],
             'totalSessions' => $context['totalSessions'],
             'assignedCoachIds' => $context['assignedCoachIds'],
-            'profile' => $user->profile
+            'profile' => $user->profile,
+            'coachAssignments' => $coachAssignments
         ]);
     }
 }
+

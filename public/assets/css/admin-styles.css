@@ -1,0 +1,76 @@
+/* START: Coach Assignment List Styles */
+.coach-assignment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.assignment-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--background-light);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.assignment-info {
+    flex-grow: 1; /* Take up available space */
+}
+
+.assignment-info .coach-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block; /* Make it a block element */
+    margin-bottom: 0.25rem;
+}
+
+.assignment-info .assignment-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.assignment-item .badge {
+    margin: 0 1rem; /* Add some spacing */
+}
+
+.assignment-actions {
+    margin-left: auto; /* Push actions to the far right */
+}
+
+.assignment-actions .btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .assignment-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .assignment-item .user-avatar-small {
+        display: none; /* Hide avatar on mobile to save space */
+    }
+
+    .assignment-item .badge {
+        margin: 0.5rem 0 0.5rem 0; /* Adjust badge spacing */
+    }
+
+    .assignment-actions {
+        margin-left: 0; /* Remove auto margin */
+        width: 100%; /* Make actions full width */
+        margin-top: 0.5rem;
+    }
+
+    .assignment-actions form,
+    .assignment-actions button {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* END: Coach Assignment List Styles */

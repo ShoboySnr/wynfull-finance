@@ -56,7 +56,7 @@
                         <form action="{{ route('admin.users.activate', $user->id) }}" method="POST"
                               style="display: inline;">
                             @csrf
-                            <button class="btn-primary" >Activate</button>
+                            <button class="btn-primary">Activate</button>
                         </form>
                     @endif
 
@@ -69,6 +69,9 @@
         <div class="profile-details-section">
             <div class="profile-tabs">
                 <button class="profile-tab active" data-tab="activity">Recent Activity</button>
+                @if(strtolower($role) === 'client')
+                    <button class="profile-tab" data-tab="assignments">Coach Assignments</button>
+                @endif
             </div>
 
             <div class="profile-tab-content active" id="activity">
@@ -97,27 +100,52 @@
 
                 </div>
             </div>
-            <div class="profile-tab-content" id="goals">
-                <div class="coming-soon">
-                    <i class="fas fa-bullseye"></i>
-                    <h3>Client Goals</h3>
-                    <p>This section will display the user's financial goals and their progress.</p>
+            {{-- START: New Coach Assignments Tab Content --}}
+            @if(strtolower($role) === 'client')
+                <div class="profile-tab-content" id="assignments">
+                    <div class="coach-assignment-list">
+                        @forelse($coachAssignments as $assignment)
+{{--                            @dd($assignment)--}}
+                            <div class="assignment-item">
+                                <img
+                                    src="{{ $assignment->coach->profile?->avatar_path ? asset('storage/' . $assignment->coach->profile->avatar_path) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($assignment->coach->name, 0, 1)) }}"
+                                    alt="{{ $assigment->coach->profile->first_name ?? $assignment->coach->name  }}" class="user-avatar-small">
+
+                                <div class="assignment-info">
+                                    <span class="coach-name">{{ $assignment->coach->name }}</span>
+                                    <span class="assignment-meta">
+                                        Assigned on {{ $assignment->assigned_at->format('M d, Y') }}
+                                        by {{ $assignment->assignedBy->name ?? 'Admin' }}
+                                    </span>
+                                </div>
+
+                                <span
+                                    class="badge badge-active">active</span>
+
+                                <div class="assignment-actions">
+                                        <form action="{{ route('admin.assignments.user.end', ['user' => $assignment->coach->id]) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Are you sure you want to end this assignment?');">
+                                            @csrf
+                                            <button type="submit" class="btn-danger btn-sm">End Assignment</button>
+                                        </form>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="activity-empty">
+                                <div class="empty-icon">
+                                    <i class="fas fa-user-tie" aria-hidden="true"></i>
+                                </div>
+                                <div class="empty-copy">
+                                    <h4>No Coach Assignments</h4>
+                                    <p>This client is not currently assigned to any coaches.</p>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
-            </div>
-            <div class="profile-tab-content" id="notes">
-                <div class="coming-soon">
-                    <i class="fas fa-sticky-note"></i>
-                    <h3>Coach Notes</h3>
-                    <p>This section will contain private notes and observations about the user.</p>
-                </div>
-            </div>
-            <div class="profile-tab-content" id="settings">
-                <div class="coming-soon">
-                    <i class="fas fa-cog"></i>
-                    <h3>User Settings</h3>
-                    <p>This section will allow managing user-specific settings and permissions.</p>
-                </div>
-            </div>
+            @endif
+            {{-- END: New Coach Assignments Tab Content --}}
         </div>
 
 
@@ -189,4 +217,5 @@
                     }
                 });
             </script>
+            <script src="{{ asset('assets/js/admin-users.js') }}"></script>
     @endpush

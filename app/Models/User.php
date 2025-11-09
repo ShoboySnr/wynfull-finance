@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -107,6 +108,15 @@ class User extends Authenticatable
             ->withPivot(['assigned_by', 'assigned_at', 'status', 'id']);
     }
 
+    public function coachAssignmentsAsClient(): HasMany
+    {
+        return $this->hasMany(CoachClientAssignment::class, 'client_id');
+    }
+
+    public function clientAssignmentsAsCoach(): HasMany
+    {
+        return $this->hasMany(CoachClientAssignment::class, 'coach_id');
+    }
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);

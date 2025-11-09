@@ -31,20 +31,20 @@ class CoachClientAssignmentController extends Controller
     {
         try {
             $data = $this->service->assign(
-                coachId: (int) $request->integer('coach_id'),
-                clientId: (int) $request->integer('client_id'),
+                coachId: (int)$request->integer('coach_id'),
+                clientId: (int)$request->integer('client_id'),
                 actorUserId: $request->user()?->id
             );
 
             // Optional: personalize the message with names
-            $coach  = User::find($data['coach_id']);
+            $coach = User::find($data['coach_id']);
             $client = User::find($data['client_id']);
 
             return back()->with('success',
                 sprintf(
                     'Coach %s was assigned to %s successfully.',
-                    $coach?->name ?? 'ID '.$data['coach_id'],
-                    $client?->name ?? 'ID '.$data['client_id']
+                    $coach?->name ?? 'ID ' . $data['coach_id'],
+                    $client?->name ?? 'ID ' . $data['client_id']
                 )
             );
 
@@ -61,23 +61,34 @@ class CoachClientAssignmentController extends Controller
     public function destroy(UnassignCoachFromClientRequest $request)
     {
         $this->service->unassign(
-            coachId: (int) $request->integer('coach_id'),
-            clientId: (int) $request->integer('client_id')
+            coachId: (int)$request->integer('coach_id'),
+            clientId: (int)$request->integer('client_id')
         );
 
         return response()->json(['message' => 'Coach unassigned from client.']);
+    }
+
+    public function unassignCoach(User $user, Request $request)
+    {
+        dd($user);
+        $this->service->unassign(
+            coachId: (int)$user->id,
+            clientId: (int)$request->user()->id
+        );
+
+        return redirect()->back()->with('success', 'coach unassigned from client.');
     }
 
     // GET /admin/coach-client-assignments?client_id=&coach_id=
     public function index(Request $request)
     {
         if ($request->filled('client_id')) {
-            $coaches = $this->service->listCoachesForClient((int) $request->integer('client_id'));
+            $coaches = $this->service->listCoachesForClient((int)$request->integer('client_id'));
             return response()->json(['data' => $coaches]);
         }
 
         if ($request->filled('coach_id')) {
-            $clients = $this->service->listClientsForCoach((int) $request->integer('coach_id'));
+            $clients = $this->service->listClientsForCoach((int)$request->integer('coach_id'));
             return response()->json(['data' => $clients]);
         }
 

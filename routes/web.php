@@ -157,4 +157,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/assignments/create', [CoachClientAssignmentController::class, 'create'])->name('assignments.create');
     Route::post('/assignments', [CoachClientAssignmentController::class, 'store'])->name('assignments.store');
     Route::post('/assignments/{assignmentId}/end', [CoachClientAssignmentController::class, 'destroy'])->name('assignments.end');
+    Route::post('/assignments/{user}/end', [CoachClientAssignmentController::class, 'unassignCoach'])->name('assignments.user.end');
 });
