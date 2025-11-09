@@ -1713,13 +1713,15 @@ textarea:focus {
     position: relative;
     width: 80px;
     height: 80px;
+    margin: 0 auto;
 }
 
 .confidence-progress {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: conic-gradient(#10B981 0deg 288deg, #E5E7EB 288deg 360deg);
+    background-image: conic-gradient(var(--success-green) 0deg, #E5E7EB 0deg);
+    transition: background-image 0.5s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1731,7 +1733,7 @@ textarea:focus {
     position: absolute;
     width: 60px;
     height: 60px;
-    background: white;
+    background: var(--white);
     border-radius: 50%;
 }
 

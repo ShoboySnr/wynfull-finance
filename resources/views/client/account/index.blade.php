@@ -31,8 +31,8 @@
                     <div class="profile-avatar-section">
                         <img src="{{ $profile->avatar_url ?? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format' }}"
                              alt="Profile" class="profile-avatar">
-                        <label class="btn-secondary mb-0" for="avatar">Change Photo</label>
-{{--                        <input id="avatar" name="avatar" type="file" accept="image/*" class="d-none">--}}
+                        <button type="button" class="btn-secondary" id="changePhotoBtn">Change Photo</button>
+                        {{--                        <input id="avatar" name="avatar" type="file" accept="image/*" class="d-none">--}}
                         @error('avatar') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
 
@@ -212,6 +212,39 @@
         </div>
     </div>
     {{-- END: New Two-Factor Authentication Modal --}}
+
+    {{-- START: Avatar Upload Modal --}}
+    <div class="modal-overlay" id="avatarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Upload New Photo</h2>
+                <button class="modal-close" id="avatarModalClose">&times;</button>
+            </div>
+            {{-- This form points to a dedicated avatar update route --}}
+            <form action="{{ route('profile.avatar.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
+                <div class="modal-body">
+                    <div class="avatar-upload-container">
+                        <div class="avatar-preview-wrapper">
+                            <img src="{{ $user->profile->avatar_path ? asset('storage/' . $user->profile->avatar_path) : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format' }}" id="avatarPreview" alt="Avatar Preview">
+                        </div>
+                        <div class="file-drop-area" id="avatarDropArea">
+                            <i class="fas fa-camera"></i>
+                            <p>Drag & drop image, or <span class="file-browse-link">browse</span></p>
+                            <input type="file" name="avatar" id="avatarInput" class="file-input" accept="image/png, image/jpeg, image/jpg" required>
+                        </div>
+                        <p class="avatar-upload-hint">For best results, upload a square image (PNG or JPG).</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="avatarModalCancel">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Photo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{-- END: Avatar Upload Modal --}}
 @endsection
 
 @push('scripts')

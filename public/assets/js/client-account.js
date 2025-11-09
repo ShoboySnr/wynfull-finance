@@ -111,4 +111,106 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // END: Notification Preferences Logic
 
+    // START: Avatar Upload Modal Logic
+    const changePhotoBtn = document.getElementById('changePhotoBtn');
+    const avatarModal = document.getElementById('avatarModal');
+
+    if (changePhotoBtn && avatarModal) {
+        const avatarModalClose = document.getElementById('avatarModalClose');
+        const avatarModalCancel = document.getElementById('avatarModalCancel');
+        const avatarDropArea = document.getElementById('avatarDropArea');
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+
+        // Function to open the modal
+        changePhotoBtn.addEventListener('click', () => {
+            avatarModal.classList.add('active');
+        });
+
+        // Function to close the modal
+        function closeAvatarModal() {
+            avatarModal.classList.remove('active');
+            // Reset preview and file input
+            if (avatarPreview) avatarPreview.src = document.querySelector('.profile-avatar').src; // Reset to main avatar
+            if (avatarInput) avatarInput.value = ''; // Clear selected file
+        }
+
+        if (avatarModalClose) avatarModalClose.addEventListener('click', closeAvatarModal);
+        if (avatarModalCancel) avatarModalCancel.addEventListener('click', closeAvatarModal);
+
+        // --- Image Preview and Drag-and-Drop ---
+        if (avatarDropArea && avatarInput && avatarPreview) {
+
+            // Function to trigger file input
+            const triggerFileInput = () => avatarInput.click();
+
+            // Click on drop area or browse link
+            avatarDropArea.addEventListener('click', (e) => {
+                if (e.target.classList.contains('file-browse-link') || e.target === avatarDropArea || e.target.tagName === 'P' || e.target.tagName === 'I') {
+                    triggerFileInput();
+                }
+            });
+
+            // Handle file selection
+            avatarInput.addEventListener('change', (event) => {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    previewFile(files[0]);
+                }
+            });
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                avatarDropArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false); // Prevent browser from opening file
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area
+            ['dragenter', 'dragover'].forEach(eventName => {
+                avatarDropArea.addEventListener(eventName, () => avatarDropArea.classList.add('dragover'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                avatarDropArea.addEventListener(eventName, () => avatarDropArea.classList.remove('dragover'), false);
+            });
+
+            // Handle dropped files
+            avatarDropArea.addEventListener('drop', (event) => {
+                const dt = event.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    avatarInput.files = files; // Assign dropped files to the input
+                    previewFile(files[0]);
+                }
+            }, false);
+        }
+
+        // Function to preview the selected file
+        function previewFile(file) {
+            // Ensure it's an image
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file (e.g., JPG, PNG).');
+                avatarInput.value = ''; // Clear invalid file
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                avatarPreview.src = reader.result;
+            }
+        }
+
+        // Re-open avatar modal if validation errors occurred
+        const avatarForm = avatarModal.querySelector('form');
+        if (avatarForm && avatarForm.querySelector('.alert-danger')) {
+            openModal();
+        }
+    }
+    // END: Avatar Upload Modal Logic
 });

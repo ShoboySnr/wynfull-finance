@@ -72,8 +72,12 @@
                 <div class="metric-card confidence-card">
                     <h3>Confidence Score</h3>
                     <div class="confidence-circle">
-                        <div class="confidence-progress">
-                            <span class="confidence-value">{{ $confidence['score'] ?? 0 }}</span>
+                        @php
+                            $score = $confidence['score'] ?? 0;
+                            $degree = round($score * 3.6); // 1% = 3.6 degrees
+                        @endphp
+                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">
+                            <span class="confidence-value">{{ $score }}</span>
                         </div>
                     </div>
                 </div>

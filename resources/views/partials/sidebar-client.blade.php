@@ -26,12 +26,12 @@
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('ai.client') ? 'active' : '' }}">
-            <a href="{{ route('ai.client') }}" class="nav-link" data-page="wynfull-ai">
-                <i class="fas fa-robot"></i>
-                <span>Wynfull AI</span>
-            </a>
-        </li>
+{{--        <li class="nav-item {{ request()->routeIs('ai.client') ? 'active' : '' }}">--}}
+{{--            <a href="{{ route('ai.client') }}" class="nav-link" data-page="wynfull-ai">--}}
+{{--                <i class="fas fa-robot"></i>--}}
+{{--                <span>Wynfull AI</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
         <li class="nav-item {{ request()->routeIs('coaching.client') ? 'active' : '' }}">
             <a href="{{ route('coaching.client') }}" class="nav-link" data-page="coaching">
                 <i class="fas fa-user-tie"></i>
@@ -44,12 +44,12 @@
                 <span>Messaging</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('plans.client') ? 'active' : '' }}">
-            <a href="{{ route('plans.client') }}" class="nav-link" data-page="plans">
-                <i class="fas fa-credit-card"></i>
-                <span>Plans</span>
-            </a>
-        </li>
+{{--        <li class="nav-item {{ request()->routeIs('plans.client') ? 'active' : '' }}">--}}
+{{--            <a href="{{ route('plans.client') }}" class="nav-link" data-page="plans">--}}
+{{--                <i class="fas fa-credit-card"></i>--}}
+{{--                <span>Plans</span>--}}
+{{--            </a>--}}
+{{--        </li>--}}
         <li class="nav-item {{ request()->routeIs('account.client') ? 'active' : '' }}">
             <a href="{{ route('account.client') }}" class="nav-link" data-page="account">
                 <i class="fas fa-user-cog"></i>

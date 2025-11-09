@@ -48,4 +48,9 @@ class AccountController extends Controller
 
         return back()->with('success', 'Password changed successfully!');
     }
+
+    public function updateAvatar()
+    {
+
+    }
 }
