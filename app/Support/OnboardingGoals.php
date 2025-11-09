@@ -29,4 +29,54 @@ class OnboardingGoals
             default             => null,
         };
     }
+
+    /**
+     * Returns an ordered array of labels for the user’s latest financial situations.
+     * Example: ['Struggling with debt', 'Living paycheck to paycheck', ...]
+     */
+    public static function financialSituationsForUser(int $userId): array
+    {
+        $co = ClientOnboarding::where('user_id', $userId)
+            ->orderByDesc('completed_at')
+            ->first();
+
+        if (!$co) return [];
+
+        $raw = Arr::get($co->answers, 'financial_situation', []);
+        $other = trim((string) Arr::get($co->answers, 'financial_situation_other', ''));
+
+        // Accept array or comma/pipe-separated string just in case
+        if (is_string($raw)) {
+            $raw = preg_split('/[,\|]/', $raw) ?: [];
+        }
+
+        // Normalize keys and filter empties
+        $keys = array_values(array_filter(array_map(
+            fn ($v) => trim((string)$v),
+            (array) $raw
+        )));
+
+        // Map to human labels
+        $map = [
+            'struggling-debt'       => 'struggling with debt',
+            'paycheck-to-paycheck'  => 'paycheck to paycheck',
+            'okay-not-saving'       => 'okay not saving',
+            'saving-regularly'      => 'saving regularly',
+            'confident-focused'     => 'Confident and focused',
+        ];
+
+        $labels = [];
+        foreach ($keys as $k) {
+            if (isset($map[$k])) {
+                $labels[] = $map[$k];
+            }
+        }
+
+        if ($other !== '') {
+            $labels[] = $other;
+        }
+
+        // De-duplicate while preserving order
+        return array_values(array_unique($labels));
+    }
 }

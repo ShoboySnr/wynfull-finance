@@ -1589,7 +1589,7 @@ textarea:focus {
     color: var(--text-primary);
 }
 
-/* Phase Chart Styles */
+/* START: Dynamic Phase Chart Styles */
 .phase-chart {
     display: flex;
     flex-direction: column;
@@ -1607,27 +1607,40 @@ textarea:focus {
     flex: 1;
     border-radius: 4px 4px 0 0;
     min-width: 40px;
+
+    /* START: This is the "down" state */
+    height: 25%;
+    opacity: 0.5;
+    /* END: This is the "down" state */
+
+    transition: height 0.4s ease, opacity 0.4s ease;
 }
 
-.phase-bar.reset-rewire {
-    background: #22D3EE;
+/* Keep the background colors */
+.phase-bar.reset-rewire { background: #22D3EE; }
+.phase-bar.take-control { background: #06B6D4; }
+.phase-bar.grow-multiply { background: #10B981; }
+.phase-bar.sustain-scale { background: #F59E0B; }
+
+/* START: These are the "up" (active) states */
+.phase-bar.reset-rewire.active {
     height: 60%;
+    opacity: 1;
 }
-
-.phase-bar.take-control {
-    background: #06B6D4;
+.phase-bar.take-control.active {
     height: 80%;
+    opacity: 1;
 }
-
-.phase-bar.grow-multiply {
-    background: #10B981;
+.phase-bar.grow-multiply.active {
     height: 90%;
+    opacity: 1;
 }
-
-.phase-bar.sustain-scale {
-    background: #F59E0B;
+.phase-bar.sustain-scale.active {
     height: 100%;
+    opacity: 1;
 }
+/* END: These are the "up" (active) states */
+
 
 .phase-labels {
     display: flex;
@@ -1638,8 +1651,23 @@ textarea:focus {
 .phase-label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text-primary);
+
+    /* START: Make labels default to inactive color */
+    color: var(--text-light);
+    text-align: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    /* END: Make labels default to inactive color */
+
+    transition: color 0.4s ease;
 }
+
+/* START: Active label style */
+.phase-label.active {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+/* END: Active label style */
 
 /* Primary Goals List */
 .goals-list {

@@ -59,6 +59,7 @@ class ClientDashboardController extends Controller
                 'multiplier' => $card['multiplier'] ?? null,
             ])->log('Viewed Emergency Fund card');
 
+        $financialSituations = OnboardingGoals::financialSituationsForUser($user->id);
 
         $activities = Activity::query()
             ->where(function ($q) use ($user) {
@@ -77,6 +78,7 @@ class ClientDashboardController extends Controller
             'financialKnowledge' => $financialKnowledge,
             'wealthCards' => $wealthCards,
             'activities' => $activities,
+            'financialSituations' => $financialSituations
         ]);
     }
 }

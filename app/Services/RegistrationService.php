@@ -66,6 +66,7 @@ class RegistrationService
                 'password' => Hash::make($randomPassword),
                 'is_active'=> false,
             ]);
+
             $user->assignRole('coach');
 
             CoachProfile::create([
