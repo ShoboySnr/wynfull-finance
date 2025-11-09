@@ -144,10 +144,10 @@ class ConfidenceScoringService
 
         // Optional band labels (tweak names to taste)
         $band = match (true) {
-            $score <= 25 => 'Not confident',
-            $score <= 50 => 'Somewhat confident',
-            $score <= 75 => 'Confident',
-            default      => 'Very confident',
+            $score <= 25 => 'Low',
+            $score <= 50 => 'Mid',
+            $score <= 75 => 'High',
+            default      => 'Low',
         };
 
         return [

@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->group(function () {
     Route::get('/dashboard', [CoachDashboardController::class, 'index'])->name('dashboard');
     Route::get('/clients', [CoachClientsController::class, 'index'])->name('clients');
+    Route::get('/clients/{user}', [CoachClientsController::class, 'show'])->name('client.show');
     Route::get('/messages', [CoachMessagesController::class, 'index'])->name('messages');
 
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');

@@ -24,6 +24,7 @@ class ComputeAndStoreConfidenceService
 
         $result = $this->scorer->computeFromAnswers($co->answers);
 
+//        dd($result);
         if ($persist) {
             DB::table('client_confidence_scores')->updateOrInsert(
                 ['user_id' => $user->id],

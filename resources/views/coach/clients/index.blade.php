@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Assuming coach layout --}}
+@extends('layouts.app')
 
 @section('title', 'My Clients')
 
@@ -15,9 +15,9 @@
                 {{-- Adjust counts dynamically later if needed --}}
                 <a href="{{ route('coach.clients') }}" class="filter-tab {{ !request('filter') ? 'active' : '' }}">All Clients</a>
                 <a href="{{ route('coach.clients', ['filter' => 'active']) }}" class="filter-tab {{ request('filter') == 'active' ? 'active' : '' }}">Active</a>
-                <a href="{{ route('coach.clients', ['filter' => 'premium']) }}" class="filter-tab {{ request('filter') == 'premium' ? 'active' : '' }}">Premium</a>
-                <a href="{{ route('coach.clients', ['filter' => 'growth']) }}" class="filter-tab {{ request('filter') == 'growth' ? 'active' : '' }}">Growth</a>
-                <a href="{{ route('coach.clients', ['filter' => 'attention']) }}" class="filter-tab {{ request('filter') == 'attention' ? 'active' : '' }}">Needs Attention</a>
+{{--                <a href="{{ route('coach.clients', ['filter' => 'premium']) }}" class="filter-tab {{ request('filter') == 'premium' ? 'active' : '' }}">Premium</a>--}}
+{{--                <a href="{{ route('coach.clients', ['filter' => 'growth']) }}" class="filter-tab {{ request('filter') == 'growth' ? 'active' : '' }}">Growth</a>--}}
+{{--                <a href="{{ route('coach.clients', ['filter' => 'attention']) }}" class="filter-tab {{ request('filter') == 'attention' ? 'active' : '' }}">Needs Attention</a>--}}
             </div>
             <div class="clients-search">
                 <form action="{{ route('coach.clients') }}" method="GET">
@@ -49,10 +49,10 @@
                         <img src="{{ $client['avatar_path'] ? asset('storage/' . $client['avatar_path']) : 'https://placehold.co/60x60/EBF0FF/0E4DA4?text=' . strtoupper(substr($client['name'], 0, 1)) }}" alt="{{ $client['name'] }}">
                         <div class="client-info">
                             <h3>{{ $client['name'] }}</h3>
-                            <p>{{ $client['plan_name'] ?? 'N/A' }} • {{ Str::ucfirst($client['status'] ?? 'Active') }}</p>
+                            <p>{{ $client['plan_name'] ?? '' }} • {{ Str::ucfirst($client['status'] ?? 'Active') }}</p>
                             <div class="client-tags">
                                 @if($client['plan_name'])
-                                    <span class="tag tag-{{ $planClass }}">{{ $client['plan_name'] }}</span>
+                                    <span class="tag tag-{{ $planClass }}"></span>
                                 @endif
                                  <span class="tag">{{ $client['primary_goal_label'] }}</span>
                             </div>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="client-actions">
                         <a href="{{ route('coach.messages') }}" class="btn-secondary btn-sm"><i class="fas fa-comment-dots"></i> Message</a>
-                        <a href="{{-- route('admin.users.show', $client) --}}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
+                        <a href="{{ route('coach.client.show', ['user' => $client['id']]) }}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
                     </div>
                 </div>
             @empty

@@ -42,7 +42,6 @@ class ClientDashboardController extends Controller
 
         $financialKnowledge = $financialKnowledgeService->forUser($user);
 
-
         $monthlyExpenses = (float) ($user->monthly_expenses ?? 1000);
 
         $wealthCards = $wealthCardsService->emergencyFundCard($user, $monthlyExpenses);

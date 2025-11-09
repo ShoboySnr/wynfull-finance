@@ -3030,3 +3030,113 @@ input:checked + .slider:before {
     word-break: break-all; /* Handle long user-agent strings */
 }
 /* END: Activity Detail Modal Styles */
+
+/* START: Client Profile Page Styles */
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 2rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.profile-header-card {
+    background: var(--background-primary);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap; /* Allow wrapping on mobile */
+}
+
+.profile-avatar-large {
+    position: relative;
+    flex-shrink: 0;
+}
+.profile-avatar-large img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--white);
+    box-shadow: var(--shadow-md);
+}
+.status-dot-large {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid var(--white);
+}
+.status-dot-large.online { background: #22c55e; }
+.status-dot-large.offline { background: #6b7280; }
+
+.profile-info-main {
+    flex-grow: 1;
+}
+.profile-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+.profile-meta-details {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.profile-meta-details span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.profile-meta-details i {
+    color: var(--text-light);
+}
+
+.profile-actions-main {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Responsive for Client Profile Page */
+@media (max-width: 768px) {
+    .profile-header-card {
+        flex-direction: column; /* Stack header card */
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    .profile-info-main {
+        width: 100%;
+    }
+    .profile-name {
+        font-size: 1.5rem;
+    }
+    .profile-meta-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .profile-actions-main {
+        width: 100%;
+        flex-direction: column; /* Stack buttons */
+    }
+    .profile-actions-main .btn-primary,
+    .profile-actions-main .btn-secondary {
+        width: 100%;
+        justify-content: center; /* Center text in button */
+    }
+
+    .client-activity {
+        /* On mobile, this will already be full-width due to grid stacking */
+    }
+}
+/* END: Client Profile Page Styles */

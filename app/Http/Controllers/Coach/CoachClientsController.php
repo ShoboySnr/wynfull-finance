@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Coach;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Clients\GoalScoringService;
+use App\Services\Dashboard\CoachDashboardService;
 use App\Services\Onboarding\ComputeAndStoreConfidenceService;
+use App\Services\Onboarding\DebtJourneyService;
+use App\Services\Onboarding\FinancialKnowledgeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +17,11 @@ class CoachClientsController extends Controller
 {
     public function __construct(
         private readonly GoalScoringService               $goals,
-        private readonly ComputeAndStoreConfidenceService $confidence
+        private readonly ComputeAndStoreConfidenceService $confidence,
+        private readonly CoachDashboardService $dashboardService,
+        private readonly ComputeAndStoreConfidenceService $computeAndStoreConfidenceService,
+        private readonly DebtJourneyService $debtJourneyService,
+        private readonly FinancialKnowledgeService $financialKnowledgeService
     )
     {
     }
@@ -94,9 +101,9 @@ class CoachClientsController extends Controller
 
         activity()
             ->useLog('clients')
-            ->performedOn($coach)           // 👈 attach subject (subject_type/id)
-            ->causedBy($coach)              // causer remains the coach
-            ->event('coach.clients.index.viewed')
+            ->performedOn($coach)
+            ->causedBy($coach)
+            ->event('coach clients index page viewed')
             ->withProperties([
                 'returned'        => $data->count(),
                 'page'            => $paginator->currentPage(),
@@ -109,5 +116,21 @@ class CoachClientsController extends Controller
             ->log('Coach viewed clients list');
 
         return view('coach.clients.index', ['clients' => $data, 'meta' => $meta]);
+    }
+
+    public function show(User $user)
+    {
+        $recentActivities = $this->dashboardService->recentActivitiesForCoach($user->id, 3);
+        $confidence = $this->computeAndStoreConfidenceService->forUser($user, persist: true);
+        $journey = $this->debtJourneyService->forUser($user);
+        $financialKnowledge = $this->financialKnowledgeService->forUser($user);
+        return view('coach.clients.profile.show', [
+            'client' => $user,
+            'profile' => $user->profile,
+            'recentActivities' => $recentActivities,
+            'confidence' => $confidence,
+            'journey' => $journey,
+            'financialKnowledge' => $financialKnowledge
+        ]);
     }
 }
