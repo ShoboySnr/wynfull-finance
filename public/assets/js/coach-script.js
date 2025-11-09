@@ -3,7 +3,61 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize coach dashboard functionality
     initializeCoachDashboard();
+
+
+    // START: Activity Detail Modal Logic
+    const activityList = document.getElementById('activityList');
+    const activityModal = document.getElementById('activityDetailModal');
+
+    if (activityList && activityModal) {
+        const closeBtn = document.getElementById('activityModalClose');
+        const cancelBtn = document.getElementById('activityModalCancel');
+
+        const modalClientName = document.getElementById('modalClientName');
+        const modalActivityDescription = document.getElementById('modalActivityDescription');
+        const modalActivityTimestamp = document.getElementById('modalActivityTimestamp');
+        const modalActivityIp = document.getElementById('modalActivityIp');
+        const modalActivityUserAgent = document.getElementById('modalActivityUserAgent');
+
+        const openModal = () => activityModal.classList.add('active');
+        const closeModal = () => activityModal.classList.remove('active');
+
+        // Use event delegation on the list
+        activityList.addEventListener('click', function(event) {
+            const detailsButton = event.target.closest('.view-activity-details');
+
+            if (detailsButton) {
+                // 1. Get data from the button's attributes
+                const description = detailsButton.dataset.description;
+                const clientName = detailsButton.dataset.clientName;
+                const timestamp = detailsButton.dataset.timestamp;
+                const ip = detailsButton.dataset.ip;
+                const userAgent = detailsButton.dataset.userAgent;
+
+                // 2. Populate the modal
+                modalClientName.textContent = clientName;
+                modalActivityDescription.textContent = description;
+                modalActivityTimestamp.textContent = timestamp;
+                modalActivityIp.textContent = ip;
+                modalActivityUserAgent.textContent = userAgent;
+
+                // 3. Show the modal
+                openModal();
+            }
+        });
+
+        // 4. Add close listeners
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        activityModal.addEventListener('click', function(event) {
+            if (event.target === activityModal) {
+                closeModal();
+            }
+        });
+    }
+// END: Activity Detail Modal Logic
 });
+
 
 function initializeCoachDashboard() {
     // Get all navigation links and pages

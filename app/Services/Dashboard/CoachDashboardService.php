@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 
 class CoachDashboardService
 {
@@ -98,12 +99,14 @@ class CoachDashboardService
      */
     public function recentActivitiesForCoach(int $coachId, int $limit = 10): Collection
     {
-        return DB::table('activity_log')
-        ->where('causer_id', $coachId)
+        return Activity::query()
+            ->with([
+                'subject',
+                'causer.profile:id,user_id,first_name,last_name,avatar_path,professional_title'
+            ])
+            ->where('causer_id', $coachId)
             ->orderByDesc('created_at')
             ->limit($limit)
-            ->get([
-                'id', 'description', 'subject_type', 'subject_id', 'properties', 'created_at'
-            ]);
+            ->get(['id', 'description', 'subject_type', 'subject_id', 'properties', 'causer_id', 'created_at']);
     }
 }
