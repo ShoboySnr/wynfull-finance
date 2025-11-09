@@ -134,4 +134,5 @@
         const coachAvailability = @json($availability ?? []);
     </script>
     <script src="{{ asset('assets/js/client-coaching.js') }}"></script>
+    <script src="{{ asset('assets/js/script.js') }}" defer></script>
 @endpush
