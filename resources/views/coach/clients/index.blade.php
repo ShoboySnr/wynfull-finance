@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="client-actions">
-                        <a href="#" class="btn-secondary btn-sm"><i class="fas fa-comment-dots"></i> Message</a>
+                        <a href="{{ route('coach.messages') }}" class="btn-secondary btn-sm"><i class="fas fa-comment-dots"></i> Message</a>
                         <a href="{{-- route('admin.users.show', $client) --}}" class="btn-primary btn-sm"><i class="fas fa-eye"></i> View Profile</a>
                     </div>
                 </div>
@@ -95,6 +95,6 @@
 @endsection
 
 @push('scripts')
-    {{-- <script src="{{ asset('assets/js/coach-clients.js') }}"></script> --}}
+     <script src="{{ asset('assets/js/coach-clients.js') }}"></script>
 @endpush
 

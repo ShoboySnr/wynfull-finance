@@ -92,16 +92,21 @@ class CoachClientsController extends Controller
             'last_page' => $paginator->lastPage(),
         ];
 
-        activity()->useLog('clients')
-            ->causedBy($coach)
-            ->event('coach_clients_index_viewed')
+        activity()
+            ->useLog('clients')
+            ->performedOn($coach)           // 👈 attach subject (subject_type/id)
+            ->causedBy($coach)              // causer remains the coach
+            ->event('coach.clients.index.viewed')
             ->withProperties([
-                'returned' => $data->count(),
-                'page' => $paginator->currentPage(),
-                'per_page' => $paginator->perPage(),
+                'returned'        => $data->count(),
+                'page'            => $paginator->currentPage(),
+                'per_page'        => $paginator->perPage(),
                 'include_metrics' => $includeMetrics,
-                'ip' => $request->ip(),
-            ])->log('Coach viewed clients list');
+                'ip'              => $request->ip(),
+                'user_agent'      => substr((string) $request->userAgent(), 0, 255),
+                'client_ids'      => $data->pluck('id')->all(),
+            ])
+            ->log('Coach viewed clients list');
 
         return view('coach.clients.index', ['clients' => $data, 'meta' => $meta]);
     }

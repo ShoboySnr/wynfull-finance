@@ -37,7 +37,7 @@ class CoachDashboardController extends Controller
         // Recent activities by this coach
         $recentActivities = $this->service->recentActivitiesForCoach($coachId, 3);
 
-//        dd($recentActivities);
+        dd($recentActivities);
         return view('dashboards.coach', [
             'user'                  => $user,
             'specialtiesCsv'        => $specialtiesCsv,
