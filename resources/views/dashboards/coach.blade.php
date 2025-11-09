@@ -101,13 +101,13 @@
                             <i class="fas fa-file-alt"></i>
                             <h3>Create Resource</h3>
                             <p>Upload new educational materials</p>
-                            <button class="btn-secondary">Upload</button>
+                            <a href="{{ route('coach.resources') }}" class="btn-secondary">Upload</a>
                         </div>
                         <div class="quick-action-card">
                             <i class="fas fa-calendar-plus"></i>
                             <h3>Schedule Session</h3>
                             <p>Book a new coaching session</p>
-                            <button class="btn-secondary">Schedule</button>
+                            <a href="{{ route('coach.schedule') }}" class="btn-secondary">Schedule</a>
                         </div>
                     </div>
                 </div>

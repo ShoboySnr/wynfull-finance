@@ -254,7 +254,9 @@
                 <div>
                     <div class="brand">
                         <div class="logo">
-                            <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
+                            <a href="/">
+                                <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
+                            </a>
                         </div>
                         <div>
                             <h1>Wynfull</h1>
@@ -292,7 +294,9 @@
                 <div class="auth-card">
                     <div class="card-head">
                         <div class="logo">
-                            <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
+                            <a href="/">
+                                <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
+                            </a>
                         </div>
                         <h2>Welcome back</h2>
                         <p>Please enter your details to sign in.</p>
