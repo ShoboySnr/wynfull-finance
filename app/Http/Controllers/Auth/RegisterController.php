@@ -17,13 +17,13 @@ class RegisterController extends Controller
     {
         $user = $this->service->registerClient($request->validated());
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.login')->with('status', 'Registration successful, awaiting admin approval');
     }
 
     public function registerCoach(RegisterCoachRequest $request): RedirectResponse
     {
         $user = $this->service->registerCoach($request->validated());
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.login')->with('status', 'Registration successful, awaiting admin approval');
     }
 }
