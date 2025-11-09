@@ -26,10 +26,10 @@
         </tr>
     </table>
 
-    @include('mail.partials.button', [
-      'url' => $actionUrl ?? '#',
-      'label' => 'Activate User'
-    ])
+{{--    @include('mail.partials.button', [--}}
+{{--      'url' => $actionUrl ?? '#',--}}
+{{--      'label' => 'Activate User'--}}
+{{--    ])--}}
 
     <p class="text" style="margin:16px 0 0; color:#6B7280; font-size:13px; line-height:20px;">
         If you didn’t expect this, you can safely ignore this email.

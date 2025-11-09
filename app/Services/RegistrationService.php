@@ -84,6 +84,13 @@ class RegistrationService
                     'status'     => 'pending_activation'
                 ])->log('coach_registered');
 
+            Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
+
+            activity()->causedBy($user)
+                ->performedOn($user)
+                ->withProperties(['notification' => 'NewUserPendingActivation'])
+                ->log('notification_dispatched');
+
             return $user;
         });
     }
