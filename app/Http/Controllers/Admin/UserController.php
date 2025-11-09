@@ -65,7 +65,7 @@ class UserController extends Controller
 
         activity()->useLog('admin')
             ->causedBy($request->user())
-            ->event('admin_view_user_details')
+            ->event('admin view user details')
             ->withProperties([
                 'ip'      => $request->ip()
             ])->log('Admin viewed User profile for ' . $user->name);

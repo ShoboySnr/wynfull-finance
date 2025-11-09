@@ -12,7 +12,7 @@
     --soft-gray: #F5F7FA;
     --accent-yellow: #F5C518;
     --white: #FFFFFF;
-    
+
     /* Light Theme Variables */
     --wynfull-blue: #0E4DA4;
     --wynfull-blue-light: #1E5BB8;
@@ -504,6 +504,7 @@ body {
 .action-card.primary .action-btn:hover {
     background: rgba(255, 255, 255, 0.9);
 }
+
 
 /* Dashboard Grid */
 .dashboard-grid {
@@ -1955,22 +1956,22 @@ font-weight: 400;
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .dashboard-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-    
+
     .phase-bar-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
     }
-    
+
     .phase-label {
         min-width: auto;
     }
-    
+
     .plans-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -3703,23 +3704,23 @@ input:checked + .slider:before {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .profile-actions {
         align-self: stretch;
     }
-    
+
     .chart-section {
         grid-template-columns: 1fr;
     }
-    
+
     .overview-cards {
         grid-template-columns: 1fr;
     }
-    
+
     .recommendations-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .habits-grid {
         grid-template-columns: 1fr;
     }
@@ -4222,82 +4223,82 @@ input:checked + .slider:before {
         transform: translateX(-100%);
         transition: transform 0.3s ease;
     }
-    
+
     .sidebar.open {
         transform: translateX(0);
     }
-    
+
     .main-content {
         margin-left: 0;
     }
-    
+
     .menu-toggle {
         display: block;
     }
-    
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .quick-actions {
         grid-template-columns: 1fr;
     }
-    
+
     .progress-card {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .content-wrapper {
         padding: 1rem;
     }
-    
+
     .resource-header {
         flex-direction: column;
         align-items: stretch;
         gap: 1.5rem;
     }
-    
+
     .resource-controls {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .resource-search {
         width: 100%;
     }
-    
+
     .filter-controls {
         flex-direction: column;
     }
-    
+
     .filter-dropdown {
         width: 100%;
     }
-    
+
     .phase-header {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
     }
-    
+
     .phase-progress {
         flex-direction: column;
         gap: 0.5rem;
         text-align: center;
     }
-    
+
     .module-item {
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
         text-align: center;
     }
-    
+
     .module-resources {
         justify-content: center;
     }
-    
+
     .tools-grid {
         grid-template-columns: 1fr;
     }
@@ -5995,11 +5996,11 @@ button.join-call {
         width: 100%;
         right: -100%;
     }
-    
+
     .walkthrough-actions {
         flex-direction: column;
     }
-    
+
     .walkthrough-actions .btn-primary,
     .walkthrough-actions .btn-secondary {
         flex: none;
@@ -6217,7 +6218,7 @@ button.join-call {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1.5rem;
     }
-    
+
     .difference-card {
         padding: 2rem 1.5rem;
     }
@@ -6227,32 +6228,32 @@ button.join-call {
     .why-different {
         padding: 3rem 0;
     }
-    
+
     .why-different .section-header h2 {
         font-size: 2rem;
     }
-    
+
     .difference-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         margin-bottom: 3rem;
     }
-    
+
     .difference-card {
         padding: 2rem 1.5rem;
     }
-    
+
     .why-different-cta {
         padding: 2rem 1.5rem;
         margin: 1.5rem 1rem 0;
         border-radius: 16px;
     }
-    
+
     .why-different-description {
         font-size: 1.2rem;
         margin-bottom: 2rem;
     }
-    
+
     .movement-button {
         padding: 1rem 2.5rem;
         font-size: 1.1rem;
@@ -6264,28 +6265,28 @@ button.join-call {
     .why-different .section-header h2 {
         font-size: 1.75rem;
     }
-    
+
     .difference-card {
         padding: 1.5rem 1rem;
     }
-    
+
     .difference-icon {
         width: 70px;
         height: 70px;
     }
-    
+
     .difference-icon i {
         font-size: 1.75rem;
     }
-    
+
     .difference-card h3 {
         font-size: 1.3rem;
     }
-    
+
     .why-different-description {
         font-size: 1.1rem;
     }
-    
+
     .movement-button {
         padding: 0.875rem 2rem;
         font-size: 1rem;
