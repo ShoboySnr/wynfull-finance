@@ -40,18 +40,30 @@ class CoachingController extends Controller
             ])
             ->log('Viewed assigned coach');
 
-        $upcoming = CoachingSession::query()
+        // If no coach, return early with safe defaults
+        if (! $coach) {
+            return view('client.coaching.index', [
+                'coach'        => null,
+                'upcoming'     => collect(),
+                'availability' => collect(),
+                'notice'       => 'No active coach assigned yet. Please contact support or wait for an assignment.',
+            ]);
+        }
+
+        $upcoming =  CoachingSession::query()
             ->betweenCoachAndClient($coach->id, $client->id)
             ->upcoming()
             ->get();
 
 
-//        dd($upcoming);
-        // Fetch slots based on coach availability settings
-        $tz   = optional($coach->availabilitySetting)->timezone ?? config('app.timezone');
+        // Availability + slots (use coach->settings; avoid the old availabilitySetting name)
+        $settings = $coach->settings;
+        $tz = $settings->timezone ?? config('app.timezone');
         $date = now($tz)->toDateString();
 
-        $slots = $this->clientBookingService->generateSlots($coach, $date);
+        $slots = $settings
+            ? $this->clientBookingService->generateSlots($coach, $date)
+            : collect();
 
         activity()->useLog('clients')
             ->performedOn($request->user())

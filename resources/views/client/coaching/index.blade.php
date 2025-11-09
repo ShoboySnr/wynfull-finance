@@ -91,36 +91,38 @@
                 <button class="modal-close" id="bookSessionModalClose">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('client.booking.store', $coach->id) }}" method="POST" id="bookSessionForm">
-                    @csrf
-                    @if($coach)
-                        <input type="hidden" name="coach_id" value="{{ $coach->id }}">
-                    @endif
-                    <input type="hidden" name="starts_at" id="starts_at_utc">
-                    <input type="hidden" name="ends_at" id="ends_at_utc">
+               @if($coach)
+                    <form action="{{ route('client.booking.store', $coach->id) }}" method="POST" id="bookSessionForm">
+                        @csrf
+                        @if($coach)
+                            <input type="hidden" name="coach_id" value="{{ $coach->id }}">
+                        @endif
+                        <input type="hidden" name="starts_at" id="starts_at_utc">
+                        <input type="hidden" name="ends_at" id="ends_at_utc">
 
-                    <div class="form-group">
-                        <label for="session_date">1. Select a Date</label>
-                        <input type="date" id="session_date" name="date" class="form-input" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>2. Select an Available Time</label>
-                        <div class="time-slots-container" id="timeSlotsContainer">
-                            <p class="time-slot-placeholder">Please select a date to see available times.</p>
+                        <div class="form-group">
+                            <label for="session_date">1. Select a Date</label>
+                            <input type="date" id="session_date" name="date" class="form-input" required>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="session_notes">3. Notes for your coach (Optional)</label>
-                        <textarea id="session_notes" name="notes" class="form-textarea" rows="3" placeholder="What would you like to discuss?"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label>2. Select an Available Time</label>
+                            <div class="time-slots-container" id="timeSlotsContainer">
+                                <p class="time-slot-placeholder">Please select a date to see available times.</p>
+                            </div>
+                        </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn-secondary" id="bookSessionModalCancel">Cancel</button>
-                        <button type="submit" class="btn-primary" id="requestSessionBtn" disabled>Request Session</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label for="session_notes">3. Notes for your coach (Optional)</label>
+                            <textarea id="session_notes" name="notes" class="form-textarea" rows="3" placeholder="What would you like to discuss?"></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" id="bookSessionModalCancel">Cancel</button>
+                            <button type="submit" class="btn-primary" id="requestSessionBtn" disabled>Request Session</button>
+                        </div>
+                    </form>
+               @endif
             </div>
         </div>
     </div>
