@@ -77,6 +77,7 @@ class UserController extends Controller
             'lastActiveAt'  => $context['lastActiveAt'],
             'totalSessions' => $context['totalSessions'],
             'assignedCoachIds' => $context['assignedCoachIds'],
+            'profile' => $user->profile
         ]);
     }
 }

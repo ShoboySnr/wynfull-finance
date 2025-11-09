@@ -16,7 +16,7 @@
             <div class="profile-header">
                 <div class="profile-avatar-large-container">
                     <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face&auto=format"
+                        src="{{ $profile?->avatar_path ? asset('storage/' . $profile->avatar_path) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($user->name, 0, 1)) }}"
                         alt="{{ $user->name }}" class="profile-avatar-large">
                     @if($user->is_active)
                         <div class="profile-status online" title="Active"></div>
