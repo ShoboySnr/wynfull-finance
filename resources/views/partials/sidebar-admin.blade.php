@@ -45,7 +45,7 @@
     </nav>
 
     <div class="sidebar-footer">
-        <a href="{{ route('admin.profiles') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
+        <a href="{{ route('profile.show') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
             <div class="user-details">
                 <span class="user-name">{{ $authUser->name ?? 'Coach Name' }}</span>
