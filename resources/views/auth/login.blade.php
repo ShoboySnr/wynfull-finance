@@ -136,10 +136,11 @@
             background: var(--background-card);
         }
         .auth-card {
-            width: 100%; max-width: 440px;
+            width: 100%; 
+            max-width: 440px;
             animation: fadeIn 0.6s ease-out 0.2s;
             animation-fill-mode: both;
-            padding: 40px;
+            padding: 30px;
         }
         .card-head { text-align: center; margin-bottom: 32px; }
         .card-head .logo {
@@ -368,13 +369,6 @@
                                              alt="Google logo" width="18" height="18">
                                         Sign in with Google
                                     </a>
-                                </div>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <div class="meta">
-                                    Don’t have an account?
-                                    <a href="/#contact">Create one</a>
                                 </div>
                             @endif
 
