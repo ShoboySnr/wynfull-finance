@@ -137,10 +137,10 @@
                     <h3>Investing</h3>
                     <div class="investing-content">
                         <span class="investing-label">Contribution score</span>
-                        <span class="investing-status">{{ $investingStatus['label'] }}</span>
+                        <span class="investing-status">{{ $investingStatus['label'] ?? '' }}</span>
                         <div class="investing-progress">
                             <div class="investing-bar">
-                                <div class="investing-fill" style="width: {{ $investingWidth }};"></div>
+                                <div class="investing-fill" style="width: {{ $investingWidth ?? 0 }};"></div>
                             </div>
                         </div>
                     </div>
