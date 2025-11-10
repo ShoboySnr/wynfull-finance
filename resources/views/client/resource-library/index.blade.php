@@ -142,185 +142,69 @@
         </div>
         <div id="tools-templates" class="resource-tab-content">
             <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="monthly-budget-tracker"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-file-excel"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Monthly Budget Tracker</h3>
-                        <p>Comprehensive Excel template for tracking income, expenses, and savings goals</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Template</span>
+                @forelse ($toolsAndTemplates as $module)
+                    @php
+                        $isModuleComplete = !$module->completions->isEmpty();
+                        $moduleIconClass = match ($module->type) {
+                            'template' => 'fa-file-alt', 'pdf' => 'fa-file-pdf',
+                            'word' => 'fa-file-word', 'excel' => 'fa-file-excel',
+                            default => 'fa-tools', // Default for tools
+                        };
+                        $linkUrl = '#'; // Default
+                        if ($module->type === 'video' && $module->video_link) {
+                            $linkUrl = $module->video_link;
+                        } elseif ($module->file_path) {
+                            $linkUrl = asset('storage/' . $module->file_path);
+                        }
+                    @endphp
+                    <div class="tool-card {{ $isModuleComplete ? 'completed' : '' }}" data-module-id="{{ $module->id }}">
+                        <div class="tool-accent"></div>
+{{--                         <button class="walkthrough-indicator"><i class="fas fa-play"></i></button>--}}
+                        <div class="tool-icon">
+                            <i class="fas {{ $moduleIconClass }}"></i>
                         </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="debt-payoff-calculator"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Debt Payoff Calculator</h3>
-                        <p>Calculate your debt elimination timeline using snowball or avalanche methods</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Template</span>
+                        <div class="tool-content">
+                            <h3>{{ $module->title }}</h3>
+                            <p>{{ $module->description }}</p>
+                            <div class="tool-formats">
+                                <span class="format-tag {{ strtolower($module->type) }}">{{ Str::ucfirst($module->type) }}</span>
+                            </div>
                         </div>
+                        {{-- Updated Download Button --}}
+                        <a href="{{ $linkUrl }}"
+                           target="_blank"
+                           class="tool-download-btn mark-complete-btn {{ $isModuleComplete ? 'secondary' : 'primary' }}"
+                           data-module-id="{{ $module->id }}">
+                            <i class="fas fa-download"></i>
+                            {{ $isModuleComplete ? 'Download Again' : 'Download' }}
+                        </a>
                     </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="emergency-fund-planner"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-piggy-bank"></i>
+{{--                    <div class="tool-card">--}}
+{{--                        <div class="tool-accent"></div>--}}
+{{--                        <button class="walkthrough-indicator" data-tool="monthly-budget-tracker"--}}
+{{--                                title="Watch walkthrough video">--}}
+{{--                            <i class="fas fa-play"></i>--}}
+{{--                        </button>--}}
+{{--                        <div class="tool-icon">--}}
+{{--                            <i class="fas fa-file-excel"></i>--}}
+{{--                        </div>--}}
+{{--                        <div class="tool-content">--}}
+{{--                            <h3>Monthly Budget Tracker</h3>--}}
+{{--                            <p>Comprehensive Excel template for tracking income, expenses, and savings goals</p>--}}
+{{--                            <div class="tool-formats">--}}
+{{--                                <span class="format-tag excel">Excel Template</span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <button class="tool-download-btn">--}}
+{{--                            <i class="fas fa-download"></i>--}}
+{{--                            Download--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+                @empty
+                    <div class="no-resources-message" style="grid-column: 1 / -1;">
+                        <p>No tools or templates are available at this time.</p>
                     </div>
-                    <div class="tool-content">
-                        <h3>Emergency Fund Planner</h3>
-                        <p>Calculate your ideal emergency fund size and track your progress</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Template</span>
-                            <span class="format-tag pdf">PDF Guide</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="investment-portfolio-tracker"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Investment Portfolio Tracker</h3>
-                        <p>Monitor your investment performance and asset allocation</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Template</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="financial-goals-worksheet"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Financial Goals Worksheet</h3>
-                        <p>Set and track SMART financial goals with actionable steps</p>
-                        <div class="tool-formats">
-                            <span class="format-tag pdf">PDF Worksheet</span>
-                            <span class="format-tag word">Word Doc</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="home-buying-readiness-checklist"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-home"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Home Buying Readiness Checklist</h3>
-                        <p>Comprehensive checklist to determine if you're ready to buy a home</p>
-                        <div class="tool-formats">
-                            <span class="format-tag pdf">PDF Checklist</span>
-                            <span class="format-tag excel">Excel Calculator</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="college-savings-planner"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>College Savings Planner</h3>
-                        <p>Plan and track savings for education expenses</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Template</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-accent"></div>
-                    <button class="walkthrough-indicator" data-tool="insurance-needs-calculator"
-                            title="Watch walkthrough video">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <div class="tool-icon">
-                        <i class="fas fa-umbrella"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Insurance Needs Calculator</h3>
-                        <p>Determine the right amount of life and disability insurance</p>
-                        <div class="tool-formats">
-                            <span class="format-tag excel">Excel Calculator</span>
-                            <span class="format-tag pdf">PDF Guide</span>
-                        </div>
-                    </div>
-                    <button class="tool-download-btn">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>

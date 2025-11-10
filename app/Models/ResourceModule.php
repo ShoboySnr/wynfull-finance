@@ -35,12 +35,7 @@ class ResourceModule extends Model
         return $this->belongsTo(ResourceCollection::class, 'resource_collection_id');
     }
 
-//    public function assignedUsers(): BelongsToMany
-//    {
-//        return $this->belongsToMany(User::class, 'resource_module_users', 'resource_module_id', 'user_id')
-//            ->withPivot(['completed_at'])
-//            ->withTimestamps();
-//    }
+
 
     public function approver(): BelongsTo
     {
@@ -50,6 +45,28 @@ class ResourceModule extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function scopeAccessibleViaCoaches($q, $coachIds)
+    {
+        return $q->whereIn('created_by', $coachIds)
+            ->whereHas('collection', fn($c) => $c->approved());
+    }
+
+    public function scopeWithCompletionFor($q, int $userId)
+    {
+        return $q->selectSub(function ($sq) use ($userId) {
+            $sq->from('resource_module_users')
+                ->select('completed_at')
+                ->whereColumn('resource_module_users.resource_module_id', 'resource_modules.id')
+                ->where('resource_module_users.user_id', $userId)
+                ->limit(1);
+        }, 'completed_at');
     }
 
     public function completions(): BelongsToMany

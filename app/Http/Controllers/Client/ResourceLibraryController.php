@@ -39,34 +39,21 @@ class ResourceLibraryController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $resourceModules = ResourceModule::query()
+        $toolsAndTemplates = ResourceModule::query()
             ->with([
                 'collection:id,title,coach_id',
                 'creator:id,name',
                 'creator.profile:id,user_id,first_name,last_name,avatar_path',
             ])
-            ->whereIn('created_by', $coachIds)
-            ->select([
-                'id',
-                'resource_collection_id',
-                'title',
-                'type',
-                'file_name',
-                'video_link',
-                'approved_at',
-                'created_by',
-            ])
-            ->addSelect([
-                'completed_at' => DB::table('resource_module_users')
-                    ->select('completed_at')
-                    ->whereColumn('resource_module_users.resource_module_id', 'resource_modules.id')
-                    ->where('resource_module_users.user_id', $client->id)
-                    ->limit(1),
-            ])
-            ->orderByDesc('approved_at')
+            ->accessibleViaCoaches($coachIds)
+            ->withCompletionFor($client->id)
+            ->select(['id','resource_collection_id','title', 'description', 'type','file_name', 'file_path', 'video_link','created_by'])
+            ->orderByDesc('id')
             ->paginate(12)
             ->withQueryString();
 
-        return view('client.resource-library.index', ['collections' => $collections]);
+//        dd($toolsAndTemplates);
+
+        return view('client.resource-library.index', ['collections' => $collections, 'toolsAndTemplates' => $toolsAndTemplates]);
     }
 }
