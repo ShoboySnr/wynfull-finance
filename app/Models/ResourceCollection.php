@@ -25,6 +25,10 @@ class ResourceCollection extends Model
         return $this->hasMany(ResourceModule::class);
     }
 
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
     public function scopeApproved($query)
     {
         return $query->whereNotNull('approved_at');

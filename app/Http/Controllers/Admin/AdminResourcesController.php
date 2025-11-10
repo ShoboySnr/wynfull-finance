@@ -12,7 +12,7 @@ class AdminResourcesController extends Controller
     {
         $status = strtolower((string) $request->query('status', ''));
 
-        $collections = ResourceCollection::with('modules')
+        $collections = ResourceCollection::with('modules', 'approver')
             ->when($status === 'approved', fn ($q) => $q->approved())
             ->when($status === 'pending',  fn ($q) => $q->pending())
             ->when($status === 'rejected', fn ($q) => $q->rejected())

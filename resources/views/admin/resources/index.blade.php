@@ -99,7 +99,6 @@
                     {{-- Display approval info if applicable --}}
                     @if($collection->status === 'approved' && $collection->approved_at)
                         <div class="approval-info">
-                            @dd($collection)
                             Approved by {{ $collection->approver->name ?? 'N/A' }} on {{ $collection->approved_at->format('M d, Y') }}
                         </div>
                     @endif
