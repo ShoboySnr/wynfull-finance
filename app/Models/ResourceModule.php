@@ -35,6 +35,13 @@ class ResourceModule extends Model
         return $this->belongsTo(ResourceCollection::class, 'resource_collection_id');
     }
 
+//    public function assignedUsers(): BelongsToMany
+//    {
+//        return $this->belongsToMany(User::class, 'resource_module_users', 'resource_module_id', 'user_id')
+//            ->withPivot(['completed_at'])
+//            ->withTimestamps();
+//    }
+
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');

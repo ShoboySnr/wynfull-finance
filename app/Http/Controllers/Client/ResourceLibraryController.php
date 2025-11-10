@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\CoachClientAssignment;
 use App\Models\ResourceCollection;
+use App\Models\ResourceModule;
 use Illuminate\Http\Request;
 
 class ResourceLibraryController extends Controller
@@ -32,10 +33,18 @@ class ResourceLibraryController extends Controller
         $collections = ResourceCollection::query()
             ->with('modules')
             ->whereIn('coach_id', $coachIds)
-            ->whereNotNull('approved_at')         // approved only
+            ->whereNotNull('approved_at')
             ->orderByDesc('approved_at')
             ->paginate(10)
             ->withQueryString();
+
+//        $assignedModules = ResourceModule::query()
+//                            ->with([
+//                                'collection:id,title,coach_id',
+//                                'collection.coach:id,name',
+//                                'collection.coach.profile:id,user_id,first_name,last_name,avatar_path',
+//                            ])
+//                            ->whereHas('assignedUsers');
 
         return view('client.resource-library.index', ['collections' => $collections]);
     }
