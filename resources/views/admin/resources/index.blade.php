@@ -105,7 +105,7 @@
                 </div>
                 <div class="card-footer">
                     {{-- Action Buttons --}}
-                    <a href="{{ route('admin.resources.collection.modules', $collection) }}" type="submit" class="btn-primary btn-sm"><i class="fas fa-users-viewfinder"></i> Manage</a>
+                    <a href="{{ route('admin.resources.collection.modules', $collection) }}" type="submit" class="btn-primary btn-sm"><i class="fas fa-expand"></i> Manage</a>
                     @if($collection->status === 'pending' || $collection->status === 'rejected')
                         <form action="{{ route('admin.resources.approve', $collection->id) }}" method="POST" style="display: inline;">
                             @csrf
@@ -116,7 +116,7 @@
                     @if($collection->status === 'pending' || $collection->status === 'approved')
                         <button class="btn-danger btn-sm rejectResourceBtn"
                                 data-action="{{route('admin.resources.reject', $collection->id) }}"
-                                data-collection-title="{{ $collection->title }}"> {{-- Pass title to modal --}}
+                                data-collection-title="{{ $collection->title }}">
                             <i class="fas fa-times"></i> Reject
                         </button>
                     @endif
