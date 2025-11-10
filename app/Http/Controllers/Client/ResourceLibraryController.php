@@ -46,6 +46,7 @@ class ResourceLibraryController extends Controller
                 'creator.profile:id,user_id,first_name,last_name,avatar_path',
             ])
             ->accessibleViaCoaches($coachIds)
+            ->orWhereHas('directAssignees', fn ($sq) => $sq->where('user_id', $client->id))
             ->withCompletionFor($client->id)
             ->select(['id','resource_collection_id','title', 'description', 'type','file_name', 'file_path', 'video_link','created_by'])
             ->orderByDesc('id')

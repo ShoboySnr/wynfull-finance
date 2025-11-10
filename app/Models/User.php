@@ -148,4 +148,11 @@ class User extends Authenticatable
     {
         return $this->completedModules()->where('resource_module_id', $moduleId)->exists();
     }
+
+    public function directlyAssignedModules(): BelongsToMany
+    {
+        return $this->belongsToMany(ResourceModule::class, 'resource_module_assignments', 'user_id', 'resource_module_id')
+            ->withPivot(['assigned_by','assigned_at'])
+            ->withTimestamps();
+    }
 }

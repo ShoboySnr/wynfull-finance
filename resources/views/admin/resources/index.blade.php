@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- Use your admin layout --}}
+@extends('layouts.admin')
 
 @section('title', 'Manage Resources')
 @section('page-title', 'Resource Management')

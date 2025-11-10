@@ -87,4 +87,11 @@ class ResourceModule extends Model
     {
         return $query->whereHas('completers', fn($q) => $q->where('users.id', $userId)->whereNotNull('resource_module_users.completed_at'));
     }
+
+    public function directAssignees(): BelongsToMany // clients assigned by admin
+    {
+        return $this->belongsToMany(User::class, 'resource_module_assignments', 'resource_module_id', 'user_id')
+            ->withPivot(['assigned_by','assigned_at'])
+            ->withTimestamps();
+    }
 }
