@@ -30,7 +30,7 @@
                     <h2>Professional Information</h2>
                     <div class="profile-form">
                         <div class="profile-avatar-section">
-                            <img src="{{ $profile['avatar_url'] ?? 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=face&auto=format' }}" alt="Profile" class="profile-avatar">
+                            <img src="{{ $profile['avatar_url'] ? asset($profile['avatar_url']) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($authUser->name, 0, 1)) }}" alt="Profile" class="profile-avatar">
                             <button type="button" class="btn-secondary" id="changePhotoBtn">Change Photo</button>
                         </div>
                         <form action="{{ route('profile.update') }}" method="POST">
