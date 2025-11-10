@@ -68,12 +68,11 @@ class CoachClientAssignmentController extends Controller
         return response()->json(['message' => 'Coach unassigned from client.']);
     }
 
-    public function unassignCoach(User $user, Request $request)
+    public function unassignCoach($coach, $client, Request $request)
     {
-        dd($user);
         $this->service->unassign(
-            coachId: (int)$user->id,
-            clientId: (int)$request->user()->id
+            coachId: (int)$coach,
+            clientId: (int)$client
         );
 
         return redirect()->back()->with('success', 'coach unassigned from client.');

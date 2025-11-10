@@ -123,7 +123,7 @@
                                     class="badge badge-active">active</span>
 
                                 <div class="assignment-actions">
-                                        <form action="{{ route('admin.assignments.user.end', ['user' => $assignment->coach->id]) }}"
+                                        <form action="{{ route('admin.assignments.user.end', ['coach' => $assignment->coach->id, 'client' => $user->id]) }}"
                                               method="POST"
                                               onsubmit="return confirm('Are you sure you want to end this assignment?');">
                                             @csrf

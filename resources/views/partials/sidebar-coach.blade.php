@@ -67,7 +67,7 @@
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
             <div class="user-details">
                 <span class="user-name">{{ $authUser->name ?? 'Coach Name' }}</span>
-                <span class="user-role">Financial Planner</span>
+                <span class="user-role">{{ $authUser->profile->specialities ?? '' }}</span>
             </div>
             <button class="role-switch-btn" id="clientViewBtn" title="Switch to Client View">
                 <i class="fas fa-user"></i>

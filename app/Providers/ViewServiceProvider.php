@@ -20,11 +20,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('dashboards.*', function ($view) {
+        View::composer('*', function ($view) {
             $user = auth()->user();
 
             if ($user) {
-                $user->loadMissing(['roles']);
+                $user->loadMissing(['roles', 'profile']);
                 $view->with('authUser', $user);
                 $view->with('authMeta', [
 //                    'unread_notifications' => $user->unreadNotifications()->count(),
