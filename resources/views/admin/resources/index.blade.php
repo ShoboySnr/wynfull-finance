@@ -24,11 +24,20 @@
     @endif
 
     {{-- Filters (Optional) --}}
-    <div class="admin-resource-filters">
-        <a href="{{ route('admin.resources') }}" class="filter-tab {{ !request('status') ? 'active' : '' }}">All</a>
-        <a href="{{ route('admin.resources', ['status' => 'pending']) }}" class="filter-tab {{ request('status') == 'pending' ? 'active' : '' }}">Pending</a>
-        <a href="{{ route('admin.resources', ['status' => 'approved']) }}" class="filter-tab {{ request('status') == 'approved' ? 'active' : '' }}">Approved</a>
-        <a href="{{ route('admin.resources', ['status' => 'rejected']) }}" class="filter-tab {{ request('status') == 'rejected' ? 'active' : '' }}">Rejected</a>
+    <div class="admin-resource-controls">
+        <div class="admin-resource-filters">
+            <a href="{{ route('admin.resources') }}" class="filter-tab {{ !request('status') ? 'active' : '' }}">All</a>
+            <a href="{{ route('admin.resources', ['status' => 'pending']) }}"
+               class="filter-tab {{ request('status') == 'pending' ? 'active' : '' }}">Pending</a>
+            <a href="{{ route('admin.resources', ['status' => 'approved']) }}"
+               class="filter-tab {{ request('status') == 'approved' ? 'active' : '' }}">Approved</a>
+            <a href="{{ route('admin.resources', ['status' => 'rejected']) }}"
+               class="filter-tab {{ request('status') == 'rejected' ? 'active' : '' }}">Rejected</a>
+        </div>
+
+        <button class="btn-primary" id="addCollectionBtn">
+            <i class="fas fa-plus"></i> Create New Collection
+        </button>
     </div>
 
     {{-- Resource Collections Grid --}}
@@ -90,6 +99,7 @@
                     {{-- Display approval info if applicable --}}
                     @if($collection->status === 'approved' && $collection->approved_at)
                         <div class="approval-info">
+                            @dd($collection)
                             Approved by {{ $collection->approver->name ?? 'N/A' }} on {{ $collection->approved_at->format('M d, Y') }}
                         </div>
                     @endif
@@ -151,6 +161,43 @@
     </div>
     {{-- END: Rejection Reason Modal --}}
 
+    {{-- START: New Add Collection Modal --}}
+    <div class="modal-overlay" id="addCollectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Resource Collection</h2>
+                <button class="modal-close" id="addCollectionModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.resources.collection.store') }}" method="POST" id="addCollectionForm">
+                    @csrf
+                    @if ($errors->any() && old('form_type') === 'add_collection')
+                        <input type="hidden" name="has_add_errors" value="true">
+                    @endif
+                    <input type="hidden" name="form_type" value="add_collection">
+
+                    <div class="form-group">
+                        <label for="add_title">Collection Title</label>
+                        <input type="text" id="add_title" name="title" class="form-input" placeholder="e.g., Investment Strategies 101" value="{{ old('title') }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_description">Collection Description</label>
+                        <textarea id="add_description" name="description" class="form-textarea" rows="3" placeholder="A brief summary of what this collection covers.">{{ old('description') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_icon_class">Icon Class (Font Awesome)</label>
+                        <input type="text" id="add_icon_class" name="icon_class" class="form-input" placeholder="e.g., fa-chart-line" value="{{ old('icon_class', 'fa-folder-open') }}">
+                        <small>Find icons at <a href="https://fontawesome.com/icons" target="_blank" rel="noopener noreferrer">Font Awesome</a> (use free icons).</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="addCollectionModalCancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Create & Manage Modules</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- END: New Add Collection Modal --}}
 @endsection
 
 @push('scripts')

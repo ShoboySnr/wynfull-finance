@@ -46,7 +46,7 @@
 
     <div class="sidebar-footer">
         <a href="{{ route('profile.show') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format" alt="Coach Avatar" class="user-avatar">
+            <img src="{{ $authUser->profile?->avatar_path ? asset('storage/' . $authUser->profile->avatar_path) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($authUser->name, 0, 1)) }}" alt="Coach Avatar" class="user-avatar">
             <div class="user-details">
                 <span class="user-name">{{ $authUser->name ?? 'Coach Name' }}</span>
                 <span class="user-role">Admin</span>

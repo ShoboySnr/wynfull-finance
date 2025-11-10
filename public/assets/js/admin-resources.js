@@ -52,4 +52,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     // END: Rejection Modal Logic
+
+
+    // START: Add Collection Modal Logic
+    const addCollectionBtn = document.getElementById('addCollectionBtn');
+    const addCollectionModal = document.getElementById('addCollectionModal');
+
+    if (addCollectionBtn && addCollectionModal) {
+        const closeBtn = addCollectionModal.querySelector('.modal-close');
+        const cancelBtn = addCollectionModal.querySelector('#addCollectionModalCancel');
+        const form = document.getElementById('addCollectionForm');
+
+        const openModal = () => addCollectionModal.classList.add('active');
+        const closeModal = () => {
+            addCollectionModal.classList.remove('active');
+            if (form) form.reset();
+        };
+
+        addCollectionBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        addCollectionModal.addEventListener('click', function(event) {
+            if (event.target === addCollectionModal) {
+                closeModal();
+            }
+        });
+
+        // Re-open if validation errors exist
+        const errorInput = addCollectionModal.querySelector('input[name="has_add_errors"]');
+        if (errorInput && errorInput.value === 'true') {
+            openModal();
+        }
+    }
+    // END: Add Collection Modal Logic
 });

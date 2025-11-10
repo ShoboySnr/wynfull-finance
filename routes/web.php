@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminResourceCollectionController;
+use App\Http\Controllers\Admin\AdminResourceCollectionModulesController;
 use App\Http\Controllers\Admin\AdminResourcesController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
@@ -145,8 +147,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
 
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
+    Route::post('resources', [AdminResourceCollectionController::class, 'store'])->name('resources.collection.store');
+    Route::put('resources/{resourceCollection}', [AdminResourceCollectionController::class, 'update'])->name('resources.collection.update');
     Route::patch('resources/{resourceCollection}/approve', [ResourceCollectionApprovalController::class, 'approve'])->name('resources.approve');
     Route::patch('resources/{resourceCollection}/reject', [ResourceCollectionApprovalController::class, 'reject'])->name('resources.reject');
+
+    Route::get('resources/{resourceCollection}/modules', [AdminResourceCollectionModulesController::class, 'index'])->name('resources.collection.modules');
+    Route::post('resources/{resourceCollection}/modules', [AdminResourceCollectionModulesController::class, 'store'])->name('resources.collection.modules.store');
+    Route::put('resources/{resourceCollection}/modules/{resourceModule}', [AdminResourceCollectionModulesController::class, 'update'])->name('resources.collection.modules.update');
+    Route::delete('resources/{resourceCollection}/modules/{resourceModule}', [AdminResourceCollectionModulesController::class, 'destroy'])->name('resources.collection.modules.destroy');
 
     Route::post('/resource-modules/{module}/approve', [ResourceModuleApprovalController::class, 'approve'])->name('resource-modules.approve');
     Route::post('/resource-modules/{module}/reject', [ResourceModuleApprovalController::class, 'reject'])->name('resource-modules.reject');

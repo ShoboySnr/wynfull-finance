@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ResourceCollection extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['coach_id', 'icon_class', 'title', 'description', 'approved_by', 'approved_at', 'rejection_reason'];
+    protected $fillable = ['coach_id', 'icon_class', 'title', 'description', 'approved_by', 'approved_at', 'rejection_reason', 'status'];
 
     protected $casts = [
         'approved_at' => 'datetime',
