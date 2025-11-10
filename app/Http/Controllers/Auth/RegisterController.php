@@ -7,11 +7,14 @@ use App\Http\Requests\RegisterClientRequest;
 use App\Http\Requests\RegisterCoachRequest;
 use App\Services\RegistrationService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function __construct(private readonly RegistrationService $service) {}
+    public function __construct(private readonly RegistrationService $service)
+    {
+    }
 
     public function registerClient(RegisterClientRequest $request): RedirectResponse
     {

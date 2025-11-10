@@ -274,12 +274,12 @@
                             <div class="form-group">
                                 <label for="client-name">Full Name</label>
                                 <input type="text" id="client-name" name="name" value="{{ old('name') }}" required autocomplete="name">
-                                @error('name')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('name')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="client-email">Email Address</label>
                                 <input type="email" id="client-email" name="email" value="{{ old('email') }}" required autocomplete="email">
-                                @error('email')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('email')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                         </div>
 
@@ -294,13 +294,13 @@
                                 <option value="retirement"       @selected(old('goal')==='retirement')>Grow Wealth for Retirement/Financial Independence</option>
                                 <option value="other"            @selected(old('goal')==='other')>Other</option>
                             </select>
-                            @error('goal')<small class="text-red-600">{{ $message }}</small>@enderror
+                            @error('goal')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                         </div>
 
                         <div class="form-group" id="other-goal-group" style="display: {{ old('goal')==='other' ? 'block' : 'none' }};">
                             <label for="other-goal">Please specify your financial goal</label>
                             <input type="text" id="other-goal" name="other-goal" value="{{ old('other-goal') }}" placeholder="Describe your specific financial goal..." style="width: 100%;">
-                            @error('other-goal')<small class="text-red-600">{{ $message }}</small>@enderror
+                            @error('other-goal')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                         </div>
 
                         <div class="form-group">
@@ -324,7 +324,7 @@
                                 <span class="checkmark"></span>
                                 I agree to receive updates about Wynfull Finance and understand I can unsubscribe at any time.
                             </label>
-                            @error('accept')<small class="text-red-600">{{ $message }}</small>@enderror
+                            @error('accept')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                         </div>
 
                         <button type="submit" class="btn-primary full-width">Request Early Access</button>
@@ -345,12 +345,12 @@
                             <div class="form-group">
                                 <label for="coach-name">Full Name</label>
                                 <input type="text" id="coach-name" name="name" value="{{ old('name') }}" required autocomplete="name">
-                                @error('name')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('name')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="coach-email">Email Address</label>
                                 <input type="email" id="coach-email" name="email" value="{{ old('email') }}" required autocomplete="email">
-                                @error('email')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('email')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                         </div>
 
@@ -362,7 +362,7 @@
                                 <option value="3-5" @selected(old('experience')==='3-5')>3-5 Years Experience</option>
                                 <option value="5+" @selected(old('experience')==='5+')>5+ Years Experience</option>
                             </select>
-                            @error('experience')<small class="text-red-600">{{ $message }}</small>@enderror
+                            @error('experience')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                         </div>
 
                         <div class="form-group">
@@ -395,7 +395,7 @@
                                     Other (please specify)
                                 </label>
                             </div>
-                            @error('specialties')<small class="text-red-600">{{ $message }}</small>@enderror>
+                            @error('specialties')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror>
                         </div>
 
                         <div class="form-group" id="other-specialty-group" style="display: {{ collect(old('specialties', []))->contains('other') ? 'block' : 'none' }};">
@@ -407,12 +407,12 @@
                             <div class="form-group">
                                 <label for="linkedin">LinkedIn Profile (Optional)</label>
                                 <input type="url" id="linkedin" name="linkedin" value="{{ old('linkedin') }}" placeholder="https://linkedin.com/in/yourprofile" autocomplete="url">
-                                @error('linkedin')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('linkedin')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <label for="website">Website (Optional)</label>
                                 <input type="url" id="website" name="website" value="{{ old('website') }}" placeholder="https://yourwebsite.com" autocomplete="url">
-                                @error('website')<small class="text-red-600">{{ $message }}</small>@enderror
+                                @error('website')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                             </div>
                         </div>
 
@@ -422,7 +422,7 @@
                                 <span class="checkmark"></span>
                                 I'm interested in joining the Wynfull coach network and agree to be contacted about opportunities.
                             </label>
-                            @error('accept')<small class="text-red-600">{{ $message }}</small>@enderror
+                            @error('accept')<small class="text-red-600 danger-text">{{ $message }}</small>@enderror
                         </div>
 
                         <button type="submit" class="btn-primary full-width">Apply to Coach Network</button>
