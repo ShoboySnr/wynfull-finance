@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 @section('title', 'Admin Dashboard')
+@section('page-title', 'Admin Dashboard')
+@section('page-subtitle', 'Manage users, resources, and system settings')
+@section('breadcrumb', 'Administration')
 
 @section('content')
 

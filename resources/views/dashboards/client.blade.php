@@ -1,5 +1,8 @@
 @extends('layouts.client')
 @section('title', 'Client Dashboard')
+@section('page-title', 'Dashboard')
+@section('page-subtitle', 'Ready to continue your financial journey?')
+@section('breadcrumb', 'Client Dashboard')
 
 
 @section('content')

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Coach Dashboard')
+@section('page-title', 'Dashboard')
+@section('page-subtitle', 'Manage your clients and coaching sessions')
+@section('breadcrumb', 'Coach Dashboard')
 
 @section('content')
         <!-- Coach Dashboard Page -->

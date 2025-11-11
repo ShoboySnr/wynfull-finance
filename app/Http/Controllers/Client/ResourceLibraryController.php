@@ -54,8 +54,6 @@ class ResourceLibraryController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-         dd($toolsAndTemplates);
-
         return view('client.resource-library.index', ['collections' => $collections, 'toolsAndTemplates' => $toolsAndTemplates]);
     }
 }

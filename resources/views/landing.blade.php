@@ -31,6 +31,15 @@
             </div>
             <div class="nav-cta-container">
                 <a href="#contact" class="nav-cta">Join the Community</a>
+                @auth
+                    @if(auth()->user()->hasRole('client'))
+                        <a href="{{ route('dashboard.client') }}" class="nav-cta dashboard-nav-btn">Go to Dashboard</a>
+                    @elseif(auth()->user()->hasRole('coach'))
+                        <a href="{{ route('coach.dashboard') }}" class="nav-cta dashboard-nav-btn">Go to Dashboard</a>
+                    @elseif(auth()->user()->hasRole('admin'))
+                        <a href="{{ route('admin.dashboard') }}" class="nav-cta dashboard-nav-btn">Go to Dashboard</a>
+                    @endif
+                @endauth
             </div>
             <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
@@ -48,6 +57,15 @@
                 <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
                 <a href="#resources" onclick="closeMobileMenu()">Strategy</a>
                 <a href="#contact" onclick="closeMobileMenu()" class="mobile-cta">Join the Community</a>
+                @auth
+                    @if(auth()->user()->hasRole('client'))
+                        <a href="{{ route('dashboard.client') }}" onclick="closeMobileMenu()" class="mobile-cta dashboard-mobile-btn">Go to Dashboard</a>
+                    @elseif(auth()->user()->hasRole('coach'))
+                        <a href="{{ route('coach.dashboard') }}" onclick="closeMobileMenu()" class="mobile-cta dashboard-mobile-btn">Go to Dashboard</a>
+                    @elseif(auth()->user()->hasRole('admin'))
+                        <a href="{{ route('admin.dashboard') }}" onclick="closeMobileMenu()" class="mobile-cta dashboard-mobile-btn">Go to Dashboard</a>
+                    @endif
+                @endauth
             </div>
         </div>
 

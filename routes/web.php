@@ -73,6 +73,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{assignment}', [ChatController::class,'index']);
     Route::post('/chat/{assignment}', [ChatController::class,'store']);
     Route::post('/chat/{assignment}/read', [ChatController::class,'markRead']);
+    
+    // Debug route to check user assignments
+    Route::get('/debug/assignments', function() {
+        $user = auth()->user();
+        $assignments = \App\Models\CoachClientAssignment::where(function($query) use ($user) {
+            $query->where('coach_id', $user->id)->orWhere('client_id', $user->id);
+        })->with(['coach', 'client'])->get();
+        
+        return response()->json([
+            'user_id' => $user->id,
+            'user_roles' => $user->getRoleNames(),
+            'assignments' => $assignments->map(function($assignment) {
+                return [
+                    'id' => $assignment->id,
+                    'coach_id' => $assignment->coach_id,
+                    'client_id' => $assignment->client_id,
+                    'coach_name' => $assignment->coach->name ?? 'N/A',
+                    'client_name' => $assignment->client->name ?? 'N/A',
+                    'status' => $assignment->status
+                ];
+            })
+        ]);
+    });
 });
 
 Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->group(function () {

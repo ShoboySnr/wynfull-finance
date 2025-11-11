@@ -8,7 +8,6 @@
                 <h2>Wynfull</h2>
                 <span>Finance Platform</span>
             </div>
-            <span class="coach-badge">Coach Portal</span>
         </a>
     </div>
 
@@ -63,15 +62,6 @@
     </nav>
 
     <div class="sidebar-footer">
-        <a href="{{ route('profile.show') }}" class="user-info" style="text-decoration: none; cursor: pointer;">
-            <img src="{{ $authUser->profile?->avatar_path ? asset('storage/' . $authUser->profile->avatar_path) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($authUser->name, 0, 1)) }}" alt="Coach Avatar" class="user-avatar">
-            <div class="user-details">
-                <span class="user-name">{{ $authUser->name ?? 'Coach Name' }}</span>
-                <span class="user-role">{{ $authUser->profile->specialities ?? '' }}</span>
-            </div>
-            <button class="role-switch-btn" id="clientViewBtn" title="Switch to Client View">
-                <i class="fas fa-user"></i>
-            </button>
-        </a>
+        <!-- User info moved to header -->
     </div>
 </aside>

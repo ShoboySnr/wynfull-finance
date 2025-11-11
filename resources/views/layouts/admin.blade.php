@@ -31,16 +31,48 @@
         <!-- Top Header -->
         <header class="top-header">
             <div class="header-left">
-                <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
+                <div class="header-breadcrumb">
+                    <span class="breadcrumb-item">@yield('breadcrumb', 'Admin Dashboard')</span>
+                </div>
+                <div class="header-title-section">
+                    <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
+                    <p class="page-subtitle">@yield('page-subtitle', 'Manage users, resources, and system settings')</p>
+                </div>
             </div>
             <div class="header-right">
-                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="notification-btn" id="notificationBtn" style="display: none;">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">5</span>
-                </button>
+                <div class="header-user-info" id="userDropdownToggle">
+                    <div class="user-welcome">
+                        <span class="welcome-text">Welcome back,</span>
+                        <span class="user-name">{{ auth()->user()->name }}</span>
+                    </div>
+                    <div class="user-avatar-container">
+                        <img src="{{ auth()->user()->profile?->avatar_path ? asset('storage/' . auth()->user()->profile->avatar_path) : 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr(auth()->user()->name, 0, 1)) }}" 
+                             alt="User Avatar" class="header-user-avatar">
+                        <div class="user-status-indicator admin-status"></div>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="{{ route('profile.show') }}" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="dropdown-item logout-item" style="width: 100%; background: none; border: none; text-align: left;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-action-btn notification-btn" id="notificationBtn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">8</span>
+                    </button>
+                    <button class="header-action-btn theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -55,6 +87,36 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/coach.js') }}"></script>
 
+<script>
+// User dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const userDropdownToggle = document.getElementById('userDropdownToggle');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userDropdownToggle && userDropdown) {
+        userDropdownToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!userDropdownToggle.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        userDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>
+
 @stack('scripts')
+
+<!-- Chatway Widget -->
+<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=d0OdliXFm4Bl"></script>
 </body>
 </html>

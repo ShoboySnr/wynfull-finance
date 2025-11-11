@@ -36,6 +36,12 @@
                     Email Password Reset Link
                 </button>
             </form>
+
+            <div class="center mt-4 w-full">
+                <a href="{{ route('login') }}" class="back-to-login text-sm text-primary hover:text-primary-600 no-underline">
+                    Back to Login
+                </a>
+            </div>
         </div>
     </div>
 @endsection

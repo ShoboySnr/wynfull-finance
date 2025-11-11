@@ -6,6 +6,7 @@ use App\Events\MessageSent;
 use App\Models\CoachClientAssignment;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
@@ -92,9 +93,23 @@ class ChatController extends Controller
 
     private function authorizeMember(Request $request, CoachClientAssignment $assignment): void
     {
-        abort_unless(
-            $request->user()->id === $assignment->coach_id || $request->user()->id === $assignment->client_id,
-            403
-        );
+        $user = $request->user();
+        // Use loose comparison (==) instead of strict (===) to handle type mismatches
+        $isAuthorized = $user->id == $assignment->coach_id || $user->id == $assignment->client_id;
+        
+        // Debug logging
+        Log::info('Chat Authorization Debug', [
+            'user_id' => $user->id,
+            'user_id_type' => gettype($user->id),
+            'assignment_id' => $assignment->id,
+            'assignment_coach_id' => $assignment->coach_id,
+            'assignment_coach_id_type' => gettype($assignment->coach_id),
+            'assignment_client_id' => $assignment->client_id,
+            'assignment_client_id_type' => gettype($assignment->client_id),
+            'is_authorized' => $isAuthorized,
+            'user_roles' => $user->getRoleNames()->toArray()
+        ]);
+        
+        abort_unless($isAuthorized, 403, 'You are not authorized to access this conversation.');
     }
 }
