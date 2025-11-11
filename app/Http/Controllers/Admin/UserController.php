@@ -89,5 +89,79 @@ class UserController extends Controller
             'coachAssignments' => $coachAssignments
         ]);
     }
+
+    public function destroy(Request $request, User $user)
+    {
+        // Only admins can delete users
+        abort_unless($request->user()?->hasRole('admin'), 403);
+        
+        // Prevent admin from deleting themselves
+        if ($user->id === $request->user()->id) {
+            return back()->with('error', 'You cannot delete your own account.');
+        }
+        
+        // Prevent deleting other admins (optional safety measure)
+        if ($user->hasRole('admin')) {
+            return back()->with('error', 'Admin accounts cannot be deleted for security reasons.');
+        }
+
+        DB::transaction(function () use ($request, $user) {
+            // Log the deletion activity before deleting
+            activity()
+                ->performedOn($user)
+                ->causedBy($request->user())
+                ->withProperties([
+                    'deleted_user_id' => $user->id,
+                    'deleted_user_name' => $user->name,
+                    'deleted_user_email' => $user->email,
+                    'deleted_user_roles' => $user->getRoleNames()->toArray()
+                ])
+                ->log('user_deleted');
+
+            // Delete related data
+            $this->deleteUserRelatedData($user);
+            
+            // Delete the user
+            $user->delete();
+        });
+
+        return redirect()->route('admin.users')
+            ->with('success', "User '{$user->name}' has been permanently deleted.");
+    }
+    
+    /**
+     * Delete user-related data to maintain referential integrity
+     */
+    private function deleteUserRelatedData(User $user): void
+    {
+        // Delete user sessions
+        DB::table('sessions')->where('user_id', $user->id)->delete();
+        
+        // Delete coach-client assignments where user is involved
+        DB::table('coach_client_assignments')
+            ->where('coach_id', $user->id)
+            ->orWhere('client_id', $user->id)
+            ->delete();
+            
+        // Delete messages sent by this user
+        DB::table('messages')->where('sender_id', $user->id)->delete();
+        
+        // Delete module completions
+        DB::table('module_completions')->where('user_id', $user->id)->delete();
+        
+        // Delete user profile (if exists)
+        if ($user->coachProfile) {
+            $user->coachProfile->delete();
+        }
+        if ($user->clientProfile) {
+            $user->clientProfile->delete();
+        }
+        
+        // Delete password reset tokens
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+        
+        // Note: Activity logs are kept for audit trail purposes
+        // They will show as "deleted user" but maintain the log integrity
+    }
 }
 

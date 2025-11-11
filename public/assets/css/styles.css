@@ -3571,6 +3571,115 @@ input:checked + .slider:before {
     transform: translateY(-1px);
 }
 
+.btn-danger {
+    background: #DC2626;
+    color: white;
+    border: 1px solid #DC2626;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-danger:hover {
+    background: #B91C1C;
+    border-color: #B91C1C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+.action-btn.delete {
+    background: #DC2626;
+    color: white;
+    border: 1px solid #DC2626;
+}
+
+.action-btn.delete:hover {
+    background: #B91C1C;
+    border-color: #B91C1C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Dropdown Menu Styles */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: var(--background-secondary);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+    background: var(--background-light);
+    border-color: var(--wynfull-blue);
+    color: var(--wynfull-blue);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: var(--background-light);
+}
+
+.dropdown-item.danger {
+    color: #DC2626;
+}
+
+.dropdown-item.danger:hover {
+    background: #FEF2F2;
+    color: #B91C1C;
+}
+
 .btn-secondary {
     background: var(--white);
     color: var(--text-secondary);

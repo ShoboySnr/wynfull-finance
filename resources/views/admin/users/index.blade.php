@@ -94,6 +94,23 @@
                                 <a href="{{ route('admin.users.show', $user->id) }}" class="action-btn view" title="View Profile">
                                     <i class="fas fa-eye"></i>
                                 </a>
+                                <div class="dropdown-container" style="display: inline-block; position: relative;">
+                                    <button class="action-btn dropdown-toggle" onclick="toggleDropdown('userActions{{ $user->id }}')" title="More Actions">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu" id="userActions{{ $user->id }}">
+                                        @if(!$user->hasRole('admin') && $user->id !== auth()->id())
+                                            <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" 
+                                                  onsubmit="return confirm('This will permanently delete {{ $user->name }} and all their data. This action cannot be undone. Are you absolutely sure?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item danger">
+                                                    Delete User
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -170,5 +187,23 @@
     {{-- END: Add New User Modal --}}
 @endsection
 @push('scripts')
+    <script>
+        // Dropdown functionality
+        window.toggleDropdown = function(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        };
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+    </script>
     <script src="{{ asset('assets/js/admin-users.js') }}"></script>
 @endpush

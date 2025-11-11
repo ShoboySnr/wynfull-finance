@@ -60,10 +60,20 @@
                         </form>
                     @endif
 
+                    <!-- Delete User Button -->
+                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST"
+                          style="display: inline;" 
+                          onsubmit="return confirm('This will permanently delete {{ $user->name }} and all their data. This action cannot be undone. Are you absolutely sure?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-danger" style="margin-left: 8px;">
+                            Delete User
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>
-
 
         <!-- Profile Details Section -->
         <div class="profile-details-section">
@@ -213,6 +223,23 @@
                             if (event.target === assignCoachModal) {
                                 closeModal();
                             }
+                        });
+                    }
+                });
+
+                // Dropdown functionality
+                window.toggleDropdown = function(dropdownId) {
+                    const dropdown = document.getElementById(dropdownId);
+                    if (dropdown) {
+                        dropdown.classList.toggle('show');
+                    }
+                };
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.dropdown-container')) {
+                        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                            menu.classList.remove('show');
                         });
                     }
                 });

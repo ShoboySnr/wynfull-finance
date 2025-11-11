@@ -168,6 +168,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::post('/users/{user}/activate', UserActivationController::class)->name('users.activate');
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
 
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
     Route::post('resources', [AdminResourceCollectionController::class, 'store'])->name('resources.collection.store');
