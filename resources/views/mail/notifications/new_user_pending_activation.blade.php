@@ -5,11 +5,11 @@
 
 @section('content')
     <h1 class="h1" style="margin:0 0 8px; font-size:24px; line-height:30px; color:#1F2937; font-weight:bold;">
-        New user awaiting activation
+        New {{ ucfirst($role ?? 'User') }} Registration
     </h1>
 
     <p class="text" style="margin:0 0 12px; color:#374151; font-size:15px; line-height:22px;">
-        A new {{ $role ?? 'user' }} has registered and is pending activation.
+        A new {{ $role ?? 'user' }} has registered for Wynfull Finance and is awaiting admin activation.
     </p>
 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:12px 0 16px;">

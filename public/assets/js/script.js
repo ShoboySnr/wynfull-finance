@@ -2146,6 +2146,7 @@ function getToolData(toolId) {
             window.WYNFULL.onboardingCompleted = true;
             modal?.classList.remove('active');
             document.body.style.overflow = 'auto';
+            window.location.reload();
 
         } catch (e) {
             showError(e.message);

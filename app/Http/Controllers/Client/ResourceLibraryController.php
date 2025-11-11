@@ -28,7 +28,8 @@ class ResourceLibraryController extends Controller
 
         if ($coachIds->isEmpty()) {
             $collections = ResourceCollection::query()->whereRaw('1=0')->paginate(10);
-            return view('client.resource-library.index', compact('collections'));
+            $toolsAndTemplates = [];
+            return view('client.resource-library.index', compact('collections', 'toolsAndTemplates'));
         }
 
         $collections = ResourceCollection::query()
@@ -53,7 +54,7 @@ class ResourceLibraryController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-//        dd($toolsAndTemplates);
+         dd($toolsAndTemplates);
 
         return view('client.resource-library.index', ['collections' => $collections, 'toolsAndTemplates' => $toolsAndTemplates]);
     }

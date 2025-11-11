@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" name="email" value="{{ $profile['email'] }}">
+                                    <input type="email" name="email" value="{{ $authUser->email }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Phone</label>

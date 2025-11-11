@@ -37,7 +37,7 @@
                 <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
                     <i class="fas fa-moon"></i>
                 </button>
-                <button class="notification-btn" id="notificationBtn">
+                <button class="notification-btn" id="notificationBtn" style="display: none;">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">5</span>
                 </button>

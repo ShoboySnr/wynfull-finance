@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="coaching-section">
+                <div class="coaching-section" style="display: none;">
                     <h2>Workshop Notes</h2>
                     <div class="notes-container">
                         <div class="note-item">

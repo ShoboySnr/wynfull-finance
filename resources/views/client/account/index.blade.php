@@ -29,7 +29,7 @@
                     @endif
 
                     <div class="profile-avatar-section">
-                        <img src="{{ $profile->avatar_url ?? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format' }}"
+                        <img src="{{ $profile->avatar_url ?? 'https://placehold.co/40x40/EBF0FF/0E4DA4?text=' . strtoupper(substr($authUser->name, 0, 1)) }}"
                              alt="Profile" class="profile-avatar">
                         <button type="button" class="btn-secondary" id="changePhotoBtn">Change Photo</button>
                         {{--                        <input id="avatar" name="avatar" type="file" accept="image/*" class="d-none">--}}
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input id="email" name="email" type="email"
-                                       value="{{ old('email', $profile->email) }}">
+                                       value="{{ old('email', $authUser->email) }}">
                                 @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
                             </div>
 

@@ -25,6 +25,10 @@
             .h1 { font-size:22px !important; line-height:28px !important; }
             .h2 { font-size:18px !important; line-height:24px !important; }
             .text { font-size:14px !important; line-height:20px !important; }
+            .logo-container { padding-right:8px !important; }
+            .logo-box { width:40px !important; height:40px !important; }
+            .brand-name { font-size:20px !important; }
+            .brand-tagline { font-size:12px !important; }
         }
     </style>
 </head>
@@ -43,12 +47,23 @@
                 <!-- Header -->
                 <tr>
                     <td align="left" style="background-color:#0E4DA4; padding:20px 24px;">
-                        <table role="presentation" width="100%">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td style="color:#FFFFFF; font-weight:bold; font-size:18px;">{{ $brandName }}</td>
-                            </tr>
-                            <tr>
-                                <td style="color:#E8F2FF; font-size:12px;">{{ $brandTag }}</td>
+                                <td align="left" style="vertical-align:middle;">
+                                    <table role="presentation" cellpadding="0" cellspacing="0" style="display:inline-table;">
+                                        <tr>
+                                            <td class="logo-container" style="vertical-align:middle; padding-right:12px;">
+                                                <div class="logo-box" style="width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,0.9); border:1px solid rgba(255,255,255,0.2); display:table-cell; vertical-align:middle; text-align:center; overflow:hidden;">
+                                                    <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo" style="width:100%; height:100%; object-fit:cover; display:block;">
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align:middle;">
+                                                <div class="brand-name" style="color:#FFFFFF; font-weight:bold; font-size:24px; line-height:1.2; margin:0;">Wynfull</div>
+                                                <div class="brand-tagline" style="color:#E8F2FF; font-size:14px; font-weight:500; margin:2px 0 0 0;">Finance</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                         </table>
                     </td>

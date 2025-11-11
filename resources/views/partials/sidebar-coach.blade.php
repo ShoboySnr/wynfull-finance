@@ -1,6 +1,6 @@
 <aside class="sidebar coach-sidebar">
     <div class="sidebar-header">
-        <div class="logo">
+        <a href="/" class="logo">
             <div class="logo-icon">
                 <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Logo" style="width: 32px; height: 32px;">
             </div>
@@ -9,7 +9,7 @@
                 <span>Finance Platform</span>
             </div>
             <span class="coach-badge">Coach Portal</span>
-        </div>
+        </a>
     </div>
 
     <nav class="nav-menu">
