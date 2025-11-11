@@ -21,7 +21,7 @@
       'label' => 'Set Password & Get Started'
     ])
 
-    <div style="margin:24px 0; padding:16px; background-color:#F8F9FA; border-radius:8px; border-left:4px solid #0E4DA4;">
+    <div style="margin:24px 0; padding:16px; background-color:#F8F9FA; border-radius:8px; border-left:4px solid #0E4DA4;display:inline-block;">
         <h3 style="margin:0 0 8px; color:#1F2937; font-size:16px; font-weight:600;">What's Next?</h3>
         <ul style="margin:0; padding-left:20px; color:#374151; font-size:14px; line-height:20px;">
             <li style="margin-bottom:4px;">Set your secure password</li>

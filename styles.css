@@ -24,6 +24,7 @@
     --text-light: #9CA3AF;
     --success-green: #0E4DA4;
     --warning-orange: #F5C518;
+    --completed-resources: #f0fdf4;
     --error-red: #EF4444;
     --border-light: #E5E7EB;
     --shadow-sm: 0 1px 2px 0 rgba(14, 77, 164, 0.05);
@@ -38,11 +39,14 @@
     --wynfull-blue-dark: #1E40AF;
     --background-light: #111827;
     --background-primary: #1F2937;
+    --background-card: #1F2937;
+    --background-body: #1F2937;
     --text-primary: #F9FAFB;
     --text-secondary: #D1D5DB;
     --text-light: #9CA3AF;
     --success-green: #10B981;
     --warning-orange: #F59E0B;
+    --completed-resources: #F59E0B;
     --error-red: #EF4444;
     --border-light: #374151;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);

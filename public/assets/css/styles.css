@@ -24,6 +24,7 @@
     --text-light: #9CA3AF;
     --success-green: #0E4DA4;
     --warning-orange: #F5C518;
+    --completed-resources: #f0fdf4;
     --error-red: #EF4444;
     --border-light: #E5E7EB;
     --shadow-sm: 0 1px 2px 0 rgba(14, 77, 164, 0.05);
@@ -38,11 +39,14 @@
     --wynfull-blue-dark: #1E40AF;
     --background-light: #111827;
     --background-primary: #1F2937;
+    --background-body: #1F2937;
+    --background-card: #1F2937;
     --text-primary: #F9FAFB;
     --text-secondary: #D1D5DB;
     --text-light: #9CA3AF;
     --success-green: #10B981;
     --warning-orange: #F59E0B;
+    --completed-resources: #ccc;
     --error-red: #EF4444;
     --border-light: #374151;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -3680,6 +3684,239 @@ input:checked + .slider:before {
     color: #B91C1C;
 }
 
+/* Logout button in dropdown */
+.dropdown-item.logout-item {
+    color: #DC2626;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item.logout-item:hover {
+    background: #FEF2F2;
+    color: #B91C1C;
+}
+
+.dropdown-item.logout-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Theme Toggle Styles for Different Layouts */
+.theme-toggle-auth {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--background-secondary);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-auth:hover {
+    background: var(--wynfull-blue);
+    color: white;
+    transform: scale(1.05);
+}
+
+.theme-toggle-landing {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+}
+
+.theme-toggle-landing:hover {
+    background: var(--wynfull-blue);
+    color: white;
+    transform: scale(1.05);
+}
+
+.theme-toggle-mobile {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.theme-toggle-mobile:hover {
+    background: var(--wynfull-blue);
+    color: white;
+}
+
+.theme-toggle-guest {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-secondary);
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.theme-toggle-guest:hover {
+    background: var(--wynfull-blue);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(14, 77, 164, 0.3);
+}
+
+.theme-toggle-guest i {
+    font-size: 1.1rem;
+}
+
+/* Dark mode styling for guest theme toggle */
+[data-theme="dark"] .theme-toggle-guest {
+    background: rgba(31, 41, 55, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .theme-toggle-guest:hover {
+    background: var(--wynfull-blue);
+    color: white;
+}
+
+/* Auth brand header positioning */
+.auth-brand-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+/* Logout Confirmation Modal */
+.logout-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.logout-modal {
+    background: var(--background-primary);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+}
+
+.logout-modal-header {
+    padding: 1.5rem 1.5rem 0;
+    border-bottom: none;
+}
+
+.logout-modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.logout-modal-body {
+    padding: 1rem 1.5rem;
+}
+
+.logout-modal-body p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.logout-modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.logout-modal-footer button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.logout-modal-footer .btn-secondary {
+    background: var(--background-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-light);
+}
+
+.logout-modal-footer .btn-secondary:hover {
+    background: var(--background-light);
+    border-color: var(--wynfull-blue);
+    color: var(--wynfull-blue);
+}
+
+.logout-modal-footer .btn-danger {
+    background: #DC2626;
+    color: white;
+    border-color: #DC2626;
+}
+
+.logout-modal-footer .btn-danger:hover {
+    background: #B91C1C;
+    border-color: #B91C1C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
 .btn-secondary {
     background: var(--white);
     color: var(--text-secondary);
@@ -7007,11 +7244,6 @@ button.join-call {
 }
 /* END: Two-Factor Authentication Styles */
 
-/* START: Auth Layout Styles */
-.auth-body {
-    background: linear-gradient(135deg, #F5F7FA, #EBF0FF);
-}
-
 .auth-layout-container {
     display: flex;
     flex-direction: column;
@@ -7386,7 +7618,7 @@ button.join-call {
 .module-item.completed {
     /* Optional: Add visual indicator */
     border-left: 4px solid var(--success-green);
-    background-color: #f0fdf4; /* Light green background */
+    background-color: var(--completed-resources); /* Light green background */
 }
 .module-item.completed .module-info h4 {
     /* Optional: Change title color */

@@ -178,9 +178,24 @@ function initializeCoachTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
-    // Load saved theme or default to light
-    const savedTheme = localStorage.getItem('wynfullTheme') || 'light';
+    // Get system preference
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const systemTheme = systemPrefersDark ? 'dark' : 'light';
+
+    // Load saved theme or use system preference as default
+    const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
     body.setAttribute('data-theme', savedTheme);
+
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', function(e) {
+        // Only update if user hasn't manually set a preference
+        if (!localStorage.getItem('wynfullTheme')) {
+            const newSystemTheme = e.matches ? 'dark' : 'light';
+            body.setAttribute('data-theme', newSystemTheme);
+            updateThemeIcon(newSystemTheme);
+        }
+    });
 
     if (themeToggle) {
         // Update icon based on current theme

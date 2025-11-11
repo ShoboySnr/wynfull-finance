@@ -1322,16 +1322,30 @@ function initializeTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
-    // Load saved theme or default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Get system preference
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const systemTheme = systemPrefersDark ? 'dark' : 'light';
+
+    // Load saved theme or use system preference as default
+    const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
     setTheme(savedTheme);
+
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', function(e) {
+        // Only update if user hasn't manually set a preference
+        if (!localStorage.getItem('wynfullTheme')) {
+            const newSystemTheme = e.matches ? 'dark' : 'light';
+            setTheme(newSystemTheme);
+        }
+    });
 
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
-            const currentTheme = body.getAttribute('data-theme') || 'light';
+            const currentTheme = body.getAttribute('data-theme') || systemTheme;
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
+            localStorage.setItem('wynfullTheme', newTheme);
         });
     }
 }

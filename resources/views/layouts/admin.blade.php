@@ -14,6 +14,24 @@
 
     @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Prevent flash of wrong theme -->
+    <script>
+        (function() {
+            // Get system preference
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const systemTheme = systemPrefersDark ? 'dark' : 'light';
+            
+            // Get saved theme or use system preference
+            const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
+            
+            // Apply theme immediately to prevent flash
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 <body class="antialiased">
 
@@ -87,32 +105,6 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/coach.js') }}"></script>
 
-<script>
-// User dropdown functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const userDropdownToggle = document.getElementById('userDropdownToggle');
-    const userDropdown = document.getElementById('userDropdown');
-    
-    if (userDropdownToggle && userDropdown) {
-        userDropdownToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            userDropdown.classList.toggle('show');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!userDropdownToggle.contains(e.target)) {
-                userDropdown.classList.remove('show');
-            }
-        });
-        
-        // Prevent dropdown from closing when clicking inside it
-        userDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    }
-});
-</script>
 
 @stack('scripts')
 

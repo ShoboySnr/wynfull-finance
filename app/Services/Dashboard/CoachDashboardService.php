@@ -95,16 +95,18 @@ class CoachDashboardService
 
     /**
      * Recent activities by the coach (Spatie activity log).
-     * Adjust the log name or filters to your tastes.
+     * Only returns activities with valid User subjects.
      */
     public function recentActivitiesForCoach(int $coachId, int $limit = 10): Collection
     {
         return Activity::query()
             ->with([
-                'subject',
+                'subject.profile:id,user_id,first_name,last_name,avatar_path,professional_title',
                 'causer.profile:id,user_id,first_name,last_name,avatar_path,professional_title'
             ])
             ->where('causer_id', $coachId)
+            ->where('subject_type', User::class) // Only get activities with User subjects
+            ->whereNotNull('subject_id') // Ensure subject exists
             ->orderByDesc('created_at')
             ->limit($limit)
             ->get(['id', 'description', 'subject_type', 'subject_id', 'properties', 'causer_id', 'created_at']);
