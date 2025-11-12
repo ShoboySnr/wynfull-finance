@@ -26,11 +26,6 @@ class ResourceLibraryController extends Controller
             ->unique()
             ->values();
 
-//        if ($coachIds->isEmpty()) {
-//            $collections = ResourceCollection::query()->whereRaw('1=0')->paginate(10);
-//            $toolsAndTemplates = [];
-//            return view('client.resource-library.index', compact('collections', 'toolsAndTemplates'));
-//        }
 
         $collections = ResourceCollection::query()
             ->withCount('modules')
@@ -50,23 +45,12 @@ class ResourceLibraryController extends Controller
                             ->whereHas('modules.directAssignees', fn ($d) => $d->where('user_id', $client->id));
                     });
             })
+            // Put admin/global on top, then newest approvals
+            ->orderByRaw("CASE WHEN visibility = 'global' THEN 1 ELSE 0 END DESC")
             ->orderByDesc('approved_at')
             ->paginate(10)
             ->withQueryString();
 
-//        $toolsAndTemplates = ResourceModule::query()
-//            ->with([
-//                'collection:id,title,coach_id',
-//                'creator:id,name',
-//                'creator.profile:id,user_id,first_name,last_name,avatar_path',
-//            ])
-//            ->accessibleViaCoaches($coachIds)
-//            ->orWhereHas('directAssignees', fn ($sq) => $sq->where('user_id', $client->id))
-//            ->withCompletionFor($client->id)
-//            ->select(['id','resource_collection_id','title', 'description', 'type','file_name', 'file_path', 'video_link','created_by'])
-//            ->orderByDesc('id')
-//            ->paginate(12)
-//            ->withQueryString();
 
         $toolsAndTemplates = ResourceModule::query()
             ->with([
@@ -75,10 +59,10 @@ class ResourceLibraryController extends Controller
                 'creator:id,name',
                 'creator.profile:id,user_id,first_name,last_name,avatar_path',
             ])
-            // Collection must be approved AND pass one of the visibility gates
-            ->whereHas('collection', function ($c) use ($coachIds, $client) {
+            // Parent collection must be approved and pass visibility gate
+            ->whereHas('collection', function ($c) use ($coachIds) {
                 $c->whereNotNull('approved_at')
-                    ->where(function ($v) use ($coachIds, $client) {
+                    ->where(function ($v) use ($coachIds) {
                         $v->where('visibility', 'global')
                             ->orWhere(function ($w) use ($coachIds) {
                                 $w->where('visibility', 'coach_only')
@@ -89,14 +73,46 @@ class ResourceLibraryController extends Controller
                             });
                     });
             })
-            // For assigned_only, ensure the module is assigned to this client
+            // For assigned_only: ensure module is assigned to this client
             ->where(function ($q) use ($client) {
                 $q->whereHas('collection', fn ($c) => $c->where('visibility', '!=', 'assigned_only'))
                     ->orWhereHas('directAssignees', fn ($d) => $d->where('user_id', $client->id));
             })
+
+            // === SELECT BASE COLUMNS FIRST ===
+            ->select([
+                'id',
+                'resource_collection_id',
+                'title',
+                'description',
+                'type',
+                'file_name',
+                'file_path',
+                'video_link',
+                'created_by',
+            ])
+
+            // === THEN ADD SUBSELECT ALIASES (DON'T CALL select() AGAIN) ===
+            ->addSelect([
+                'collection_visibility' => ResourceCollection::query()
+                    ->select('visibility')
+                    ->whereColumn('resource_collections.id', 'resource_modules.resource_collection_id')
+                    ->whereNull('resource_collections.deleted_at')
+                    ->limit(1),
+                'collection_approved_at' => ResourceCollection::query()
+                    ->select('approved_at')
+                    ->whereColumn('resource_collections.id', 'resource_modules.resource_collection_id')
+                    ->whereNull('resource_collections.deleted_at')
+                    ->limit(1),
+            ])
+
             ->withCompletionFor($client->id)
-            ->select(['id','resource_collection_id','title','description','type','file_name','file_path','video_link','created_by'])
+
+            // Admin/global first, then by collection approval recency, then newest modules
+            ->orderByRaw("CASE WHEN collection_visibility = 'global' THEN 1 ELSE 0 END DESC")
+            ->orderByDesc('collection_approved_at')
             ->orderByDesc('id')
+
             ->paginate(12)
             ->withQueryString();
 
