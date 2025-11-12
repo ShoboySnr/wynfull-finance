@@ -38,7 +38,7 @@ use App\Http\Controllers\Settings\NotificationPreferencesController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'landing')->name('home');
-Route::view('/login', 'auth.login')->name('auth.login');
+Route::get('/login', [LoginController::class, 'create'])->name('auth.login');
 
 Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
@@ -73,6 +73,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{assignment}', [ChatController::class,'index']);
     Route::post('/chat/{assignment}', [ChatController::class,'store']);
     Route::post('/chat/{assignment}/read', [ChatController::class,'markRead']);
+    
+    // Notification routes
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::get('/notifications/count', [\App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.count');
     
     // Debug route to check user assignments
     Route::get('/debug/assignments', function() {

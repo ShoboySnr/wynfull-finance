@@ -11,7 +11,7 @@ class Message extends Model
 
     public function assignment(): BelongsTo
     {
-        return $this->belongsTo(CoachClientAssignment::class);
+        return $this->belongsTo(CoachClientAssignment::class, 'coach_client_assignment_id');
     }
 
     public function sender(): BelongsTo

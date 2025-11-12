@@ -108,15 +108,265 @@ function initializeUserDropdowns() {
     }
 }
 
-// Basic notification functionality
+// Comprehensive notification functionality
 function initializeNotifications() {
     const notificationBtn = document.getElementById('notificationBtn');
+    const notificationPanel = document.getElementById('notificationPanel');
+    const closeNotifications = document.getElementById('closeNotifications');
+    const markAllReadBtn = document.getElementById('markAllReadBtn');
+    const notificationList = document.getElementById('notificationList');
     
-    if (notificationBtn) {
-        notificationBtn.addEventListener('click', function() {
-            // Placeholder for notification functionality
-            console.log('Notifications clicked');
+    
+    if (notificationBtn && notificationPanel) {
+        // Load initial notifications and count
+        loadNotifications();
+        updateNotificationCount();
+        
+        // Set up periodic updates (every 30 seconds)
+        setInterval(() => {
+            updateNotificationCount();
+        }, 30000);
+
+        notificationBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleNotificationPanel();
         });
+
+        if (closeNotifications) {
+            closeNotifications.addEventListener('click', function() {
+                hideNotificationPanel();
+            });
+        }
+
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', function() {
+                markAllNotificationsAsRead();
+            });
+        }
+    }
+    
+    // Close notification panel when clicking outside
+    document.addEventListener('click', function(e) {
+        if (notificationPanel && !notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+            hideNotificationPanel();
+        }
+    });
+}
+
+function toggleNotificationPanel() {
+    const notificationPanel = document.getElementById('notificationPanel');
+    if (notificationPanel) {
+        const isVisible = notificationPanel.classList.contains('active');
+        if (isVisible) {
+            hideNotificationPanel();
+        } else {
+            showNotificationPanel();
+        }
+    }
+}
+
+function showNotificationPanel() {
+    const notificationPanel = document.getElementById('notificationPanel');
+    if (notificationPanel) {
+        notificationPanel.classList.add('active');
+        loadNotifications(); // Refresh notifications when panel opens
+    }
+}
+
+function hideNotificationPanel() {
+    const notificationPanel = document.getElementById('notificationPanel');
+    if (notificationPanel) {
+        notificationPanel.classList.remove('active');
+    }
+}
+
+async function loadNotifications() {
+    const notificationList = document.getElementById('notificationList');
+    if (!notificationList) return;
+
+    try {
+        const response = await fetch('/notifications');
+        const data = await response.json();
+
+        if (data.ok) {
+            renderNotifications(data.data);
+        } else {
+            showNotificationError('Failed to load notifications');
+        }
+    } catch (error) {
+        showNotificationError('Error loading notifications');
+    }
+}
+
+function renderNotifications(notifications) {
+    const notificationList = document.getElementById('notificationList');
+    if (!notificationList) return;
+
+    if (notifications.length === 0) {
+        notificationList.innerHTML = `
+            <div class="no-notifications">
+                <i class="fas fa-bell-slash"></i>
+                <p>No notifications yet</p>
+            </div>
+        `;
+        return;
+    }
+
+    const notificationsHtml = notifications.map(notification => {
+        const timeAgo = getTimeAgo(new Date(notification.created_at));
+        const icon = getNotificationIcon(notification.type);
+        const unreadClass = notification.read_at ? '' : 'unread';
+
+        return `
+            <div class="notification-item ${unreadClass}" data-id="${notification.id}" data-type="${notification.type}" data-assignment-id="${notification.data?.assignment_id || ''}" style="cursor: pointer;">
+                <div class="notification-icon">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>${notification.title}</h4>
+                    <p>${notification.message}</p>
+                    <time>${timeAgo}</time>
+                </div>
+                ${!notification.read_at ? '<div class="notification-unread-dot"></div>' : ''}
+            </div>
+        `;
+    }).join('');
+
+    notificationList.innerHTML = notificationsHtml;
+
+    // Add click handlers for all notifications (read and unread)
+    notificationList.querySelectorAll('.notification-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const notificationId = this.dataset.id;
+            const notificationType = this.dataset.type;
+            const assignmentId = this.dataset.assignmentId;
+            
+            // Mark as read if unread
+            if (this.classList.contains('unread')) {
+                markNotificationAsRead(notificationId, this);
+            }
+            
+            // Handle different notification types
+            if (notificationType === 'message' && assignmentId) {
+                // Redirect to messaging page based on user role
+                // The messaging page will handle opening the specific conversation
+                const userRole = document.body.getAttribute('data-user-role') || 'client';
+                if (userRole === 'coach') {
+                    window.location.href = '/messages';
+                } else {
+                    window.location.href = '/messages/client';
+                }
+            }
+            // Add more notification types here as needed
+        });
+    });
+}
+
+function getNotificationIcon(type) {
+    const iconMap = {
+        'message': 'fas fa-comment',
+        'assignment': 'fas fa-user-plus',
+        'reminder': 'fas fa-bell',
+        'system': 'fas fa-info-circle'
+    };
+    return iconMap[type] || 'fas fa-bell';
+}
+
+function getTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    
+    return date.toLocaleDateString();
+}
+
+async function markNotificationAsRead(notificationId, element) {
+    try {
+        const response = await fetch(`/notifications/${notificationId}/read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+            element.classList.remove('unread');
+            const unreadDot = element.querySelector('.notification-unread-dot');
+            if (unreadDot) {
+                unreadDot.remove();
+            }
+            updateNotificationCount();
+        }
+    } catch (error) {
+        // Silently handle error
+    }
+}
+
+async function markAllNotificationsAsRead() {
+    try {
+        const response = await fetch('/notifications/read-all', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+            // Remove unread class from all notifications
+            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                item.classList.remove('unread');
+                const unreadDot = item.querySelector('.notification-unread-dot');
+                if (unreadDot) {
+                    unreadDot.remove();
+                }
+            });
+            updateNotificationCount();
+        }
+    } catch (error) {
+        // Silently handle error
+    }
+}
+
+async function updateNotificationCount() {
+    try {
+        const response = await fetch('/notifications/count');
+        const data = await response.json();
+
+        if (data.ok) {
+            const badge = document.querySelector('.notification-badge');
+            if (badge) {
+                if (data.unread_count > 0) {
+                    badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+    } catch (error) {
+        // Silently handle error
+    }
+}
+
+function showNotificationError(message) {
+    const notificationList = document.getElementById('notificationList');
+    if (notificationList) {
+        notificationList.innerHTML = `
+            <div class="notification-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>${message}</p>
+            </div>
+        `;
     }
 }
 

@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Models\CoachClientAssignment;
 use App\Models\Message;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
+    public function __construct(
+        private NotificationService $notificationService
+    ) {}
+
     public function index(Request $request, CoachClientAssignment $assignment)
     {
         $this->authorizeMember($request, $assignment);
@@ -60,6 +65,12 @@ class ChatController extends Controller
 
         // broadcast
         broadcast(new MessageSent($message))->toOthers();
+
+        // Load relationships needed for notifications
+        $message->load(['sender', 'assignment']);
+
+        // Create notifications (website + email)
+        $this->notificationService->createMessageNotification($message);
 
         // activity
         activity()->useLog('chat')->causedBy($request->user())->performedOn($assignment)
