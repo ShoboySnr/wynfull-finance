@@ -12,6 +12,17 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    public function create(Request $request)
+    {
+        // If user is already authenticated, redirect to their dashboard
+        if (Auth::check()) {
+            return redirect($this->redirectPathFor(Auth::user()));
+        }
+
+        // Show login form for unauthenticated users
+        return view('auth.login');
+    }
+
     public function store(Request $request)
     {
         $base = $request->validate([

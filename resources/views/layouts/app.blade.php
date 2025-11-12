@@ -3,9 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Dashboard') — Wynfull</title>
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Wynfull')</title>
 
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/coach-styles.css') }}">
@@ -34,7 +33,7 @@
         })();
     </script>
 </head>
-<body class="antialiased">
+<body class="antialiased" data-user-role="coach">
 
 <div class="coach-dashboard-layout">
     <!-- Sidebar -->
@@ -86,7 +85,7 @@
                 <div class="header-actions">
                     <button class="header-action-btn notification-btn" id="notificationBtn" title="Notifications">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
+                        <span class="notification-badge" style="display: none;">0</span>
                     </button>
                     <button class="header-action-btn theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
                         <i class="fas fa-moon"></i>
@@ -101,6 +100,25 @@
             </div>
         </div>
     </main>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-notifications" id="closeNotifications">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading notifications...</p>
+            </div>
+        </div>
+        <div class="notification-footer">
+            <button class="mark-all-read-btn" id="markAllReadBtn">Mark All as Read</button>
+        </div>
+    </div>
 </div>
 
 <script src="{{ asset('assets/js/main.js') }}"></script>

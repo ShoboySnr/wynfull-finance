@@ -310,37 +310,14 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="notification-list">
-            <div class="notification-item unread">
-                <div class="notification-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="notification-content">
-                    <h4>Portfolio Update</h4>
-                    <p>Your investments are up 2.3% this week</p>
-                    <time>2 hours ago</time>
-                </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading notifications...</p>
             </div>
-            <div class="notification-item unread">
-                <div class="notification-icon">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <div class="notification-content">
-                    <h4>Goal Milestone</h4>
-                    <p>You're 75% towards your emergency fund goal!</p>
-                    <time>1 day ago</time>
-                </div>
-            </div>
-            <div class="notification-item">
-                <div class="notification-icon">
-                    <i class="fas fa-calendar"></i>
-                </div>
-                <div class="notification-content">
-                    <h4>Coaching Session</h4>
-                    <p>Reminder: Session with Sarah Chen tomorrow at 2 PM</p>
-                    <time>2 days ago</time>
-                </div>
-            </div>
+        </div>
+        <div class="notification-footer">
+            <button class="mark-all-read-btn" id="markAllReadBtn">Mark All as Read</button>
         </div>
     </div>
 
@@ -429,5 +406,15 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/script.js') }}" defer></script>
+<script>
+function closeWelcomeModal() {
+    const welcomeModal = document.getElementById('welcomeModal');
+    if (welcomeModal) {
+        welcomeModal.style.display = 'none';
+        // Store that the user has seen the welcome modal
+        localStorage.setItem('welcomeModalSeen', 'true');
+    }
+}
+</script>
 @endpush
+

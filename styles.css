@@ -372,6 +372,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    line-height: 1;
 }
 
 .user-avatar-small {
@@ -2878,22 +2879,6 @@ input:checked + .slider:before {
 .notification-content time {
     font-size: 0.8rem;
     color: var(--text-light);
-}
-
-.notification-btn {
-    position: relative;
-    background: none;
-    border: none;
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background 0.2s ease;
-}
-
-.notification-btn:hover {
-    background: rgba(0, 0, 0, 0.1);
 }
 
 .notification-badge {
