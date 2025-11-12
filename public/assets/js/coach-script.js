@@ -175,16 +175,13 @@ function initializeCoachDashboard() {
 }
 
 function initializeCoachTheme() {
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
     // Get system preference
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const systemTheme = systemPrefersDark ? 'dark' : 'light';
 
     // Load saved theme or use system preference as default
     const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
-    body.setAttribute('data-theme', savedTheme);
+    setCoachTheme(savedTheme);
 
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -192,37 +189,61 @@ function initializeCoachTheme() {
         // Only update if user hasn't manually set a preference
         if (!localStorage.getItem('wynfullTheme')) {
             const newSystemTheme = e.matches ? 'dark' : 'light';
-            body.setAttribute('data-theme', newSystemTheme);
-            updateThemeIcon(newSystemTheme);
+            setCoachTheme(newSystemTheme);
         }
     });
 
-    if (themeToggle) {
-        // Update icon based on current theme
-        updateThemeIcon(savedTheme);
+    // Initialize theme toggle with retry mechanism
+    initializeCoachThemeToggle();
+}
 
-        themeToggle.addEventListener('click', function() {
+function initializeCoachThemeToggle(retryCount = 0) {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (themeToggle && !themeToggle.hasAttribute('data-theme-initialized')) {
+        // Mark as initialized to prevent duplicate event listeners
+        themeToggle.setAttribute('data-theme-initialized', 'true');
+        
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const body = document.body;
             const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-            body.setAttribute('data-theme', newTheme);
+            
+            // If data-theme is set to 'dark', switch to light. Otherwise, switch to dark.
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            setCoachTheme(newTheme);
             localStorage.setItem('wynfullTheme', newTheme);
-            updateThemeIcon(newTheme);
         });
+    } else if (!themeToggle && retryCount < 10) {
+        // Retry after a short delay if element not found (max 10 retries)
+        setTimeout(() => initializeCoachThemeToggle(retryCount + 1), 100);
     }
 }
 
-function updateThemeIcon(theme) {
+function setCoachTheme(theme) {
+    const body = document.body;
+    const documentElement = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        const icon = themeToggle.querySelector('i');
-        if (theme === 'light') {
-            icon.className = 'fas fa-moon';
-        } else {
+    const icon = themeToggle?.querySelector('i');
+    
+    if (theme === 'dark') {
+        // Set theme on both elements to match inline script behavior
+        documentElement.setAttribute('data-theme', 'dark');
+        body.setAttribute('data-theme', 'dark');
+        if (icon) {
             icon.className = 'fas fa-sun';
+        }
+    } else {
+        // Remove or set to light theme
+        documentElement.removeAttribute('data-theme');
+        body.removeAttribute('data-theme');
+        if (icon) {
+            icon.className = 'fas fa-moon';
         }
     }
 }
+
 
 // Resource Filtering Functions
 function initializeResourceFiltering() {

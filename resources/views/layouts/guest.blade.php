@@ -28,10 +28,6 @@
     </script>
 </head>
 <body class="antialiased">
-<!-- Theme Toggle Button -->
-<button class="theme-toggle-guest" id="themeToggle" title="Toggle Dark/Light Mode">
-    <i class="fas fa-moon"></i>
-</button>
 
 @yield('content')
 

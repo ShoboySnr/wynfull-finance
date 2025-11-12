@@ -1319,9 +1319,6 @@ function resetOnboardingForm() {
 
 // Theme functionality
 function initializeTheme() {
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-
     // Get system preference
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const systemTheme = systemPrefersDark ? 'dark' : 'light';
@@ -1340,27 +1337,50 @@ function initializeTheme() {
         }
     });
 
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const currentTheme = body.getAttribute('data-theme') || systemTheme;
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    // Initialize theme toggle with retry mechanism
+    initializeScriptThemeToggle();
+}
+
+function initializeScriptThemeToggle(retryCount = 0) {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (themeToggle && !themeToggle.hasAttribute('data-theme-initialized')) {
+        // Mark as initialized to prevent duplicate event listeners
+        themeToggle.setAttribute('data-theme-initialized', 'true');
+        
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            
+            // If data-theme is set to 'dark', switch to light. Otherwise, switch to dark.
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
             setTheme(newTheme);
             localStorage.setItem('wynfullTheme', newTheme);
         });
+    } else if (!themeToggle && retryCount < 10) {
+        // Retry after a short delay if element not found (max 10 retries)
+        setTimeout(() => initializeScriptThemeToggle(retryCount + 1), 100);
     }
 }
 
 function setTheme(theme) {
     const body = document.body;
+    const documentElement = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
     const icon = themeToggle?.querySelector('i');
 
     if (theme === 'dark') {
+        // Set theme on both elements to match inline script behavior
+        documentElement.setAttribute('data-theme', 'dark');
         body.setAttribute('data-theme', 'dark');
         if (icon) {
             icon.className = 'fas fa-sun';
         }
     } else {
+        // Remove or set to light theme
+        documentElement.removeAttribute('data-theme');
         body.removeAttribute('data-theme');
         if (icon) {
             icon.className = 'fas fa-moon';

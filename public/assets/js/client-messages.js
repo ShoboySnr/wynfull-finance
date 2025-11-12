@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
             messagesList.innerHTML = '<div class="no-messages"><p>No messages in this conversation yet. Send one!</p></div>';
             return;
         }
-        messages.slice().reverse().forEach(msg => renderMessage(msg, msg.sender_id === authUserId));
+        messages.slice().reverse().forEach(msg => renderMessage(msg, parseInt(msg.sender_id) === parseInt(authUserId)));
         scrollToBottom();
     };
 
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         coach_client_assignment_id: assignmentId
                     };
 
-                    if (message.coach_client_assignment_id == currentAssignmentId && message.sender_id !== authUserId) {
+                    if (message.coach_client_assignment_id == currentAssignmentId && parseInt(message.sender_id) !== parseInt(authUserId)) {
                         renderMessage(message, false); // Render coach's message
                         scrollToBottom();
                         markMessagesRead(currentAssignmentId);
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         message.created_at
                     );
                     // Handle unread indicator if conversation is not active
-                    if (message.coach_client_assignment_id !== currentAssignmentId && message.sender_id !== authUserId) {
+                    if (message.coach_client_assignment_id !== currentAssignmentId && parseInt(message.sender_id) !== parseInt(authUserId)) {
                         const targetConvItem = conversationsList.querySelector(`.conversation-item[data-assignment-id="${message.coach_client_assignment_id}"]`);
                     }
                 });

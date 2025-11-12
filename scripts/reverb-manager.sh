@@ -27,11 +27,11 @@ is_reverb_running() {
 start_reverb() {
     cd "$PROJECT_PATH"
     
-    # Start Reverb in background and save PID
-    nohup php artisan reverb:start >> "$LOG_FILE" 2>&1 &
+    # Start Reverb in background with correct host and port
+    nohup php artisan reverb:start --host=0.0.0.0 --port=8080 >> "$LOG_FILE" 2>&1 &
     echo $! > "$REVERB_PID_FILE"
     
-    echo "$(date): Reverb started with PID $(cat $REVERB_PID_FILE)" >> "$LOG_FILE"
+    echo "$(date): Reverb started with PID $(cat $REVERB_PID_FILE) on host 0.0.0.0:8080" >> "$LOG_FILE"
 }
 
 # Function to stop Reverb
