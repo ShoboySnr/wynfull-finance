@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         // Messages from API are newest first (orderByDesc), render them oldest first
-        messages.slice().reverse().forEach(msg => renderMessage(msg, msg.sender_id === authUserId));
+        messages.slice().reverse().forEach(msg => renderMessage(msg, parseInt(msg.sender_id) === parseInt(authUserId)));
         scrollToBottom();
     };
 
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         coach_client_assignment_id: assignmentId
                     };
 
-                    if (message.coach_client_assignment_id == currentAssignmentId && message.sender_id !== authUserId) {
+                    if (message.coach_client_assignment_id == currentAssignmentId && parseInt(message.sender_id) !== parseInt(authUserId)) {
                         renderMessage(message, false);
                         scrollToBottom();
                         // Mark as read immediately if the conversation is open
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     );
 
                     // Show unread indicator if the conversation is NOT active
-                    if (message.coach_client_assignment_id != currentAssignmentId && message.sender_id !== authUserId) {
+                    if (message.coach_client_assignment_id != currentAssignmentId && parseInt(message.sender_id) !== parseInt(authUserId)) {
                         const targetConvItem = conversationsList.querySelector(`.conversation-item[data-assignment-id="${message.coach_client_assignment_id}"]`);
                         let indicator = targetConvItem?.querySelector('.unread-indicator');
                         let countEl = targetConvItem?.querySelector('.unread-count');
