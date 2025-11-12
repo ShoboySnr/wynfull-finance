@@ -94,7 +94,7 @@ class AdminResourceCollectionModulesController extends Controller
 
     public function destroy(Request $request, ResourceCollection $resourceCollection, ResourceModule $resourceModule)
     {
-        abort_unless($resourceModule->resource_collection_id === $resourceCollection->id, 404);
+        abort_unless($resourceModule->resource_collection_id == $resourceCollection->id, 404);
 
         if ($resourceModule->file_path) {
             Storage::disk('public')->delete($resourceModule->file_path);
