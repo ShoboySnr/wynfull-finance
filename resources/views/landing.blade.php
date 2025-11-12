@@ -66,9 +66,6 @@
                         <a href="{{ route('admin.dashboard') }}" onclick="closeMobileMenu()" class="mobile-cta dashboard-mobile-btn">Go to Dashboard</a>
                     @endif
                 @endauth
-                <button class="theme-toggle-mobile" onclick="toggleTheme(); closeMobileMenu();" title="Toggle Dark/Light Mode">
-                    <i class="fas fa-moon"></i> <span>Toggle Theme</span>
-                </button>
             </div>
         </div>
 
