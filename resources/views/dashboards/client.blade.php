@@ -18,7 +18,12 @@
 
             <div class="dashboard-top-section">
                 <div class="phase-status-card">
-                    <h2>Phase Status</h2>
+                    <div class="card-header-with-info">
+                        <h2>Phase Status</h2>
+                        <div class="info-indicator" data-tooltip="phase-status">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="phase-chart">
                         @php
                             $barStates = [
@@ -60,7 +65,12 @@
                 </div>
 
                 <div class="primary-goals-card">
-                    <h2>Primary Goals</h2>
+                    <div class="card-header-with-info">
+                        <h2>Primary Goals</h2>
+                        <div class="info-indicator" data-tooltip="primary-goals">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <ul class="goals-list">
                         @forelse($pickedGoals as $goal)
                             <li>{{ $goal }}</li>
@@ -73,7 +83,12 @@
 
             <div class="dashboard-grid">
                 <div class="metric-card confidence-card">
-                    <h3>Confidence Score</h3>
+                    <div class="card-header-with-info">
+                        <h3>Confidence Score</h3>
+                        <div class="info-indicator" data-tooltip="confidence-score">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="confidence-circle">
                         @php
                             $score = $confidence['score'] ?? 0;
@@ -86,7 +101,12 @@
                 </div>
 
                 <div class="metric-card debt-progress-card">
-                    <h3>Debt Journey</h3>
+                    <div class="card-header-with-info">
+                        <h3>Debt Journey</h3>
+                        <div class="info-indicator" data-tooltip="debt-journey">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="debt-status">
                         <div class="debt-icon">
                             <i class="fas fa-chart-line"></i>
@@ -102,7 +122,12 @@
                 </div>
 
                 <div class="metric-card knowledge-card">
-                    <h3>Investing Knowledge</h3>
+                    <div class="card-header-with-info">
+                        <h3>Investing Knowledge</h3>
+                        <div class="info-indicator" data-tooltip="investing-knowledge">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="knowledge-content">
                         <div class="knowledge-level">
                             <div class="knowledge-icon">
@@ -118,7 +143,12 @@
                 </div>
 
                 <div class="metric-card emergency-fund-card">
-                    <h3>Emergency Fund</h3>
+                    <div class="card-header-with-info">
+                        <h3>Emergency Fund</h3>
+                        <div class="info-indicator" data-tooltip="emergency-fund">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="fund-amount">{{ $wealthCards['saved_display'] ?? ''}}</div>
                     <div class="fund-progress">
                         <div class="fund-bar">
@@ -137,7 +167,12 @@
                     }
                 @endphp
                 <div class="metric-card investing-card">
-                    <h3>Investing</h3>
+                    <div class="card-header-with-info">
+                        <h3>Investing</h3>
+                        <div class="info-indicator" data-tooltip="investing-contribution">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
                     <div class="investing-content">
                         <span class="investing-label">Contribution score</span>
                         <span class="investing-status">{{ $investingStatus['label'] ?? '' }}</span>
@@ -403,6 +438,12 @@
             </div>
         </div>
     </div>
+
+    <!-- Info Tooltips -->
+    <div class="tooltip-container" id="tooltip-container" style="display: none;">
+        <div class="tooltip-content" id="tooltip-content"></div>
+        <div class="tooltip-arrow"></div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -414,6 +455,169 @@ function closeWelcomeModal() {
         // Store that the user has seen the welcome modal
         localStorage.setItem('welcomeModalSeen', 'true');
     }
+}
+
+// Tooltip functionality
+const tooltipData = {
+    'phase-status': {
+        title: 'Phase Status',
+        content: `<strong>Purpose:</strong><br>
+        Shows where you are across the four Wynfull phases — Reset & Rewire, Take Control, Grow & Multiply, and Sustain & Scale.<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • The height of each bar reflects where your attention is most needed.<br>
+        • Bar heights are determined by your answers to the onboarding questionnaire.<br>
+        • Each phase corresponds to your current financial situation:<br>
+        &nbsp;&nbsp;- Reset & Rewire: "Struggling with debt"<br>
+        &nbsp;&nbsp;- Take Control: "Living paycheck to paycheck" or "Doing okay but not saving much"<br>
+        &nbsp;&nbsp;- Grow: "Saving regularly and want to invest"<br>
+        &nbsp;&nbsp;- Sustain: "Confident and focused on long-term wealth"<br>
+        &nbsp;&nbsp;- Other: All bars will appear at equal height.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Focus your next steps and conversations on the phase with the highest bar — that's where your current financial journey is centered.`
+    },
+    'primary-goals': {
+        title: 'Primary Goals',
+        content: `<strong>Purpose:</strong><br>
+        Displays your main focus areas for this pilot phase of your financial journey.<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • These goals are automatically set based on your onboarding questionnaire.<br>
+        • They can be updated anytime in collaboration with your coach.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Use your goals as your North Star — revisit and adjust as you hit milestones or refine your priorities.`
+    },
+    'confidence-score': {
+        title: 'Confidence Score',
+        content: `<strong>Purpose:</strong><br>
+        Reflects how confident you feel managing your personal finances.<br><br>
+        
+        <strong>Scale:</strong><br>
+        25 (Low) → 100 (High)<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • A lower score indicates financial stress or uncertainty.<br>
+        • A higher score represents clarity, control, and progress.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Your confidence grows through habit — track your progress, build consistency, and celebrate small wins.`
+    },
+    'debt-journey': {
+        title: 'Debt Journey',
+        content: `<strong>Purpose:</strong><br>
+        Tracks your current stage in managing or paying off debt.<br><br>
+        
+        <strong>Stages:</strong><br>
+        Overwhelmed → Managing → Taking Control → Debt-Free<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • The progress bar shows how far you've moved toward full debt control.<br>
+        • Your stage is updated based on questionnaire responses and future progress inputs.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Use your Wynfull Debt Tracker and coaching sessions to reflect on progress and strategies. Each milestone moves you closer to financial peace.`
+    },
+    'investing-knowledge': {
+        title: 'Investing Knowledge',
+        content: `<strong>Purpose:</strong><br>
+        Shows your current level of understanding and experience with investing.<br><br>
+        
+        <strong>Levels:</strong><br>
+        Beginner (1–2/5) → Intermediate (3–4/5) → Expert (5/5)<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • Based on your questionnaire responses about your investing habits and knowledge.<br>
+        • Updated as you complete learning modules or coaching milestones.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Use Wynfull's Resource Library and your coach's guidance to build confidence and move to the next investing tier.`
+    },
+    'emergency-fund': {
+        title: 'Emergency Fund',
+        content: `<strong>Purpose:</strong><br>
+        Displays your current amount saved for unexpected events or emergencies.<br><br>
+        
+        <strong>Goal Benchmark:</strong><br>
+        3–6 months of essential and priority expenses.<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • The number reflects your estimated savings level, based on your responses or updated progress.<br>
+        • You'll see this number increase as you grow your buffer fund and update your response.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Building an emergency fund is one of the strongest financial defenses — even small, consistent contributions make a big difference over time.`
+    },
+    'investing-contribution': {
+        title: 'Investing (Contribution Score)',
+        content: `<strong>Purpose:</strong><br>
+        Tracks your consistency in contributing to investment or retirement accounts.<br><br>
+        
+        <strong>Scale:</strong><br>
+        Not Started → Just Starting → Consistent<br><br>
+        
+        <strong>How to Read It:</strong><br>
+        • Measures how regularly you contribute, not how much you invest.<br>
+        • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>
+        
+        <strong>Action Tip:</strong><br>
+        Start with small automated investments — even $25 or $50 per paycheck builds powerful momentum. Consistency beats amount over time.`
+    }
+};
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    const infoIndicators = document.querySelectorAll('.info-indicator');
+    const tooltipContainer = document.getElementById('tooltip-container');
+    const tooltipContent = document.getElementById('tooltip-content');
+    
+    infoIndicators.forEach(indicator => {
+        indicator.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const tooltipType = this.getAttribute('data-tooltip');
+            const data = tooltipData[tooltipType];
+            
+            if (data) {
+                tooltipContent.innerHTML = `<h4>${data.title}</h4>${data.content}`;
+                showTooltip(e.target, tooltipContainer);
+            }
+        });
+    });
+    
+    // Close tooltip when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!tooltipContainer.contains(e.target) && !e.target.closest('.info-indicator')) {
+            hideTooltip(tooltipContainer);
+        }
+    });
+});
+
+function showTooltip(trigger, tooltip) {
+    const rect = trigger.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    
+    // Position tooltip
+    tooltip.style.display = 'block';
+    tooltip.style.position = 'fixed';
+    tooltip.style.left = (rect.left - 200) + 'px'; // Offset to the left
+    tooltip.style.top = (rect.bottom + 10) + 'px';
+    
+    // Adjust if tooltip goes off screen
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    if (rect.left - 200 < 0) {
+        tooltip.style.left = '10px';
+    }
+    
+    if (rect.bottom + tooltip.offsetHeight + 10 > viewportHeight) {
+        tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+    }
+}
+
+function hideTooltip(tooltip) {
+    tooltip.style.display = 'none';
 }
 </script>
 @endpush

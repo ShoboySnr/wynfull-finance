@@ -7744,7 +7744,7 @@ button.join-call {
 .resource-tag { /* Base style defined elsewhere */
     /* ... */
 }
-.resource-tag.template { background: rgba(167, 139, 250, 0.1); color: #7c3aed; } /* Violet */
+.resource-tag.template { background: rgba(167, 139, 250, 0.1); color: #0E4DA4; } /* Violet */
 .resource-tag.word { background: rgba(59, 130, 246, 0.1); color: #2563eb; } /* Blue */
 .resource-tag.pdf { background: rgba(239, 68, 68, 0.1); color: #b91c1c; } /* Red */
 .resource-tag.excel { background: rgba(34, 197, 94, 0.1); color: #15803d; } /* Green */
@@ -7972,3 +7972,268 @@ button.join-call {
     }
 }
 /* END: Manage Modules Page Styles */
+
+/* Card Info Indicators & Tooltips */
+.card-header-with-info {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    width: 100%;
+    position: relative;
+    text-align: left;
+}
+
+.card-header-with-info h2,
+.card-header-with-info h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.info-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6B7280, #6B7280);
+    color: white;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: absolute;
+    overflow: hidden;
+    right: 0;
+}
+
+.info-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.info-indicator:hover {
+    background: linear-gradient(135deg, #6B7280, #6B7280);
+    transform: scale(1.15);
+}
+
+.info-indicator:hover::before {
+    opacity: 1;
+}
+
+.info-indicator:active {
+    transform: scale(1.05);
+}
+
+.info-indicator i {
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 1;
+    position: relative;
+}
+
+.tooltip-container {
+    position: fixed;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
+    max-width: 420px;
+    width: 420px;
+    max-height: 400px;
+    z-index: 1000;
+    padding: 0;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    animation: tooltipFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.tooltip-content {
+    padding: 2rem;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #374151;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 12px;
+    overflow-y: auto;
+    flex: 1;
+    max-height: calc(400px - 2rem);
+}
+
+/* Custom scrollbar styling for tooltip */
+.tooltip-content::-webkit-scrollbar {
+    width: 3px;
+}
+
+.tooltip-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 1px;
+}
+
+.tooltip-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #1f2937, #1f2937);
+    border-radius: 1px;
+}
+
+.tooltip-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #1f2937, #1f2937);
+}
+
+.tooltip-content h4 {
+    display: none;
+}
+
+.tooltip-content strong {
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.tooltip-content br {
+    margin-bottom: 0.5rem;
+}
+
+.tooltip-content p {
+    margin: 0 0 1rem 0;
+}
+
+.tooltip-content ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.tooltip-content li {
+    margin-bottom: 0.25rem;
+    color: #4b5563;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid white;
+    filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Dark mode support for tooltips */
+[data-theme="dark"] .tooltip-container {
+    background: #1f2937;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .tooltip-content {
+    color: #e5e7eb;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+/* Dark mode scrollbar styling */
+[data-theme="dark"] .tooltip-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .tooltip-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8b5cf6, #a855f7);
+}
+
+[data-theme="dark"] .tooltip-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0E4DA4, #0E4DA4);
+}
+
+[data-theme="dark"] .tooltip-content h4 {
+    display: none;
+}
+
+[data-theme="dark"] .tooltip-content strong {
+    color: #f9fafb;
+}
+
+[data-theme="dark"] .tooltip-content li {
+    color: #d1d5db;
+}
+
+[data-theme="dark"] .tooltip-arrow {
+    border-bottom-color: #1f2937;
+    filter: drop-shadow(0 -4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Dark mode info indicator adjustments */
+[data-theme="dark"] .info-indicator {
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .info-indicator:hover {
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
+}
+
+/* Responsive tooltip */
+@media (max-width: 768px) {
+    .tooltip-container {
+        max-width: calc(100vw - 20px);
+        width: calc(100vw - 20px);
+        max-height: 300px;
+        left: 10px !important;
+        right: 10px;
+    }
+    
+    .tooltip-content {
+        padding: 1rem;
+        font-size: 13px;
+        max-height: calc(300px - 1rem);
+    }
+    
+    .tooltip-content h4 {
+        font-size: 15px;
+    }
+}
+
+/* Ensure info indicators work well in different card layouts */
+.phase-status-card .card-header-with-info,
+.primary-goals-card .card-header-with-info {
+    margin-bottom: 1.5rem;
+}
+
+.metric-card .card-header-with-info {
+    margin-bottom: 1rem;
+}
+
+.metric-card .card-header-with-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Adjust spacing for cards with info indicators */
+.phase-status-card .card-header-with-info + .phase-chart,
+.primary-goals-card .card-header-with-info + .goals-list,
+.metric-card .card-header-with-info + * {
+    margin-top: 0;
+}
