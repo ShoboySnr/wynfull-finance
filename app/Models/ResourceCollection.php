@@ -11,7 +11,7 @@ class ResourceCollection extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['coach_id', 'icon_class', 'title', 'description', 'approved_by', 'approved_at', 'rejection_reason', 'status'];
+    protected $fillable = ['coach_id', 'created_by', 'icon_class', 'title', 'description', 'visibility', 'approved_by', 'approved_at', 'rejection_reason', 'status'];
 
     protected $casts = [
         'approved_at' => 'datetime',

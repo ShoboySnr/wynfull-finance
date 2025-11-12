@@ -17,6 +17,7 @@ class ResourceCollectionController extends Controller
     {
         $collection = ResourceCollection::create([
             'coach_id'   => $request->user()->id,
+            'created_by' => $request->user()->id,
             'icon_class' => $request->icon_class,
             'title'      => $request->title,
             'description'=> $request->description,

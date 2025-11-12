@@ -20,8 +20,10 @@ class AdminResourceCollectionController extends Controller
         $collection = ResourceCollection::create([
             'title' => $data['title'],
             'description' => $data['description'],
+            'visibility'  => 'global',
             'icon_class' => $data['icon_class'],
             'coach_id' => $request->user()->id,
+            'created_by' => $request->user()->id,
             'approved_by' => $request->user()->id,
             'approved_at' => now(),
             'status' => 'approved',
