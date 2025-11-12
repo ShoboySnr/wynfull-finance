@@ -5707,7 +5707,7 @@ input:checked + .slider:before {
         position: absolute;
         left: -100%;
         transition: left 0.3s ease;
-        z-index: 1000;
+        z-index: 999999;
         height: 100%;
         background: var(--background-primary);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
@@ -5768,7 +5768,8 @@ input:checked + .slider:before {
 
 
     /* Add overlay when sidebar is active */
-    .coaches-sidebar.active::before {
+    .coaches-sidebar.active::before,
+    .coach-clients-sidebar.active::before {
         content: '';
         position: fixed;
         top: 0;
@@ -5782,7 +5783,8 @@ input:checked + .slider:before {
     /* Theme-aware overlay */
     [data-theme="light"] .coaches-sidebar.active::before,
     [data-theme="light"] .coach-clients-sidebar.active::before,
-    body:not([data-theme]) .coaches-sidebar.active::before {
+    body:not([data-theme]) .coaches-sidebar.active::before,
+    body:not([data-theme]) .coach-clients-sidebar.active::before {
         background: rgba(0, 0, 0, 0.2);
     }
 
