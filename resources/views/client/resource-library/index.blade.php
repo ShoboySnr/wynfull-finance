@@ -145,6 +145,7 @@
                 @forelse ($toolsAndTemplates as $module)
                     @php
                         $isModuleComplete = !$module->completions->isEmpty();
+//                        dd($isCollectionComplete);
                         $moduleIconClass = match ($module->type) {
                             'template' => 'fa-file-alt', 'pdf' => 'fa-file-pdf',
                             'word' => 'fa-file-word', 'excel' => 'fa-file-excel',

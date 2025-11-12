@@ -72,7 +72,8 @@ class ResourceModule extends Model
     public function completions(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'resource_module_users')
-            ->withTimestamps('completed_at');
+            ->withPivot(['completed_at'])
+            ->withTimestamps();
     }
 
 

@@ -19,8 +19,7 @@ class ResourceLibraryController extends Controller
         // Get active coach assignments for this client (supports multiple)
         $coachIds = CoachClientAssignment::query()
             ->where('client_id', $client->id)
-            ->when($request->query('status', 'active'), fn ($q, $status) =>
-            $q->where('status', $status)   // default: active
+            ->when($request->query('status', 'active'), fn($q, $status) => $q->where('status', $status)   // default: active
             )
             ->pluck('coach_id')
             ->unique()
@@ -29,10 +28,16 @@ class ResourceLibraryController extends Controller
 
         $collections = ResourceCollection::query()
             ->withCount('modules')
-            ->with(['modules' => function ($m) {
-                $m->select('id','resource_collection_id','title','type','file_name','file_path','video_link','created_by')
-                    ->latest('id');
-            }])
+            ->with([
+                'modules' => function ($m) use ($client) {
+                    $m->select('id', 'resource_collection_id', 'title', 'type', 'file_name', 'file_path', 'video_link', 'created_by')
+                        ->latest('id')
+                        ->with([
+                            'completions' => fn($c) => $c->where('users.id', $client->id)
+                                ->whereNotNull('resource_module_users.completed_at')
+                        ]);
+                },
+            ])
             ->whereNotNull('approved_at')
             ->where(function ($q) use ($coachIds, $client) {
                 $q->where('visibility', 'global')
@@ -42,7 +47,7 @@ class ResourceLibraryController extends Controller
                     })
                     ->orWhere(function ($w) use ($client) {
                         $w->where('visibility', 'assigned_only')
-                            ->whereHas('modules.directAssignees', fn ($d) => $d->where('user_id', $client->id));
+                            ->whereHas('modules.directAssignees', fn($d) => $d->where('user_id', $client->id));
                     });
             })
             // Put admin/global on top, then newest approvals
@@ -75,11 +80,9 @@ class ResourceLibraryController extends Controller
             })
             // For assigned_only: ensure module is assigned to this client
             ->where(function ($q) use ($client) {
-                $q->whereHas('collection', fn ($c) => $c->where('visibility', '!=', 'assigned_only'))
-                    ->orWhereHas('directAssignees', fn ($d) => $d->where('user_id', $client->id));
+                $q->whereHas('collection', fn($c) => $c->where('visibility', '!=', 'assigned_only'))
+                    ->orWhereHas('directAssignees', fn($d) => $d->where('user_id', $client->id));
             })
-
-            // === SELECT BASE COLUMNS FIRST ===
             ->select([
                 'id',
                 'resource_collection_id',
@@ -91,8 +94,6 @@ class ResourceLibraryController extends Controller
                 'video_link',
                 'created_by',
             ])
-
-            // === THEN ADD SUBSELECT ALIASES (DON'T CALL select() AGAIN) ===
             ->addSelect([
                 'collection_visibility' => ResourceCollection::query()
                     ->select('visibility')
@@ -105,14 +106,12 @@ class ResourceLibraryController extends Controller
                     ->whereNull('resource_collections.deleted_at')
                     ->limit(1),
             ])
-
             ->withCompletionFor($client->id)
 
             // Admin/global first, then by collection approval recency, then newest modules
             ->orderByRaw("CASE WHEN collection_visibility = 'global' THEN 1 ELSE 0 END DESC")
             ->orderByDesc('collection_approved_at')
             ->orderByDesc('id')
-
             ->paginate(12)
             ->withQueryString();
 
