@@ -20,8 +20,8 @@
                             @if($coach && $coach->coachProfile && $coach->profile)
                                 <img src="{{ $coach->profile->avatar_url }}" alt="Coach" class="coach-avatar">
                                 <div class="coach-details">
-                                    <h3>{{ $coach->name }},</h3>
-                                    <p>{{ $coach->profile->bio }}</p>
+                                    <h3>{{ $coach->name }}</h3>
+                                    <p>{{ $coach->profile->bio ? ', '. $coach->profile->bio : '' }}</p>
                                 </div>
                             @else
                                 <p>You are not currently assigned to a coach.</p>
