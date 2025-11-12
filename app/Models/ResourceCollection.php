@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ResourceCollection extends Model
 {
     use SoftDeletes;
+
     protected $fillable = ['coach_id', 'icon_class', 'title', 'description', 'approved_by', 'approved_at', 'rejection_reason', 'status'];
 
     protected $casts = [
         'approved_at' => 'datetime',
     ];
+
     public function coach(): BelongsTo
     {
         return $this->belongsTo(User::class, 'coach_id');
@@ -29,9 +31,25 @@ class ResourceCollection extends Model
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+
     public function scopeApproved($query)
     {
         return $query->whereNotNull('approved_at');
+    }
+
+    public function scopeGlobal($q)
+    {
+        return $q->where('visibility', 'global');
+    }
+
+    public function scopeCoachOnly($q)
+    {
+        return $q->where('visibility', 'coach_only');
+    }
+
+    public function scopeAssignedOnly($q)
+    {
+        return $q->where('visibility', 'assigned_only');
     }
 
     public function scopePending($query)
@@ -49,10 +67,10 @@ class ResourceCollection extends Model
     /** Optional: computed status for display */
     public function getStatusAttribute(): string
     {
-        if (! is_null($this->approved_at)) {
+        if (!is_null($this->approved_at)) {
             return 'approved';
         }
-        if (! is_null($this->rejection_reason)) {
+        if (!is_null($this->rejection_reason)) {
             return 'rejected';
         }
         return 'pending';
