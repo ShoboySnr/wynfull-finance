@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Get auth user ID from window
+    const authUserId = window.authUserId;
+    
     // --- DOM Elements ---
     const conversationsList = document.getElementById('conversationsList');
     const messagesList = document.getElementById('messagesList');
@@ -8,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    // Mobile elements
+    const mobileClientsToggle = document.getElementById('mobileClientsToggle');
+    const clientsSidebar = document.getElementById('clientsSidebar');
+    
 
     let currentAssignmentId = null; // Track the currently active assignment
     let currentChannelName = null;  // Track the current Echo channel name
@@ -392,27 +400,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // --- Mobile Sidebar Toggle ---
-    const sidebar = document.querySelector('.coach-clients-sidebar');
-    const headerProfileArea = document.querySelector('.chat-header .client-profile'); // Clickable area in header
-    const overlay = document.querySelector('.messaging-overlay');
+    // --- Mobile Clients Sidebar Toggle ---
+    if (mobileClientsToggle && clientsSidebar) {
+        mobileClientsToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            clientsSidebar.classList.toggle('active');
+        });
 
-    if (sidebar && headerProfileArea && overlay ) {
-        const openSidebar = () => {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-        };
-        const closeSidebar = () => {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        };
-
-        headerProfileArea.addEventListener('click', (event)=>{
-            if(!sidebar.classList.contains('open')){
-                openSidebar();
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768 && 
+                clientsSidebar.classList.contains('active') && 
+                !clientsSidebar.contains(e.target) && 
+                !mobileClientsToggle.contains(e.target)) {
+                clientsSidebar.classList.remove('active');
             }
         });
-        overlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar when window is resized to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                clientsSidebar.classList.remove('active');
+            }
+        });
+
+        // Close sidebar when a conversation is selected on mobile
+        if (conversationsList) {
+            conversationsList.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && e.target.closest('.conversation-item')) {
+                    clientsSidebar.classList.remove('active');
+                }
+            });
+        }
     }
 
 });

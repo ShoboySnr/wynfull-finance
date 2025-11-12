@@ -14,12 +14,17 @@
         {{-- START: Added Auth User ID for JS --}}
         <script>
             // Pass the authenticated user's ID to JavaScript
-            const authUserId = {{ auth()->id() }};
+            window.authUserId = {{ auth()->id() }};
         </script>
         {{-- END: Added Auth User ID for JS --}}
 
         <div class="coach-messaging-container">
-            <div class="coaches-sidebar">
+            <!-- Mobile toggle button for coaches sidebar -->
+            <button class="mobile-coaches-toggle" id="mobileCoachesToggle" title="Show Coaches">
+                <i class="fas fa-users"></i>
+            </button>
+            
+            <div class="coaches-sidebar" id="coachesSidebar">
                 <div class="coaches-header">
                     <h3>Your Coach</h3>
                 </div>

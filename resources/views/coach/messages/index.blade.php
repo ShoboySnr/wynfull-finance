@@ -10,12 +10,17 @@
         </div>
 
         <script>
-        const authUserId = {{ auth()->id() }};
+        window.authUserId = {{ auth()->id() }};
         </script>
 
         <div class="coach-messaging-container">
+            <!-- Mobile toggle button for clients sidebar -->
+            <button class="mobile-clients-toggle" id="mobileClientsToggle" title="Show Clients">
+                <i class="fas fa-users"></i>
+            </button>
+            
             <!-- Conversations List Sidebar -->
-            <div class="coach-clients-sidebar">
+            <div class="coach-clients-sidebar" id="clientsSidebar">
                 <div class="clients-header">
                     <h3>Conversations</h3>
                     {{-- <button class="btn-secondary new-message-btn btn-sm"><i class="fas fa-plus"></i> New</button> --}}

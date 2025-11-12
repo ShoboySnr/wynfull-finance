@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeUserDropdowns();
     initializeNotifications();
     initializeLogoutConfirmation();
+    initializeMobileMenu();
 });
 
 // Theme functionality
@@ -463,3 +464,91 @@ window.toggleTheme = function() {
     setTheme(newTheme);
     localStorage.setItem('wynfullTheme', newTheme);
 };
+
+// Mobile Menu Functionality
+function initializeMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (mobileMenuToggle && sidebar) {
+        // Remove any existing event listeners
+        mobileMenuToggle.removeEventListener('click', toggleMobileMenu);
+        
+        // Add click event listener
+        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (sidebar.classList.contains('mobile-active') && 
+                !sidebar.contains(event.target) && 
+                !mobileMenuToggle.contains(event.target)) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close mobile menu when window is resized to desktop size
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        });
+    }
+}
+
+function toggleMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const body = document.body;
+    
+    if (sidebar) {
+        if (sidebar.classList.contains('mobile-active')) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    }
+}
+
+function openMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const body = document.body;
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const toggleIcon = mobileMenuToggle ? mobileMenuToggle.querySelector('i') : null;
+    
+    if (sidebar) {
+        sidebar.classList.add('mobile-active');
+        body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Change hamburger to X icon
+        if (mobileMenuToggle) {
+            mobileMenuToggle.classList.add('active');
+        }
+        if (toggleIcon) {
+            toggleIcon.className = 'fas fa-times';
+        }
+    }
+}
+
+function closeMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const body = document.body;
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const toggleIcon = mobileMenuToggle ? mobileMenuToggle.querySelector('i') : null;
+    
+    if (sidebar) {
+        sidebar.classList.remove('mobile-active');
+        body.style.overflow = ''; // Restore scrolling
+        
+        // Change X back to hamburger icon
+        if (mobileMenuToggle) {
+            mobileMenuToggle.classList.remove('active');
+        }
+        if (toggleIcon) {
+            toggleIcon.className = 'fas fa-bars';
+        }
+    }
+}
+
+// Make functions globally available
+window.toggleMobileMenu = toggleMobileMenu;
+window.openMobileMenu = openMobileMenu;
+window.closeMobileMenu = closeMobileMenu;

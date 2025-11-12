@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Get auth user ID from window
+    const authUserId = window.authUserId;
+    
     // Check for Echo
     if (typeof window.Echo === 'undefined') {
         console.error('Laravel Echo is not initialized.');
@@ -17,6 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const sendBtn = document.getElementById('sendBtn');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    // Mobile elements
+    const mobileCoachesToggle = document.getElementById('mobileCoachesToggle');
+    const coachesSidebar = document.getElementById('coachesSidebar');
 
     let currentAssignmentId = null;
     let currentChannelName = null;
@@ -304,5 +311,38 @@ document.addEventListener('DOMContentLoaded', function () {
         loadConversation(parseInt(firstConversation.dataset.assignmentId), firstConversation);
     }
 
+    // --- Mobile Coaches Sidebar Toggle ---
+    if (mobileCoachesToggle && coachesSidebar) {
+        mobileCoachesToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            coachesSidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768 && 
+                coachesSidebar.classList.contains('active') && 
+                !coachesSidebar.contains(e.target) && 
+                !mobileCoachesToggle.contains(e.target)) {
+                coachesSidebar.classList.remove('active');
+            }
+        });
+
+        // Close sidebar when window is resized to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                coachesSidebar.classList.remove('active');
+            }
+        });
+
+        // Close sidebar when a conversation is selected on mobile
+        if (conversationsList) {
+            conversationsList.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && e.target.closest('.conversation-item')) {
+                    coachesSidebar.classList.remove('active');
+                }
+            });
+        }
+    }
 
 });
