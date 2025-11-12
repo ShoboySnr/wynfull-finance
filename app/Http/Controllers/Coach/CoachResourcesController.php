@@ -18,9 +18,32 @@ class CoachResourcesController extends Controller
      */
     public function index(Request $request)
     {
+
+        $user = $request->user();
+
         $resourceCollections = ResourceCollection::query()
-            ->when($request->user()->hasRole('coach'), fn($q) => $q->where('coach_id', $request->user()->id))
-            ->latest()->paginate(20);
+            ->when(
+                $user->hasRole('coach'),
+                function ($q) use ($user) {
+                    $q->where(function ($w) use ($user) {
+                        // Coach’s own collections (any status)
+                        $w->where('coach_id', $user->id)
+
+                            // Admin/global collections (approved) – visible to everyone
+                            ->orWhere(function ($g) {
+                                $g->where('visibility', 'global')
+                                    ->whereNotNull('approved_at');
+                            });
+                    });
+                },
+                fn ($q) => $q
+            )
+            // Sort: admin/global first, then newest
+            ->orderByRaw("CASE WHEN visibility = 'global' THEN 1 ELSE 0 END DESC")
+            ->orderByDesc('approved_at')
+            ->orderByDesc('created_at')
+            ->paginate(20)
+            ->withQueryString();
 
         return view('coach.resources.index', compact( 'resourceCollections'));
     }

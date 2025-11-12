@@ -43,6 +43,17 @@ class ResourceCollectionController extends Controller
 
     public function edit(Request $request, ResourceCollection $resourceCollection)
     {
+        $user = $request->user();
+
+        // Ensure user is a coach
+        abort_unless($user->hasRole('coach'), 403, 'Unauthorized access.');
+
+        // Only allow if this coach owns the resource OR it’s a global (admin) collection
+        $isOwner = $resourceCollection->coach_id === $user->id;
+        $isGlobal = $resourceCollection->visibility === 'global';
+
+        abort_unless($isOwner || $isGlobal, 403, 'You are not authorized to edit this resource collection.');
+
         $resourceCollection->load('modules');
         return view('coach.resources.collections.shows', compact('resourceCollection'));
     }

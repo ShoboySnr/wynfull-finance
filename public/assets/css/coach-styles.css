@@ -3140,3 +3140,15 @@ input:checked + .slider:before {
     }
 }
 /* END: Client Profile Page Styles */
+
+.status-badge.status-rejected {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+}
+
+/* START: Add new style for Admin badge */
+.status-badge.status-admin {
+    background: rgba(147, 51, 234, 0.1); /* Purple */
+    color: #7e22ce;
+}
+/* END: Add new style for Admin badge */
