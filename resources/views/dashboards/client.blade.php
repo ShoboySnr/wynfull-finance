@@ -438,12 +438,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Info Tooltips -->
-    <div class="tooltip-container" id="tooltip-container" style="display: none;">
-        <div class="tooltip-content" id="tooltip-content"></div>
-        <div class="tooltip-arrow"></div>
-    </div>
 @endsection
 
 @push('scripts')
@@ -561,64 +555,5 @@ const tooltipData = {
         • Measures how regularly you contribute, not how much you invest.<br>
         • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>
         
-        <strong>Action Tip:</strong><br>
-        Start with small automated investments — even $25 or $50 per paycheck builds powerful momentum. Consistency beats amount over time.`
-    }
-};
-
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    const infoIndicators = document.querySelectorAll('.info-indicator');
-    const tooltipContainer = document.getElementById('tooltip-container');
-    const tooltipContent = document.getElementById('tooltip-content');
-    
-    infoIndicators.forEach(indicator => {
-        indicator.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const tooltipType = this.getAttribute('data-tooltip');
-            const data = tooltipData[tooltipType];
-            
-            if (data) {
-                tooltipContent.innerHTML = `<h4>${data.title}</h4>${data.content}`;
-                showTooltip(e.target, tooltipContainer);
-            }
-        });
-    });
-    
-    // Close tooltip when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!tooltipContainer.contains(e.target) && !e.target.closest('.info-indicator')) {
-            hideTooltip(tooltipContainer);
-        }
-    });
-});
-
-function showTooltip(trigger, tooltip) {
-    const rect = trigger.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-    
-    // Position tooltip
-    tooltip.style.display = 'block';
-    tooltip.style.position = 'fixed';
-    tooltip.style.left = (rect.left - 200) + 'px'; // Offset to the left
-    tooltip.style.top = (rect.bottom + 10) + 'px';
-    
-    // Adjust if tooltip goes off screen
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    
-    if (rect.left - 200 < 0) {
-        tooltip.style.left = '10px';
-    }
-    
-    if (rect.bottom + tooltip.offsetHeight + 10 > viewportHeight) {
-        tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
-    }
-}
-
-function hideTooltip(tooltip) {
-    tooltip.style.display = 'none';
-}
 </script>
 @endpush
-

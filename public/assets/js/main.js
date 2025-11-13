@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize other common functionality
     initializeUserDropdowns();
     initializeNotifications();
+    initializeInfoPanel();
     initializeLogoutConfirmation();
     initializeMobileMenu();
 });
@@ -548,7 +549,251 @@ function closeMobileMenu() {
     }
 }
 
+// Info Panel functionality
+function initializeInfoPanel() {
+    const infoPanel = document.getElementById('infoPanel');
+    const closeInfoBtn = document.getElementById('closeInfo');
+    
+    if (!infoPanel) return;
+    
+    // Close info panel
+    if (closeInfoBtn) {
+        closeInfoBtn.addEventListener('click', function() {
+            closeInfoPanel();
+        });
+    }
+    
+    // Close panel when clicking outside
+    document.addEventListener('click', function(e) {
+        if (infoPanel.classList.contains('active') && 
+            !infoPanel.contains(e.target) && 
+            !e.target.closest('.info-indicator')) {
+            closeInfoPanel();
+        }
+    });
+    
+    // Initialize info indicators
+    initializeInfoIndicators();
+}
+
+function initializeInfoIndicators() {
+    const infoIndicators = document.querySelectorAll('.info-indicator');
+    
+    infoIndicators.forEach(indicator => {
+        indicator.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const tooltipType = this.getAttribute('data-tooltip');
+            openInfoPanel(tooltipType);
+        });
+    });
+}
+
+function openInfoPanel(tooltipType) {
+    const infoPanel = document.getElementById('infoPanel');
+    const infoPanelTitle = document.getElementById('infoPanelTitle');
+    const infoContent = document.getElementById('infoContent');
+    
+    if (!infoPanel || !infoPanelTitle || !infoContent) return;
+    
+    // Set title and content based on tooltip type
+    const infoData = getInfoContent(tooltipType);
+    infoPanelTitle.textContent = infoData.title;
+    infoContent.innerHTML = infoData.content;
+    
+    // Show panel
+    infoPanel.classList.add('active');
+}
+
+function closeInfoPanel() {
+    const infoPanel = document.getElementById('infoPanel');
+    if (infoPanel) {
+        infoPanel.classList.remove('active');
+    }
+}
+
+function getInfoContent(tooltipType) {
+    const infoContents = {
+        'phase-status': {
+            title: 'Phase Status Information',
+            content: `
+                <h4>Understanding Your Financial Journey</h4>
+                <p>Your phase status shows where you currently stand in your financial journey. Each phase represents a different stage of financial growth and stability.</p>
+                
+                <div class="info-highlight">
+                    <strong>Current Phase Indicators:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Reset & Rewire:</strong> Addressing debt and financial challenges</li>
+                    <li><strong>Take Control:</strong> Building budgeting skills and emergency funds</li>
+                    <li><strong>Grow & Multiply:</strong> Investing and growing your wealth</li>
+                    <li><strong>Sustain & Scale:</strong> Advanced wealth management and planning</li>
+                </ul>
+                
+                <p>Your coach will help you progress through these phases at your own pace, providing personalized guidance and support along the way.</p>
+            `
+        },
+        'confidence-level': {
+            title: 'Confidence Level',
+            content: `
+                <h4>Your Financial Confidence</h4>
+                <p>This metric tracks how confident you feel about your financial decisions and future.</p>
+                
+                <div class="info-highlight">
+                    <strong>Confidence Levels:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Low (1-3):</strong> Feeling uncertain about financial decisions</li>
+                    <li><strong>Moderate (4-6):</strong> Some confidence but room for improvement</li>
+                    <li><strong>High (7-8):</strong> Generally confident in financial planning</li>
+                    <li><strong>Expert (9-10):</strong> Very confident and knowledgeable</li>
+                </ul>
+                
+                <p>Your confidence level helps your coach understand how to best support you and what areas need more focus.</p>
+            `
+        },
+        'primary-goals': {
+            title: 'Primary Goals',
+            content: `
+                <h4>Your Financial Objectives</h4>
+                <p>Primary goals are the main financial objectives you want to achieve. These form the foundation of your financial planning strategy.</p>
+                
+                <div class="info-highlight">
+                    <strong>Goal Types:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Emergency Fund:</strong> Building financial security</li>
+                    <li><strong>Debt Payoff:</strong> Eliminating high-interest debt</li>
+                    <li><strong>Savings:</strong> Building wealth for the future</li>
+                    <li><strong>Investment:</strong> Growing money through investments</li>
+                    <li><strong>Major Purchase:</strong> House, car, or other significant expenses</li>
+                </ul>
+                
+                <p>Your coach will help you prioritize and create actionable plans for each goal.</p>
+            `
+        },
+        'confidence-score': {
+            title: 'Confidence Score',
+            content: `
+                <h4>Your Financial Confidence Level</h4>
+                <p>This score reflects how confident you feel about making financial decisions and managing your money.</p>
+                
+                <div class="info-highlight">
+                    <strong>Score Ranges:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>1-3 (Building):</strong> Just starting your financial journey</li>
+                    <li><strong>4-6 (Growing):</strong> Developing financial knowledge and skills</li>
+                    <li><strong>7-8 (Confident):</strong> Comfortable with most financial decisions</li>
+                    <li><strong>9-10 (Expert):</strong> High level of financial expertise</li>
+                </ul>
+                
+                <p>This score helps your coach tailor their guidance to your comfort level and experience.</p>
+            `
+        },
+        'debt-journey': {
+            title: 'Debt Journey',
+            content: `
+                <h4>Your Path to Debt Freedom</h4>
+                <p>Track your progress in eliminating debt and building a stronger financial foundation.</p>
+                
+                <div class="info-highlight">
+                    <strong>Debt Reduction Strategies:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Snowball Method:</strong> Pay off smallest debts first</li>
+                    <li><strong>Avalanche Method:</strong> Target highest interest rates first</li>
+                    <li><strong>Consolidation:</strong> Combine debts for easier management</li>
+                    <li><strong>Balance Transfer:</strong> Move to lower interest options</li>
+                </ul>
+                
+                <p>Your coach will help you choose the best strategy based on your specific situation.</p>
+            `
+        },
+        'investing-knowledge': {
+            title: 'Investing Knowledge',
+            content: `
+                <h4>Your Investment Understanding</h4>
+                <p>This measures your current knowledge and comfort level with investment concepts and strategies.</p>
+                
+                <div class="info-highlight">
+                    <strong>Knowledge Areas:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Basic Concepts:</strong> Stocks, bonds, mutual funds</li>
+                    <li><strong>Risk Management:</strong> Diversification and asset allocation</li>
+                    <li><strong>Market Understanding:</strong> How markets work and behave</li>
+                    <li><strong>Investment Vehicles:</strong> 401k, IRA, brokerage accounts</li>
+                    <li><strong>Tax Implications:</strong> Tax-efficient investing strategies</li>
+                </ul>
+                
+                <p>Your coach will provide education and guidance to improve your investment knowledge.</p>
+            `
+        },
+        'emergency-fund': {
+            title: 'Emergency Fund',
+            content: `
+                <h4>Your Financial Safety Net</h4>
+                <p>An emergency fund provides financial security for unexpected expenses or income loss.</p>
+                
+                <div class="info-highlight">
+                    <strong>Emergency Fund Guidelines:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Starter Fund:</strong> $1,000 for immediate emergencies</li>
+                    <li><strong>Basic Fund:</strong> 3-6 months of essential expenses</li>
+                    <li><strong>Enhanced Fund:</strong> 6-12 months for extra security</li>
+                    <li><strong>Accessibility:</strong> Keep in high-yield savings account</li>
+                </ul>
+                
+                <p>Building an emergency fund is often the first step in creating financial stability.</p>
+            `
+        },
+        'investing-contribution': {
+            title: 'Investing Contributions',
+            content: `
+                <h4>Building Wealth Through Investing</h4>
+                <p>Regular investing contributions help build long-term wealth and achieve your financial goals.</p>
+                
+                <div class="info-highlight">
+                    <strong>Investment Strategies:</strong>
+                </div>
+                
+                <ul>
+                    <li><strong>Dollar-Cost Averaging:</strong> Regular, consistent investments</li>
+                    <li><strong>Target-Date Funds:</strong> Age-appropriate asset allocation</li>
+                    <li><strong>Index Funds:</strong> Low-cost, diversified investing</li>
+                    <li><strong>Employer Match:</strong> Maximize free money from 401k match</li>
+                </ul>
+                
+                <p>Your coach will help you determine the right investment amount and strategy for your situation.</p>
+            `
+        },
+        'default': {
+            title: 'Information',
+            content: `
+                <h4>Help & Information</h4>
+                <p>This section provides additional context and explanations for the various elements on your dashboard.</p>
+                
+                <p>If you need more specific help, please don't hesitate to reach out to your coach or our support team.</p>
+            `
+        }
+    };
+    
+    return infoContents[tooltipType] || infoContents['default'];
+}
+
 // Make functions globally available
 window.toggleMobileMenu = toggleMobileMenu;
 window.openMobileMenu = openMobileMenu;
+window.openInfoPanel = openInfoPanel;
+window.closeInfoPanel = closeInfoPanel;
 window.closeMobileMenu = closeMobileMenu;
