@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResourceCollection;
+use App\Services\Notifications\NotifyUsersOfCollection;
 use Illuminate\Http\Request;
 
 class AdminResourceCollectionController extends Controller
@@ -35,6 +36,8 @@ class AdminResourceCollectionController extends Controller
             ->event('collection created by admin')
             ->withProperties(['coach_id' => $collection->coach_id])
             ->log('Admin created resource collection');
+
+        app(NotifyUsersOfCollection::class)->sendToAll($collection);
 
         return redirect()->route('admin.resources.collection.modules', $collection->id)->with('success', 'Resource collection created successfully');
     }
