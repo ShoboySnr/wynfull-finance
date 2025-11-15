@@ -149,11 +149,22 @@ class UserController extends Controller
 //        // Delete messages sent by this user
 //        DB::table('messages')->where('sender_id', $user->id)->delete();
 
+        DB::table('coach_client_assignments')
+            ->where('coach_id', $user->id)
+            ->orWhere('client_id', $user->id)
+            ->delete();
+
+        // Delete messages sent by this user
+        DB::table('messages')->where('sender_id', $user->id)->delete();
+
+        // Delete module completions
+//        DB::table('module_completions')->where('user_id', $user->id)->delete();
 
         // Delete user profile (if exists)
         if ($user->coachProfile) {
             $user->coachProfile->delete();
         }
+
         if ($user->clientProfile) {
             $user->clientProfile->delete();
         }

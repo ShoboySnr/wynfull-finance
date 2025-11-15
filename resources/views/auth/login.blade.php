@@ -11,6 +11,7 @@
             --brand-blue-dark: #073B73;
             --background-body: #F8F9FA;
             --background-card: #FFFFFF;
+            --background-light: #F8F9FA;
             --text-primary: #1D2939;
             --text-secondary: #475467;
             --text-muted: #98A2B3;
@@ -27,6 +28,19 @@
             --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
 
             --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        /* Dark mode variables */
+        [data-theme="dark"] {
+            --background-body: #0F172A;
+            --background-card: #1E293B;
+            --background-light: #1E293B;
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+            --text-muted: #64748B;
+            --border-color: #334155;
+            --accent-green-light: #064E3B;
+            --error-red-light: #7F1D1D;
         }
 
         @keyframes fadeIn {
@@ -262,6 +276,51 @@
             border-color: var(--accent-green); background: var(--accent-green-light); color: var(--accent-green);
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle-guest {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+        }
+
+        .theme-toggle-guest:hover {
+            background: var(--brand-blue);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(10, 82, 161, 0.3);
+        }
+
+        .theme-toggle-guest i {
+            font-size: 1.1rem;
+        }
+
+        /* Dark mode styling for theme toggle */
+        [data-theme="dark"] .theme-toggle-guest {
+            background: rgba(31, 41, 55, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .theme-toggle-guest:hover {
+            background: var(--brand-blue);
+            color: white;
+        }
+
         /* --- Mobile Responsive --- */
         @media (max-width: 1023px) {
             .auth-hero {
@@ -274,6 +333,14 @@
 
             .auth-card {
                 padding: 20px;
+            }
+            
+            .theme-toggle-guest {
+                top: 1rem;
+                right: 1rem;
+                width: 44px;
+                height: 44px;
+                padding: 0.6rem;
             }
         }
     </style>
