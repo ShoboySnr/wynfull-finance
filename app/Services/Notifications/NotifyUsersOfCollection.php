@@ -22,7 +22,7 @@ class NotifyUsersOfCollection
             });
     }
 
-    public function send(User $user, ResourceCollection $collection)
+    public function send(User $user, ResourceCollection $collection): void
     {
         // 1) ---- EMAIL NOTIFICATION ----
         Mail::send('emails.collection_published', [
