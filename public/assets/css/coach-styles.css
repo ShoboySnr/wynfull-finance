@@ -3160,3 +3160,27 @@ input:checked + .slider:before {
     color: #7e22ce;
 }
 /* END: Add new style for Admin badge */
+
+.drag-handle {
+    cursor: grab;
+    color: var(--text-light);
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.drag-handle:hover {
+    color: var(--text-primary);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Style applied to the item while dragging */
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: var(--background-light);
+    border: 2px dashed var(--wynfull-blue);
+}

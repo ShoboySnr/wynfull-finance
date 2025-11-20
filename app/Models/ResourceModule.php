@@ -14,7 +14,7 @@ class ResourceModule extends Model
     protected $fillable = [
         'resource_collection_id', 'title', 'description', 'type',
         'file_path', 'file_name', 'video_link',
-        'status', 'approved_by', 'approved_at', 'rejection_reason', 'created_by',
+        'status', 'approved_by', 'approved_at', 'rejection_reason', 'created_by', 'sort_order'
     ];
 
     protected $casts = [

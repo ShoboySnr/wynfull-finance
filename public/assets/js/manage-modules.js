@@ -251,5 +251,53 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // END: Logic to handle opening Edit Collection Modal
 
+    // START: Drag and Drop Logic
+    const sortableList = document.getElementById('moduleList');
+    const isSortable = sortableList?.dataset.isSortable === 'true';
+
+    if (sortableList && isSortable && typeof Sortable !== 'undefined') {
+        new Sortable(sortableList, {
+            animation: 150,
+            handle: '.drag-handle', // Restrict drag to the handle icon
+            ghostClass: 'sortable-ghost', // Class name for the drop placeholder
+            onEnd: function (evt) {
+                const itemEl = evt.item;
+                const newIndex = evt.newIndex;
+                const oldIndex = evt.oldIndex;
+
+                if (newIndex === oldIndex) return; // No change
+
+                // Get all module IDs in the new order
+                const moduleIds = Array.from(sortableList.querySelectorAll('.module-item')).map(
+                    item => item.dataset.id
+                );
+
+                // Send the new order to the backend
+                const reorderUrl = sortableList.dataset.reorderUrl;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+                fetch(reorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ ordered_ids: moduleIds })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        console.log('Order updated successfully');
+                        // Optionally show a toast notification
+                    })
+                    .catch(error => {
+                        console.error('Error updating order:', error);
+                        alert('Failed to save new order. Please refresh the page.');
+                    });
+            }
+        });
+    }
+    // END: Drag and Drop Logic
 });
 

@@ -24,7 +24,8 @@ class ResourceCollection extends Model
 
     public function modules(): HasMany
     {
-        return $this->hasMany(ResourceModule::class);
+        return $this->hasMany(ResourceModule::class)->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     public function approver(): BelongsTo

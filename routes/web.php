@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminResourceCollectionController;
 use App\Http\Controllers\Admin\AdminResourceCollectionModulesController;
+use App\Http\Controllers\Admin\AdminResourceModuleOrderController;
 use App\Http\Controllers\Admin\AdminResourcesController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Coach\CoachMessagesController;
 use App\Http\Controllers\Coach\CoachProfileController;
 use App\Http\Controllers\Coach\CoachResourcesController;
 use App\Http\Controllers\Coach\CoachScheduleController;
+use App\Http\Controllers\Coach\ResourceModuleOrderController;
 use App\Http\Controllers\Coach\ScheduleController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
@@ -73,20 +75,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{assignment}', [ChatController::class,'index']);
     Route::post('/chat/{assignment}', [ChatController::class,'store']);
     Route::post('/chat/{assignment}/read', [ChatController::class,'markRead']);
-    
+
     // Notification routes
     Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     Route::get('/notifications/count', [\App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.count');
-    
+
     // Debug route to check user assignments
     Route::get('/debug/assignments', function() {
         $user = auth()->user();
         $assignments = \App\Models\CoachClientAssignment::where(function($query) use ($user) {
             $query->where('coach_id', $user->id)->orWhere('client_id', $user->id);
         })->with(['coach', 'client'])->get();
-        
+
         return response()->json([
             'user_id' => $user->id,
             'user_roles' => $user->getRoleNames(),
@@ -122,6 +124,7 @@ Route::middleware(['auth', 'role:coach'])->prefix('coach')->name('coach.')->grou
     Route::post('/resources/collection', [ResourceCollectionController::class, 'store'])->name('resources.collection.store');
     Route::put('/resources/{resourceCollection}/collection', [ResourceCollectionController::class, 'update'])->name('resources.collection.update');
     Route::get('/resources/{resourceCollection}/collection', [ResourceCollectionController::class, 'edit'])->name('resources.collection.edit');
+    Route::post('/resources/{resourceCollection}/reorder', [ResourceModuleOrderController::class, 'reorder'])->name('resources.modules.reorder');
     Route::post('/resources/{resourceCollection}/modules', [ResourceModuleController::class, 'store'])->name('resources.modules.store');
     Route::put('/resources/{resourceCollection}/modules/{resourceModule}', [ResourceModuleController::class, 'update'])->name('resources.modules.update');
     Route::delete('/resources/{resourceCollection}/modules/{resourceModule}', [ResourceModuleController::class, 'destroy'])->name('resources.modules.destroy');
@@ -182,6 +185,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('resources/{resourceCollection}/approve', [ResourceCollectionApprovalController::class, 'approve'])->name('resources.approve');
     Route::patch('resources/{resourceCollection}/reject', [ResourceCollectionApprovalController::class, 'reject'])->name('resources.reject');
 
+    Route::post('resources/{resourceCollection}/reorder', [AdminResourceModuleOrderController::class, 'reorder'])->name('resources.collection.modules.reorder');
     Route::get('resources/{resourceCollection}/modules', [AdminResourceCollectionModulesController::class, 'index'])->name('resources.collection.modules');
     Route::post('resources/{resourceCollection}/modules', [AdminResourceCollectionModulesController::class, 'store'])->name('resources.collection.modules.store');
     Route::put('resources/{resourceCollection}/modules/{resourceModule}', [AdminResourceCollectionModulesController::class, 'update'])->name('resources.collection.modules.update');

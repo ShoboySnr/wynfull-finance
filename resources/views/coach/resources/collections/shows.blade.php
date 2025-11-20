@@ -58,7 +58,11 @@
         {{-- START: Module List --}}
         <div class="module-list-container">
             <h2>Modules in this Collection</h2>
-            <div class="module-list">
+            <div class="module-list"
+                 id="moduleList"
+                 data-reorder-url="{{ route('coach.resources.modules.reorder', $resourceCollection) }}"
+                 data-is-sortable="{{ $resourceCollection->visibility !== 'global' ? 'true' : 'false' }}"
+            >
                 @forelse ($resourceCollection->modules as $module)
                     @php
                         // Determine the icon class based on module type
@@ -79,6 +83,13 @@
                         }
                     @endphp
                     <div class="module-item" data-id="{{ $module->id }}">
+
+                        @if($resourceCollection->visibility !== 'global')
+                            <div class="drag-handle" title="Drag to reorder">
+                                <i class="fas fa-grip-vertical"></i>
+                            </div>
+                        @endif
+
                         <div class="module-icon">
                             <i class="fas {{ $iconClass }}"></i>
                         </div>
@@ -270,6 +281,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <script src="{{ asset('assets/js/manage-modules.js') }}"></script>
     <script src="{{ asset('assets/js/resources.js') }}"></script>
 @endpush

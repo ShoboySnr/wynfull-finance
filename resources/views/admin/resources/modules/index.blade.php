@@ -54,7 +54,10 @@
         {{-- START: Module List --}}
         <div class="module-list-container">
             <h2>Modules in this Collection</h2>
-            <div class="module-list">
+            <div class="module-list"
+                 id="moduleList"
+                 data-reorder-url="{{ route('admin.resources.collection.modules.reorder', $collection) }}"
+            >
                 {{-- Use $collection->modules (loaded in the controller) --}}
                 @forelse ($collection->modules as $module)
                     @php
@@ -69,6 +72,11 @@
                         };
                     @endphp
                     <div class="module-item" data-id="{{ $module->id }}">
+
+                        <div class="drag-handle" title="Drag to reorder">
+                            <i class="fas fa-grip-vertical"></i>
+                        </div>
+
                         <div class="module-icon">
                             <i class="fas {{ $iconClass }}"></i>
                         </div>
@@ -115,5 +123,6 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <script src="{{ asset('assets/js/admin-modules.js') }}"></script>
 @endpush

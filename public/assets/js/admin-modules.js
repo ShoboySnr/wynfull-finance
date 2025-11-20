@@ -232,4 +232,46 @@ document.addEventListener('DOMContentLoaded', function () {
             openModal(editCollectionModal);
         }
     }
+
+
+    // START: Drag and Drop Logic (Admin)
+    const sortableList = document.getElementById('moduleList');
+    if (sortableList && typeof Sortable !== 'undefined') {
+        new Sortable(sortableList, {
+            animation: 150,
+            handle: '.drag-handle', // Restrict drag to the handle
+            ghostClass: 'sortable-ghost',
+            onEnd: function (evt) {
+                const newIndex = evt.newIndex;
+                const oldIndex = evt.oldIndex;
+
+                if (newIndex === oldIndex) return;
+
+                const moduleIds = Array.from(sortableList.querySelectorAll('.module-item')).map(
+                    item => item.dataset.id
+                );
+
+                const reorderUrl = sortableList.dataset.reorderUrl;
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+                fetch(reorderUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ ordered_ids: moduleIds })
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        console.log('Order updated successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error updating order:', error);
+                        alert('Failed to save new order. Please refresh.');
+                    });
+            }
+        });
+    }
+    // END: Drag and Drop Logic (Admin)
 });
