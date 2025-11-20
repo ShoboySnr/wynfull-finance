@@ -69,11 +69,10 @@
 
                 {{-- START: Video Upload Field --}}
                 <div class="form-group video-upload-field-container" style="display: none;">
-                    <label for="add_module_video_file">Upload Video File (MP4, MOV)</label>
+                    <label for="add_module_video_file">Upload Video File</label>
                     <div class="file-drop-area">
                         <i class="fas fa-film"></i>
                         <p>Drag & drop video, or <span class="file-browse-link">browse</span></p>
-                        {{-- Use a different name 'video_file' to keep validation clean --}}
                         <input type="file" id="add_module_video_file" name="video_file" class="file-input" accept="video/mp4,video/x-m4v,video/*">
                         <p class="file-name-display"></p>
                     </div>

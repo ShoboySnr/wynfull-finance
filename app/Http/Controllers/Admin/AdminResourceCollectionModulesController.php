@@ -25,14 +25,21 @@ class AdminResourceCollectionModulesController extends Controller
             'type' => ['required', 'in:file,template,word,pdf,excel,video'],
             'file' => ['nullable', 'file', 'max:51200'], // 50MB
             'video_link' => ['nullable', 'url'],
+            'video_file'   => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/x-msvideo,video/x-matroska', 'max:204800'],
         ]);
 
         $filePath = $fileName = null;
+        $videoPath = null;
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filePath = $file->store("resources/collections/{$resourceCollection->id}", 'public');
             $fileName = $file->getClientOriginalName();
+        }
+
+        if ($request->hasFile('video_file')) {
+            $video = $request->file('video_file');
+            $videoPath = $video->store("resources/collections/{$resourceCollection->id}/videos", 'public');
         }
 
         // Determine next sort order within this collection
@@ -42,6 +49,10 @@ class AdminResourceCollectionModulesController extends Controller
 
         $nextSortOrder++;
 
+        $finalVideoLink = $videoPath
+            ? asset("storage/{$videoPath}")
+            : ($data['video_link'] ?? null);
+
         $module = ResourceModule::create([
             'resource_collection_id' => $resourceCollection->id,
             'title' => $data['title'],
@@ -49,7 +60,7 @@ class AdminResourceCollectionModulesController extends Controller
             'type' => $data['type'],
             'file_path' => $filePath,
             'file_name' => $fileName,
-            'video_link' => $data['video_link'] ?? null,
+            'video_link' => $finalVideoLink,
             'created_by' => $request->user()->id,
             'sort_order'  => $nextSortOrder,
         ]);
