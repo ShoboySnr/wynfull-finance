@@ -28,6 +28,13 @@ class ResourceModuleController extends Controller
             $fileName = $request->file('file')->getClientOriginalName();
         }
 
+        // Determine next sort order within this collection
+        $nextSortOrder = (int) ResourceModule::query()
+            ->where('resource_collection_id', $resourceCollection->id)
+            ->max('sort_order');
+
+        $nextSortOrder++;
+
         $module = ResourceModule::create([
             'resource_collection_id' => $resourceCollection->id,
             'title'       => $data['title'],
@@ -38,6 +45,7 @@ class ResourceModuleController extends Controller
             'video_link'  => $data['video_link'] ?? null,
             'status'      => $data['status'] ?? ResourceModule::STATUS_DRAFT,
             'created_by'  => $request->user()->id,
+            'sort_order' => $nextSortOrder,
         ]);
 
         activity()->useLog('content')->causedBy($request->user())->performedOn($module)

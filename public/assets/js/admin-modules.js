@@ -9,49 +9,70 @@ document.addEventListener('DOMContentLoaded', function () {
             const form = modal.querySelector('form');
             if (form) {
                 form.reset();
-                // Reset file display specifically
-                const fileDisplay = form.querySelector('.file-name-display');
-                if (fileDisplay) fileDisplay.textContent = '';
-                toggleModuleFields(modal, ''); // Reset field visibility
+                const fileDisplay = form.querySelectorAll('.file-name-display');
+                fileDisplay.forEach(el => el.textContent = '');
+
+                // Reset field visibility (pass empty type or trigger default)
+                const typeSelect = form.querySelector('select[name="type"]');
+                if(typeSelect) toggleModuleFields(modal, typeSelect.value);
             }
         }
     };
 
-    // Function to show/hide file vs video link fields based on selected type
+    // Function to show/hide file vs video link vs video upload fields
     const toggleModuleFields = (modalOrForm, selectedType) => {
+        // Containers
         const fileField = modalOrForm.querySelector('.file-field-container');
-        const videoField = modalOrForm.querySelector('.video-link-field-container');
-        const fileInput = modalOrForm.querySelector('.file-input');
-        const videoInput = modalOrForm.querySelector('.video-link-field-container input');
+        const videoSourceField = modalOrForm.querySelector('.video-source-field-container');
+        const videoLinkField = modalOrForm.querySelector('.video-link-field-container');
+        const videoUploadField = modalOrForm.querySelector('.video-upload-field-container');
 
-        if (fileField && videoField && fileInput && videoInput) {
-            if (selectedType === 'video') {
-                videoField.style.display = 'block';
-                fileField.style.display = 'none';
-                videoInput.required = true; // Make video link required
-                fileInput.required = false; // Make file input not required
-                fileInput.value = ''; // Clear file input if switching to video
-                const fileDisplay = fileField.querySelector('.file-name-display');
-                if(fileDisplay) fileDisplay.textContent = '';
-            } else if (selectedType) { // Any other type requires a file
-                videoField.style.display = 'none';
-                fileField.style.display = 'block';
-                videoInput.required = false;
-                videoInput.value = ''; // Clear video input if switching to file
+        // Inputs (to manage required attribute)
+        const fileInput = modalOrForm.querySelector('.file-field-container .file-input');
+        const videoLinkInput = modalOrForm.querySelector('.video-link-field-container input');
+        const videoUploadInput = modalOrForm.querySelector('.video-upload-field-container .file-input');
+        const videoSourceRadios = modalOrForm.querySelectorAll('input[name="video_source"]');
 
-                // Make file input required only for ADD modal
-                if(modalOrForm.closest('#addModuleModal')) {
-                    fileInput.required = true;
-                } else {
-                    // In EDIT modal, file is optional (only required if replacing)
-                    fileInput.required = false;
-                }
+        // 1. Reset all first
+        if (fileField) fileField.style.display = 'none';
+        if (videoSourceField) videoSourceField.style.display = 'none';
+        if (videoLinkField) videoLinkField.style.display = 'none';
+        if (videoUploadField) videoUploadField.style.display = 'none';
 
-            } else { // No type selected or invalid
-                videoField.style.display = 'none';
-                fileField.style.display = 'none';
-                videoInput.required = false;
-                fileInput.required = false;
+        if (fileInput) fileInput.required = false;
+        if (videoLinkInput) videoLinkInput.required = false;
+        if (videoUploadInput) videoUploadInput.required = false;
+
+        // 2. Apply logic based on type
+        if (selectedType === 'video') {
+            // Show Source Selection
+            if (videoSourceField) videoSourceField.style.display = 'block';
+
+            // Check which source is selected (Link vs Upload)
+            let source = 'link'; // Default
+            videoSourceRadios.forEach(r => {
+                if (r.checked) source = r.value;
+            });
+
+            if (source === 'upload') {
+                if (videoUploadField) videoUploadField.style.display = 'block';
+                if (videoUploadInput) videoUploadInput.required = true;
+            } else {
+                if (videoLinkField) videoLinkField.style.display = 'block';
+                if (videoLinkInput) videoLinkInput.required = true;
+            }
+
+            // Clear standard file input value if switching to video
+            if(fileInput) fileInput.value = '';
+
+        } else if (selectedType) {
+            // Template, Word, PDF, Excel -> Show Standard File Upload
+            if (fileField) fileField.style.display = 'block';
+
+            // File is required ONLY for Add Modal, optional for Edit
+            const isAddModal = modalOrForm.id === 'addModuleModal' || modalOrForm.id === 'addModuleForm';
+            if (fileInput && isAddModal) {
+                fileInput.required = true;
             }
         }
     };
@@ -62,24 +83,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const addModuleModalCloseBtn = document.getElementById('addModuleModalClose');
     const addModuleModalCancelBtn = document.getElementById('addModuleModalCancel');
     const addModuleTypeSelect = document.getElementById('add_module_type');
+    const addVideoSourceRadios = document.querySelectorAll('#addModuleModal input[name="video_source"]');
 
     if (addModuleBtn && addModuleModal) {
-        addModuleBtn.addEventListener('click', () => openModal(addModuleModal));
+        addModuleBtn.addEventListener('click', () => {
+            openModal(addModuleModal);
+            // Trigger toggle on open to set initial state correctly
+            if(addModuleTypeSelect) toggleModuleFields(addModuleModal, addModuleTypeSelect.value);
+        });
+
         addModuleModalCloseBtn?.addEventListener('click', () => closeModal(addModuleModal));
         addModuleModalCancelBtn?.addEventListener('click', () => closeModal(addModuleModal));
         addModuleModal.addEventListener('click', (event) => {
             if (event.target === addModuleModal) closeModal(addModuleModal);
         });
 
-        // Toggle fields on type change in Add Modal
+        // Toggle on Type Change
         addModuleTypeSelect?.addEventListener('change', (e) => {
             toggleModuleFields(addModuleModal, e.target.value);
+        });
+
+        // Toggle on Video Source Change
+        addVideoSourceRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                toggleModuleFields(addModuleModal, addModuleTypeSelect.value);
+            });
         });
     }
 
     // --- Edit Module Modal ---
     const editModuleModal = document.getElementById('editModuleModal');
-    const moduleList = document.querySelector('.module-list'); // Container for modules
+    const moduleList = document.querySelector('.module-list');
     const editModuleModalCloseBtn = document.getElementById('editModuleModalClose');
     const editModuleModalCancelBtn = document.getElementById('editModuleModalCancel');
     const editModuleTypeSelect = document.getElementById('edit_module_type');
@@ -95,19 +129,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 const videoLinkInput = document.getElementById('edit_module_video_link');
                 const currentFileNameSpan = document.getElementById('edit_current_file_name');
 
-                // Populate common fields
+                // Populate form
                 titleInput.value = editButton.dataset.title || '';
                 descriptionInput.value = editButton.dataset.description || '';
                 typeSelect.value = editButton.dataset.type || '';
-                videoLinkInput.value = editButton.dataset.video_link || '';
 
-                // Update current file name display
-                currentFileNameSpan.textContent = editButton.dataset.file_name || 'None';
+                // Handle Video Link population
+                if(videoLinkInput) videoLinkInput.value = editButton.dataset.video_link || '';
 
-                // Set form action dynamically
+                // Handle File Name display
+                if(currentFileNameSpan) currentFileNameSpan.textContent = editButton.dataset.file_name || 'None';
+
                 form.action = editButton.dataset.action || '#';
 
-                // Toggle fields based on the CURRENT type
+                // Set initial state of fields
                 toggleModuleFields(editModuleModal, typeSelect.value);
 
                 openModal(editModuleModal);
@@ -120,7 +155,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (event.target === editModuleModal) closeModal(editModuleModal);
         });
 
-        // Toggle fields on type change in Edit Modal
         editModuleTypeSelect?.addEventListener('change', (e) => {
             toggleModuleFields(editModuleModal, e.target.value);
         });
@@ -151,28 +185,23 @@ document.addEventListener('DOMContentLoaded', function () {
             if (files.length > 0) {
                 fileNameDisplay.textContent = `Selected: ${files[0].name}`;
             } else {
-                const currentFileSpan = dropArea.closest('form').querySelector('#edit_current_file_name');
-                if (currentFileSpan) {
-                    fileNameDisplay.textContent = '';
-                } else {
-                    fileNameDisplay.textContent = '';
-                }
+                // If in edit mode, revert to 'None' or empty?
+                // Usually keeping empty is fine as the helper text says "Leave blank to keep..."
+                fileNameDisplay.textContent = '';
             }
         });
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
+            dropArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
         });
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'));
         });
         ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'));
         });
         dropArea.addEventListener('drop', (event) => {
             const dt = event.dataTransfer;
@@ -182,75 +211,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 const changeEvent = new Event('change');
                 fileInput.dispatchEvent(changeEvent);
             }
-        }, false);
+        });
     });
 
     // --- Re-open correct modal on validation errors ---
     const addErrorInput = document.querySelector('input[name="has_add_module_errors"]');
-    const editErrorInput = document.querySelector('input[name="has_edit_module_errors"]');
-
-    if (addErrorInput && addErrorInput.value === 'true') {
+    if (addErrorInput && addErrorInput.value === 'true' && addModuleModal) {
         openModal(addModuleModal);
-        if (addModuleTypeSelect) {
-            toggleModuleFields(addModuleModal, addModuleTypeSelect.value);
-        }
+        // Re-run toggle logic to ensure correct fields (Video/Upload) are shown based on old input
+        const typeSelect = document.getElementById('add_module_type');
+        if (typeSelect) toggleModuleFields(addModuleModal, typeSelect.value);
     }
+
+    const editErrorInput = document.querySelector('input[name="has_edit_module_errors"]');
     if (editErrorInput && editErrorInput.value === 'true') {
-        console.warn("Edit validation failed. Modal cannot be automatically reopened without knowing which module.");
+        console.warn("Edit validation failed.");
     }
 
-    // --- Logic to handle opening Edit Collection Modal ---
-    const editCollectionBtn = document.querySelector('.editCollectionBtn'); // Assumes only one on this page
-    const editCollectionModal = document.getElementById('editResourceModal'); // The modal included via partial
-    const editCollectionModalCloseBtn = document.getElementById('editResourceModalClose');
-    const editCollectionModalCancelBtn = document.getElementById('editResourceModalCancel');
-
-    if (editCollectionBtn && editCollectionModal) {
-        editCollectionBtn.addEventListener('click', () => {
-            const form = document.getElementById('editResourceForm');
-            const titleInput = document.getElementById('edit_title');
-            const descriptionInput = document.getElementById('edit_description');
-            const iconInput = document.getElementById('edit_icon_class');
-
-            titleInput.value = editCollectionBtn.dataset.title || '';
-            descriptionInput.value = editCollectionBtn.dataset.description || '';
-            iconInput.value = editCollectionBtn.dataset.icon_class || 'fa-folder-open';
-            form.action = editCollectionBtn.dataset.action || '#';
-
-            openModal(editCollectionModal);
-        });
-
-        editCollectionModalCloseBtn?.addEventListener('click', () => closeModal(editCollectionModal));
-        editCollectionModalCancelBtn?.addEventListener('click', () => closeModal(editCollectionModal));
-        editCollectionModal.addEventListener('click', (event) => {
-            if (event.target === editCollectionModal) closeModal(editCollectionModal);
-        });
-
-        // Check for edit collection validation errors
-        const editCollectionErrorInput = editCollectionModal?.querySelector('input[name="has_edit_errors"]');
-        if (editCollectionErrorInput && editCollectionErrorInput.value === 'true') {
-            openModal(editCollectionModal);
-        }
-    }
-
-
-    // START: Drag and Drop Logic (Admin)
+    // --- Drag and Drop Reordering (Admin) ---
     const sortableList = document.getElementById('moduleList');
     if (sortableList && typeof Sortable !== 'undefined') {
         new Sortable(sortableList, {
             animation: 150,
-            handle: '.drag-handle', // Restrict drag to the handle
+            handle: '.drag-handle',
             ghostClass: 'sortable-ghost',
             onEnd: function (evt) {
                 const newIndex = evt.newIndex;
                 const oldIndex = evt.oldIndex;
-
                 if (newIndex === oldIndex) return;
 
                 const moduleIds = Array.from(sortableList.querySelectorAll('.module-item')).map(
                     item => item.dataset.id
                 );
-
                 const reorderUrl = sortableList.dataset.reorderUrl;
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -261,17 +253,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({ ordered_ids: moduleIds })
-                })
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        console.log('Order updated successfully');
-                    })
-                    .catch(error => {
-                        console.error('Error updating order:', error);
-                        alert('Failed to save new order. Please refresh.');
-                    });
+                }).then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    console.log('Order updated');
+                }).catch(error => {
+                    console.error('Error updating order:', error);
+                    alert('Failed to save new order.');
+                });
             }
         });
     }
-    // END: Drag and Drop Logic (Admin)
 });
