@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminResourcesController;
 use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
+use App\Http\Controllers\Admin\MeetingsController;
 use App\Http\Controllers\Admin\ResourceCollectionApprovalController;
 use App\Http\Controllers\Admin\UserActivationController;
 use App\Http\Controllers\Admin\UserController;
@@ -203,4 +204,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/assignments', [CoachClientAssignmentController::class, 'store'])->name('assignments.store');
     Route::post('/assignments/{assignmentId}/end', [CoachClientAssignmentController::class, 'destroy'])->name('assignments.end');
     Route::post('/assignments/{coach}/{client}/end', [CoachClientAssignmentController::class, 'unassignCoach'])->name('assignments.user.end');
+
+
+    Route::get('/meetings', [MeetingsController::class, 'index'])->name('meetings.index');
+    Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
+    Route::patch('/meetings/{meeting}/reschedule', [MeetingsController::class, 'reschedule'])->name('meetings.reschedule');
+    Route::patch('/meetings/{meeting}/cancel', [MeetingsController::class, 'cancel'])->name('meetings.cancel');
+
 });
