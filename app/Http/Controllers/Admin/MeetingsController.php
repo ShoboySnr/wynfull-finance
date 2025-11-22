@@ -22,7 +22,7 @@ class MeetingsController extends Controller
             ->latest('starts_at')
             ->paginate(20);
 
-        return view('admin.meetings.index', compact('meetings'));
+        return view('admin.schedule.index', compact('meetings'));
     }
 
     public function store(Request $request)
@@ -30,40 +30,54 @@ class MeetingsController extends Controller
         $admin = $request->user();
 
         $data = $request->validate([
-            'attendee_id' => ['required','exists:users,id'],
-            'date'        => ['required','date'],
-            'start_time'  => ['required','date_format:H:i'],
-            'duration'    => ['required','integer','min:15','max:240'],
-            'mode'        => ['nullable','string','max:20'],
-            'notes'       => ['nullable','string'],
+            'audience'     => ['required', 'in:single,all_clients,all_coaches,all'],
+            'attendee_id'  => ['nullable','required_if:audience,single','exists:users,id'],
+            'date'         => ['required','date'],
+            'start_time'   => ['required','date_format:H:i'],
+            'duration'     => ['required','integer','min:15','max:240'],
+            'mode'         => ['nullable','string','max:20'],
+            'meeting_link' => ['nullable','url','max:500'],
+            'notes'        => ['nullable','string'],
         ]);
-
-        $attendee = User::findOrFail($data['attendee_id']);
 
         $start = now()
             ->setDateFrom($data['date'])
             ->setTimeFromTimeString($data['start_time'])
             ->setTimezone(config('app.timezone'));
 
-        $meeting = $this->service->schedule(
+        $audience = [
+            'type' => $data['audience'],
+            'user_id' => $data['attendee_id'] ?? null,
+        ];
+
+        $meeting = $this->service->scheduleBroadcast(
             $admin,
-            $attendee,
             $start,
-            $data['duration'],
-            ['mode' => $data['mode'] ?? null, 'notes' => $data['notes'] ?? null]
+            (int) $data['duration'],
+            $audience,
+            [
+                'mode'         => $data['mode'] ?? null,
+                'meeting_link' => $data['meeting_link'] ?? null,
+                'notes'        => $data['notes'] ?? null,
+            ]
         );
 
         activity()->useLog('admin')
             ->causedBy($admin)
             ->performedOn($meeting)
             ->event('admin.meeting.created')
-            ->withProperties(['attendee_id' => $attendee->id])
+            ->withProperties([
+                'audience' => $data['audience'],
+                'attendee_id' => $data['attendee_id'] ?? null,
+            ])
             ->log('Admin scheduled a meeting');
 
-        // TODO: send mail + custom notification
+        // Dispatch async notifications to attendees (recommended)
+        // BroadcastMeetingInvites::dispatch($meeting->id);
 
         return back()->with('success', 'Meeting scheduled successfully.');
     }
+
 
     public function reschedule(Request $request, Meeting $meeting)
     {

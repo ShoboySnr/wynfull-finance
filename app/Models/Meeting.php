@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Meeting extends Model
 {
     protected $fillable = [
         'organizer_id','attendee_id','starts_at','ends_at',
-        'status','mode','notes','scheduled_by',
+        'status','mode', 'meeting_link', 'notes','scheduled_by',
         'cancelled_at','cancel_reason',
     ];
 
@@ -27,6 +28,13 @@ class Meeting extends Model
     public function attendee(): BelongsTo
     {
         return $this->belongsTo(User::class, 'attendee_id');
+    }
+
+    public function attendees(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'meeting_attendees')
+            ->withPivot(['status','responded_at'])
+            ->withTimestamps();
     }
 
     // scopes
