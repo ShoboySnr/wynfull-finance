@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminResourceCollectionController;
 use App\Http\Controllers\Admin\AdminResourceCollectionModulesController;
 use App\Http\Controllers\Admin\AdminResourceModuleOrderController;
 use App\Http\Controllers\Admin\AdminResourcesController;
+use App\Http\Controllers\Admin\AdminScheduleController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\CoachClientAssignmentController;
 use App\Http\Controllers\Admin\ResourceCollectionApprovalController;
@@ -179,6 +180,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
 
+    Route::get('schedules', [AdminScheduleController::class, 'index'])->name('schedules');
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
     Route::post('resources', [AdminResourceCollectionController::class, 'store'])->name('resources.collection.store');
     Route::put('resources/{resourceCollection}', [AdminResourceCollectionController::class, 'update'])->name('resources.collection.update');

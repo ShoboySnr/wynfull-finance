@@ -1,7 +1,7 @@
 @extends('layouts.client')
 
-@section('title', 'View User Profile')
-@section('page-title', 'User Profile')
+@section('title', 'Resource Library')
+@section('page-title', 'Resource Library')
 
 @section('content')
     <div id="resource-library" class="page-content">
@@ -14,7 +14,6 @@
             </div>
         </div>
 
-        {{-- Tab Navigation --}}
         <div class="resource-tabs">
             <button class="resource-tab active" data-tab="learning-phases">
                 <i class="fas fa-graduation-cap"></i>
@@ -32,16 +31,12 @@
                 @php $previousCollectionComplete = true;  @endphp
                 @forelse ($collections as $collection)
                     @php
-                        // Calculate Completion
                         $totalModules = $collection->modules->count();
                         $completedModules = $collection->modules->filter(fn($module) => !$module->completions->isEmpty())->count();
                         $completionPercentage = ($totalModules > 0) ? round(($completedModules / $totalModules) * 100) : 0;
                         $isCollectionComplete = ($totalModules > 0 && $completedModules === $totalModules);
-
-                        // Determine Locking Status
                         $isLocked = !$previousCollectionComplete;
 
-                        // Determine Collection Status Text/Icon
                         $statusClass = 'locked';
                         $statusIcon = 'fa-lock';
                         $statusText = 'Locked';
@@ -75,15 +70,13 @@
 
                         <div class="phase-progress">
                             <div class="progress-bar">
-                                <div class="progress-fill"
-                                     style="width: {{ $isLocked ? 0 : $completionPercentage }}%"></div>
+                                <div class="progress-fill" style="width: {{ $isLocked ? 0 : $completionPercentage }}%"></div>
                             </div>
                             <span class="progress-text">
                                 @if($isLocked)
                                     Complete previous phase to unlock
                                 @else
-                                    {{ $completedModules }}/{{ $totalModules }} modules • {{ $completionPercentage }}%
-                                    complete
+                                    {{ $completedModules }}/{{ $totalModules }} modules • {{ $completionPercentage }}% complete
                                 @endif
                             </span>
                         </div>
@@ -97,7 +90,7 @@
                                         'word' => 'fa-file-word', 'excel' => 'fa-file-excel',
                                         'video' => 'fa-video', default => 'fa-file',
                                     };
-                                    $linkUrl = '#'; // Default
+                                    $linkUrl = '#';
                                     if ($module->type === 'video' && $module->video_link) {
                                         $linkUrl = $module->video_link;
                                     } elseif ($module->file_path) {
@@ -112,8 +105,7 @@
                                         <p>{{ $module->description }}</p>
                                     </div>
                                     <div class="module-resources">
-                                        <span
-                                            class="resource-tag {{ strtolower($module->type) }}">{{ Str::ucfirst($module->type) }}</span>
+                                        <span class="resource-tag {{ strtolower($module->type) }}">{{ Str::ucfirst($module->type) }}</span>
                                     </div>
                                     @if($isLocked)
                                         <button class="module-btn locked" disabled>Locked</button>
@@ -121,7 +113,9 @@
                                         <a href="{{ $linkUrl }}"
                                            target="_blank"
                                            class="module-btn {{ $isModuleComplete ? 'secondary' : 'primary' }} mark-complete-btn"
-                                           data-module-id="{{ $module->id }}">
+                                           data-module-id="{{ $module->id }}"
+                                           data-type="{{ $module->type }}"
+                                           data-title="{{ $module->title }}">
                                             {{ $isModuleComplete ? 'View Again' : 'Open Resource' }}
                                         </a>
                                     @endif
@@ -137,21 +131,20 @@
                         <p>No learning resources are available at this time.</p>
                     </div>
                 @endforelse
-                {{-- END: Dynamic Loop for Collections --}}
             </div>
         </div>
+
         <div id="tools-templates" class="resource-tab-content">
             <div class="tools-grid">
                 @forelse ($toolsAndTemplates as $module)
                     @php
                         $isModuleComplete = !$module->completions->isEmpty();
-//                        dd($isCollectionComplete);
                         $moduleIconClass = match ($module->type) {
                             'template' => 'fa-file-alt', 'pdf' => 'fa-file-pdf',
                             'word' => 'fa-file-word', 'excel' => 'fa-file-excel',
-                            default => 'fa-tools', // Default for tools
+                            default => 'fa-tools',
                         };
-                        $linkUrl = '#'; // Default
+                        $linkUrl = '#';
                         if ($module->type === 'video' && $module->video_link) {
                             $linkUrl = $module->video_link;
                         } elseif ($module->file_path) {
@@ -160,7 +153,6 @@
                     @endphp
                     <div class="tool-card {{ $isModuleComplete ? 'completed' : '' }}" data-module-id="{{ $module->id }}">
                         <div class="tool-accent"></div>
-{{--                         <button class="walkthrough-indicator"><i class="fas fa-play"></i></button>--}}
                         <div class="tool-icon">
                             <i class="fas {{ $moduleIconClass }}"></i>
                         </div>
@@ -171,41 +163,40 @@
                                 <span class="format-tag {{ strtolower($module->type) }}">{{ Str::ucfirst($module->type) }}</span>
                             </div>
                         </div>
-                        {{-- Updated Download Button --}}
                         <a href="{{ $linkUrl }}"
                            target="_blank"
                            class="tool-download-btn mark-complete-btn {{ $isModuleComplete ? 'secondary' : 'primary' }}"
-                           data-module-id="{{ $module->id }}">
-                            <i class="fas fa-download"></i>
-                            {{ $isModuleComplete ? 'Download Again' : 'Download' }}
+                           data-module-id="{{ $module->id }}"
+                           data-type="{{ $module->type }}"
+                           data-title="{{ $module->title }}">
+                            <i class="fas fa-eye"></i>
+                            {{ $isModuleComplete ? 'View Again' : 'View' }}
                         </a>
                     </div>
-{{--                    <div class="tool-card">--}}
-{{--                        <div class="tool-accent"></div>--}}
-{{--                        <button class="walkthrough-indicator" data-tool="monthly-budget-tracker"--}}
-{{--                                title="Watch walkthrough video">--}}
-{{--                            <i class="fas fa-play"></i>--}}
-{{--                        </button>--}}
-{{--                        <div class="tool-icon">--}}
-{{--                            <i class="fas fa-file-excel"></i>--}}
-{{--                        </div>--}}
-{{--                        <div class="tool-content">--}}
-{{--                            <h3>Monthly Budget Tracker</h3>--}}
-{{--                            <p>Comprehensive Excel template for tracking income, expenses, and savings goals</p>--}}
-{{--                            <div class="tool-formats">--}}
-{{--                                <span class="format-tag excel">Excel Template</span>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <button class="tool-download-btn">--}}
-{{--                            <i class="fas fa-download"></i>--}}
-{{--                            Download--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
                 @empty
                     <div class="no-resources-message" style="grid-column: 1 / -1;">
                         <p>No tools or templates are available at this time.</p>
                     </div>
                 @endforelse
+            </div>
+        </div>
+    </div>
+
+    {{-- Resource Viewer Modal --}}
+    <div class="modal-overlay" id="resourceViewerModal">
+        <div class="modal-content viewer-modal-content">
+            <div class="modal-header">
+                <h2 id="viewerTitle">Resource Title</h2>
+                <button class="modal-close" id="closeViewerModal">&times;</button>
+            </div>
+            <div class="modal-body viewer-body">
+                <div id="viewerContainer" class="viewer-container"></div>
+                <div id="viewerFallback" style="display:none; text-align: center; padding: 20px;">
+                    <p class="mb-3">This file type cannot be previewed directly.</p>
+                    <a href="#" id="fallbackDownloadLink" class="btn-primary" target="_blank" download>
+                        <i class="fas fa-download"></i> Download File
+                    </a>
+                </div>
             </div>
         </div>
     </div>

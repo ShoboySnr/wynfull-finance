@@ -598,62 +598,62 @@ body {
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .header-left {
         width: 100%;
     }
-    
+
     .header-breadcrumb {
         display: none; /* Hide breadcrumb on mobile */
     }
-    
+
     .page-title {
         font-size: 1.5rem;
     }
-    
+
     .page-subtitle {
         font-size: 0.875rem;
     }
-    
+
     .header-right {
         width: 100%;
         justify-content: flex-end;
         gap: 1rem;
     }
-    
+
     .header-user-info {
         justify-content: flex-end;
         padding: 0.5rem 0.75rem;
     }
-    
+
     .user-welcome {
         align-items: flex-start;
         text-align: left;
     }
-    
+
     .welcome-text {
         font-size: 0.75rem;
     }
-    
+
     .user-name {
         font-size: 0.875rem;
     }
-    
+
     .header-user-avatar {
         width: 36px;
         height: 36px;
     }
-    
+
     .header-actions {
         gap: 0.25rem;
     }
-    
+
     .header-action-btn {
         width: 40px;
         height: 40px;
         font-size: 1rem;
     }
-    
+
     /* Show mobile menu toggle on tablet and mobile */
     .mobile-menu-toggle {
         display: flex !important;
@@ -670,34 +670,34 @@ body {
     .top-header {
         padding: 0.75rem;
     }
-    
+
     .page-title {
         font-size: 1.25rem;
     }
-    
+
     .header-user-info {
         padding: 0.5rem;
     }
-    
+
     .user-name {
         font-size: 0.8rem;
     }
-    
+
     .welcome-text {
         font-size: 0.7rem;
     }
-    
+
     .header-user-avatar {
         width: 32px;
         height: 32px;
     }
-    
+
     .header-action-btn {
         width: 36px;
         height: 36px;
         font-size: 0.9rem;
     }
-    
+
     /* Show mobile menu toggle on mobile */
     .mobile-menu-toggle {
         display: flex !important;
@@ -3607,19 +3607,19 @@ input:checked + .slider:before {
         width: 100%;
         right: -100%;
     }
-    
+
     .info-panel.active {
         right: 0;
     }
-    
+
     .info-header {
         padding: 1rem;
     }
-    
+
     .info-content {
         padding: 1rem;
     }
-    
+
     .info-content h4 {
         font-size: 1rem;
     }
@@ -5310,7 +5310,7 @@ input:checked + .slider:before {
     .menu-toggle {
         display: block;
     }
-    
+
     /* Ensure mobile menu toggle is always visible on mobile */
     .mobile-menu-toggle {
         display: flex !important;
@@ -5824,7 +5824,7 @@ input:checked + .slider:before {
     .mobile-clients-toggle:active {
         transform: translateY(0);
     }
-    
+
     .coach-messaging-container,
     .messaging-container {
         height: calc(100vh - 140px);
@@ -8990,13 +8990,13 @@ button.join-call {
         left: 10px !important;
         right: 10px;
     }
-    
+
     .tooltip-content {
         padding: 1rem;
         font-size: 13px;
         max-height: calc(300px - 1rem);
     }
-    
+
     .tooltip-content h4 {
         font-size: 15px;
     }
@@ -9023,3 +9023,50 @@ button.join-call {
 .metric-card .card-header-with-info + * {
     margin-top: 0;
 }
+
+/* START: Resource Viewer Modal Styles */
+.viewer-modal-content {
+    max-width: 900px; /* Wider modal for viewing */
+    width: 95%;
+    height: 85vh; /* Tall modal */
+    display: flex;
+    flex-direction: column;
+}
+
+.viewer-body {
+    flex: 1;
+    padding: 0; /* Remove padding for full bleed */
+    background-color: #000; /* Dark background for media */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.viewer-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.viewer-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff; /* White background for docs */
+}
+
+.viewer-video {
+    max-width: 100%;
+    max-height: 100%;
+    outline: none;
+}
+
+/* Specific styles for the Office Viewer Fallback area */
+#viewerFallback {
+    background-color: var(--white);
+    border-top: 1px solid var(--border-light);
+}
+/* END: Resource Viewer Modal Styles */

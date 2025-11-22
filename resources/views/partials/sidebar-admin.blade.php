@@ -24,6 +24,12 @@
                 <span>Resources</span>
             </a>
         </li>
+        <li class="nav-item {{ request()->routeIs('admin.schedules') ? 'active' : '' }}">
+            <a href="{{ route('admin.schedules') }}" class="nav-link">
+                <i class="fas fa-folder-open"></i>
+                <span>Schedule</span>
+            </a>
+        </li>
         <li class="nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}">
             <a href="{{ route('admin.users') }}" class="nav-link">
                 <i class="fas fa-user-group"></i>

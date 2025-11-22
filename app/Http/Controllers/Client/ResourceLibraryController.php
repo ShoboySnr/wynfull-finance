@@ -14,6 +14,8 @@ class ResourceLibraryController extends Controller
     public function index(Request $request)
     {
         $client = $request->user();
+
+//        dd($client);
         abort_unless($client?->hasRole('client'), 403);
 
         // Get active coach assignments for this client (supports multiple)
