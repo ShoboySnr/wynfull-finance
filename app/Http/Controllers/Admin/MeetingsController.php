@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AttachBroadcastMeetingAttendees;
 use App\Models\Meeting;
 use App\Models\User;
 use App\Services\Schedule\AdminMeetingService;
@@ -45,22 +46,34 @@ class MeetingsController extends Controller
             ->setTimeFromTimeString($data['start_time'])
             ->setTimezone(config('app.timezone'));
 
-        $audience = [
-            'type' => $data['audience'],
-            'user_id' => $data['attendee_id'] ?? null,
-        ];
+        $end = (clone $start)->addMinutes((int)$data['duration']);
 
-        $meeting = $this->service->scheduleBroadcast(
-            $admin,
-            $start,
-            (int) $data['duration'],
-            $audience,
-            [
-                'mode'         => $data['mode'] ?? null,
-                'meeting_link' => $data['meeting_link'] ?? null,
-                'notes'        => $data['notes'] ?? null,
-            ]
-        );
+        // Create meeting row fast
+        $meeting = Meeting::create([
+            'organizer_id' => $admin->id,
+            'starts_at'    => $start->utc(),
+            'ends_at'      => $end->utc(),
+            'status'       => 'scheduled',
+            'mode'         => $data['mode'] ?? null,
+            'meeting_link' => $data['meeting_link'] ?? null,
+            'notes'        => $data['notes'] ?? null,
+            'scheduled_by' => $admin->id,
+            'audience'     => $data['audience'],
+        ]);
+
+        // Single attendee = attach immediately
+        if ($data['audience'] === 'single') {
+            $attendee = User::findOrFail($data['attendee_id']);
+
+            $meeting->attendees()->attach($attendee->id, [
+                'status' => 'invited',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } else {
+            // Broadcast = attach in background
+            AttachBroadcastMeetingAttendees::dispatch($meeting->id, $data['audience']);
+        }
 
         activity()->useLog('admin')
             ->causedBy($admin)
@@ -72,10 +85,11 @@ class MeetingsController extends Controller
             ])
             ->log('Admin scheduled a meeting');
 
-        // Dispatch async notifications to attendees (recommended)
-        // BroadcastMeetingInvites::dispatch($meeting->id);
-
-        return back()->with('success', 'Meeting scheduled successfully.');
+        return back()->with('success',
+            $data['audience'] === 'single'
+                ? 'Meeting scheduled successfully.'
+                : 'Broadcast meeting scheduled. Attendees are being attached in the background.'
+        );
     }
 
 

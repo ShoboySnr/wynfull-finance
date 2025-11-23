@@ -11,7 +11,7 @@ class Meeting extends Model
     protected $fillable = [
         'organizer_id','attendee_id','starts_at','ends_at',
         'status','mode', 'meeting_link', 'notes','scheduled_by',
-        'cancelled_at','cancel_reason',
+        'cancelled_at','cancel_reason', 'audience'
     ];
 
     protected $casts = [

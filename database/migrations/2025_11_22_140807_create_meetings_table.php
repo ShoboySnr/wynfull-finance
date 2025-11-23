@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('status', 20)->default('scheduled'); // scheduled|completed|cancelled
             $table->string('mode', 20)->nullable();             // video|audio|in-person|call
             $table->string('meeting_link')->nullable();
+            $table->string('audience')->default('single');
             $table->text('notes')->nullable();
 
             $table->foreignId('scheduled_by')->nullable()->constrained('users')->nullOnDelete(); // admin id (audit)
