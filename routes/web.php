@@ -34,6 +34,7 @@ use App\Http\Controllers\CoachController;
 use App\Http\Controllers\Dashboards\AdminDashboardController;
 use App\Http\Controllers\Dashboards\ClientDashboardController;
 use App\Http\Controllers\Dashboards\CoachDashboardController;
+use App\Http\Controllers\MeetingsCalendarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceCollectionController;
 use App\Http\Controllers\ResourceModuleApprovalController;
@@ -208,6 +209,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/meetings', [MeetingsController::class, 'index'])->name('meetings.index');
     Route::post('/meetings', [MeetingsController::class, 'store'])->name('meetings.store');
+    Route::get('/meetings/feed', [MeetingsCalendarController::class, 'feed'])->name('meetings.feed');
     Route::patch('/meetings/{meeting}/reschedule', [MeetingsController::class, 'reschedule'])->name('meetings.reschedule');
     Route::patch('/meetings/{meeting}/cancel', [MeetingsController::class, 'cancel'])->name('meetings.cancel');
 

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const end = endDate.toISOString().split('T')[0];
 
         try {
-            const response = await fetch(`/admin/schedule/events?start=${start}&end=${end}`);
+            const response = await fetch(`/admin/meetings/feed?start=${start}&end=${end}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
         } catch (error) {
