@@ -61,6 +61,8 @@ class AttachBroadcastMeetingAttendees implements ShouldQueue
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+
+                BroadcastMeetingInvites::dispatch($meeting->id);
             }
 
             if (! empty($rows)) {

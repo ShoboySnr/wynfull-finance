@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\AttachBroadcastMeetingAttendees;
+use App\Jobs\BroadcastMeetingInvites;
 use App\Models\Meeting;
 use App\Models\User;
 use App\Services\Schedule\AdminMeetingService;
@@ -70,6 +71,8 @@ class MeetingsController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            BroadcastMeetingInvites::dispatch($meeting->id);
         } else {
             // Broadcast = attach in background
             AttachBroadcastMeetingAttendees::dispatch($meeting->id, $data['audience']);

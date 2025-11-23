@@ -171,4 +171,14 @@ class User extends Authenticatable
     {
         $this->notify(new \App\Notifications\VerifyEmailNotification);
     }
+
+    public function meetingAttendees(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Meeting::class,
+            'meeting_attendees',
+            'user_id',
+            'meeting_id'
+        )->withPivot(['status','responded_at'])->withTimestamps();
+    }
 }
