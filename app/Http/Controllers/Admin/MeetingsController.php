@@ -36,7 +36,7 @@ class MeetingsController extends Controller
             'attendee_id'  => ['nullable','required_if:audience,single','exists:users,id'],
             'date'         => ['required','date'],
             'start_time'   => ['required','date_format:H:i'],
-            'duration'     => ['required','integer','min:15','max:240'],
+            'end_time'   => ['required','date_format:H:i'],
             'mode'         => ['nullable','string','max:20'],
             'meeting_link' => ['nullable','url','max:500'],
             'notes'        => ['nullable','string'],
@@ -47,7 +47,10 @@ class MeetingsController extends Controller
             ->setTimeFromTimeString($data['start_time'])
             ->setTimezone(config('app.timezone'));
 
-        $end = (clone $start)->addMinutes((int)$data['duration']);
+        $end = now()
+            ->setDateFrom($data['date'])
+            ->setTimeFromTimeString($data['end_time'])
+            ->setTimezone(config('app.timezone'));
 
         // Create meeting row fast
         $meeting = Meeting::create([

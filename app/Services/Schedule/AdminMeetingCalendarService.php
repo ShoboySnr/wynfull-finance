@@ -60,18 +60,13 @@ class AdminMeetingCalendarService
      */
     public function formatForCalendar(Collection $meetings, ?string $tz = null): array
     {
+        $tz = $tz ?: config('app.timezone', 'UTC');
+
         return $meetings->map(function (Meeting $m) use ($tz) {
-            $start = $m->starts_at->clone();
-            $end   = $m->ends_at->clone();
+            $start = $m->starts_at->clone()->setTimezone($tz);
+            $end   = $m->ends_at->clone()->setTimezone($tz);
 
-            if ($tz) {
-                $start->setTimezone($tz);
-                $end->setTimezone($tz);
-            }
-
-            // Build a friendly title:
-            // - If broadcast, show audience label.
-            // - Else show attendee name(s).
+            // Audience label (broadcast)
             $audienceLabel = match ($m->audience ?? 'single') {
                 'all_clients' => 'All Clients',
                 'all_coaches' => 'All Coaches',
@@ -79,22 +74,41 @@ class AdminMeetingCalendarService
                 default       => null,
             };
 
+            // Attendee names (single or small preview)
             $attendeeNames = $m->attendees
                 ? $m->attendees->pluck('name')->take(3)->join(', ')
-                : '';
+                : '—';
 
+            // For coach-style "client" field, we’ll call it "user"
+            // If broadcast, user label becomes the audience label.
+            $userLabel = $audienceLabel ?: $attendeeNames;
+
+            // Type label similar to coaching sessions
+            $typeLabel = $m->mode
+                ? ucfirst($m->mode) . ' Meeting'
+                : 'Meeting';
+
+            // Title shown on calendar
             $title = $audienceLabel
                 ? "Admin Meeting • {$audienceLabel}"
                 : "Admin Meeting • {$attendeeNames}";
 
             return [
-                'id'    => $m->id,
+                // ===== Coach-style fields (list UI) =====
+                'date'  => $start->toDateString(),        // e.g. 2025-10-13
+                'time'  => $start->format('g:i A'),       // e.g. 10:00 AM
+                'user'  => $userLabel,                    // single user name OR broadcast label
+                'type'  => $typeLabel,                    // e.g. "Video Meeting"
                 'title' => $title,
-                'start' => $start->toIso8601String(),
-                'end'   => $end->toIso8601String(),
-                'allDay'=> false,
+                'client' => $audienceLabel,
 
-                // Extended props for your UI popovers/modals
+                // ===== Calendar/Event fields (FullCalendar UI) =====
+                'id'     => $m->id,
+                'start'  => $start->toIso8601String(),
+                'end'    => $end->toIso8601String(),
+                'allDay' => false,
+
+                // Extra metadata for modals/popovers
                 'extendedProps' => [
                     'status'       => $m->status,
                     'mode'         => $m->mode,
@@ -113,4 +127,5 @@ class AdminMeetingCalendarService
             ];
         })->values()->all();
     }
+
 }

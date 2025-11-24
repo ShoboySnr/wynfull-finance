@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('organizer_id')->constrained('users')->cascadeOnDelete();
 
             // who the meeting is with (coach or client)
-            $table->foreignId('attendee_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('attendee_id')->nullable()->constrained('users')->cascadeOnDelete();
 
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');

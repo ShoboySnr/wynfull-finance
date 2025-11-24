@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 dayEl.querySelector('.day-sessions').innerHTML += `
                     <div class="session-block admin-session">
                         <div class="session-time">${session.time}</div>
-                        <div class="session-client">${session.client}</div> {{-- Or Attendee Name --}}
+                        <div class="session-client">${session.client}</div>
                         <div class="session-type">${session.type}</div>
                     </div>`;
             }

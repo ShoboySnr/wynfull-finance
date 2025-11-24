@@ -45,7 +45,7 @@
     <!-- New Session Modal -->
     <div class="modal-overlay" id="newSessionModal">
         <div class="modal-content">
-            <form action="{{-- route('admin.schedule.store') --}}" method="POST" id="newSessionForm">
+            <form action="{{ route('admin.meetings.store') }}" method="POST" id="newSessionForm">
                 @csrf
                 <div class="modal-header">
                     <h3>Schedule New Meeting</h3>
@@ -56,29 +56,29 @@
                         <div class="form-group">
                             <label for="target_group">Attendee Group</label>
                             {{-- START: Updated Dropdown Options --}}
-                            <select id="target_group" name="target_group" class="form-select" required>
+                            <select id="target_group" name="audience" class="form-select" required>
                                 <option value="" disabled selected>Select audience...</option>
                                 <option value="all_coaches">All Coaches</option>
                                 <option value="all_clients">All Clients</option>
-                                <option value="everyone">Both Coaches and Clients</option>
+                                <option value="all">Both Coaches and Clients</option>
                             </select>
                             {{-- END: Updated Dropdown Options --}}
                         </div>
                         <div class="form-group">
                             <label for="sessionType">Session Type / Title</label>
-                            <input type="text" id="sessionType" name="session_type" placeholder="e.g., Monthly Town Hall" required>
+                            <input type="text" id="sessionType" name="mode" placeholder="e.g., Monthly Town Hall" required>
                         </div>
                         <div class="form-group full-width">
                             <label for="sessionDate">Date</label>
-                            <input type="date" id="sessionDate" name="session_date" required>
+                            <input type="date" id="sessionDate" name="date" required>
                         </div>
                         <div class="form-group">
                             <label for="sessionStartTime">Start Time</label>
-                            <input type="time" id="sessionStartTime" name="session_start_time" required>
+                            <input type="time" id="sessionStartTime" name="start_time" required>
                         </div>
                         <div class="form-group">
                             <label for="sessionEndTime">End Time</label>
-                            <input type="time" id="sessionEndTime" name="session_end_time" required>
+                            <input type="time" id="sessionEndTime" name="end_time" required>
                         </div>
 
                         <div class="form-group full-width">
@@ -88,7 +88,7 @@
 
                         <div class="form-group full-width">
                             <label for="sessionNotes">Notes (Optional)</label>
-                            <textarea id="sessionNotes" name="session_notes" rows="3" placeholder="Add any relevant notes..."></textarea>
+                            <textarea id="sessionNotes" name="notes" rows="3" placeholder="Add any relevant notes..."></textarea>
                         </div>
                     </div>
                 </div>
