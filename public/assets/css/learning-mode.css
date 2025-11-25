@@ -127,7 +127,18 @@
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
 }
+
+/* START: Ensure iframe fills the wrapper */
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+/* END: Ensure iframe fills the wrapper */
+
 .doc-frame { border: none; }
 
 .viewer-fallback {
