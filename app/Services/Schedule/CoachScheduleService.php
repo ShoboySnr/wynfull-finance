@@ -220,24 +220,28 @@ class CoachScheduleService
         };
     }
 
-    public function formatForCalendar(Collection $sessions, ?string $tz = null, ?Collection $adminMeetings = null): array
-    {
+    public function formatForCalendar(
+        Collection $sessions,
+        ?string $tz = null,
+        ?Collection $adminMeetings = null
+    ): array {
         $tz = $tz ?: config('app.timezone', 'UTC');
 
-        // 1) normal coaching sessions payload (unchanged)
-        $sessionItems = $sessions->map(function (CoachingSession $s) use ($tz) {
+        // Make sure we’re working with base Collections, not Eloquent\Collection
+        $sessionItems = collect($sessions)->map(function (CoachingSession $s) use ($tz) {
+            $start = $s->starts_at->clone()->setTimezone($tz);
+
             return [
-                'date'   => $s->starts_at->clone()->setTimezone($tz)->toDateString(),
-                'time'   => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),
+                'date'   => $start->toDateString(),                // e.g. 2025-10-13
+                'time'   => $start->format('g:i A'),               // e.g. 10:00 AM
                 'client' => $s->client?->name ?? '—',
                 'type'   => $s->type ?? 'Session',
                 'title'  => $s->title,
-                'source' => 'coach_session', // helpful for UI badges (optional)
+                'source' => 'coach_session',
                 'id'     => $s->id,
             ];
         });
 
-        // 2) admin meetings payload mapped to same shape
         $adminItems = collect($adminMeetings ?: [])->map(function (Meeting $m) use ($tz) {
             $start = $m->starts_at->clone()->setTimezone($tz);
 
@@ -248,7 +252,6 @@ class CoachScheduleService
                 default       => null,
             };
 
-            // If broadcast, show audience. If single, show "Admin"
             $clientLabel = $audienceLabel ? "Admin ({$audienceLabel})" : 'Admin';
 
             return [
@@ -258,14 +261,14 @@ class CoachScheduleService
                 'type'   => 'Admin Meeting',
                 'title'  => $m->notes
                     ? "Admin Meeting • {$m->notes}"
-                    : "Admin Meeting",
-                'source' => 'admin_meeting',
-                'id'     => $m->id,
-                'meeting_link' => $m->meeting_link, // optional for popover/open
+                    : 'Admin Meeting',
+                'source'       => 'admin_meeting',
+                'id'           => $m->id,
+                'meeting_link' => $m->meeting_link,
             ];
         });
 
-        // 3) merge + sort chronologically
+        // Now both are plain Collections of arrays, so merge() is safe
         return $sessionItems
             ->merge($adminItems)
             ->sortBy(fn ($i) => $i['date'].' '.$i['time'])

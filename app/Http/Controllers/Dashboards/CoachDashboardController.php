@@ -27,24 +27,31 @@ class CoachDashboardController extends Controller
         }
         $specialtiesCsv = implode(', ', $specialties);
 
-        // Dashboard stats & data
         $coachId = (int) $user->id;
-        $activeClientsCount    = $this->service->activeClientsCount($coachId);
-        $weeklySessions        = $this->service->weeklySessions($coachId);
+
+        // Coaching sessions + admin meetings for this week
+        $weeklySessions      = $this->service->weeklySessions($coachId);
+        $weeklyAdminMeetings = $this->service->weeklyAdminMeetings($coachId);
+
+        // Count now includes both sessions + admin meetings
         $weeklySessionsCount   = $this->service->weeklySessionsCount($coachId);
-        $weeklyScheduleEntries = $this->service->formatSessionsForDashboard($weeklySessions);
+        $weeklyScheduleEntries = $this->service->formatSessionsForDashboard(
+            $weeklySessions,
+            null,
+            $weeklyAdminMeetings
+        );
 
         // Recent activities by this coach
         $recentActivities = $this->service->recentActivitiesForCoach($coachId, 3);
 
-//        dd($recentActivities);
         return view('dashboards.coach', [
             'user'                  => $user,
             'specialtiesCsv'        => $specialtiesCsv,
-            'activeClientsCount'    => $activeClientsCount,
+            'activeClientsCount'    => $this->service->activeClientsCount($coachId),
             'weeklySessionsCount'   => $weeklySessionsCount,
             'weeklyScheduleEntries' => $weeklyScheduleEntries,
-            'recentActivities'      => $recentActivities,      // collection from activity_log
+            'recentActivities'      => $recentActivities,
         ]);
     }
+
 }

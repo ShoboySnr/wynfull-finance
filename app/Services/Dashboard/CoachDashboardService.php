@@ -3,6 +3,7 @@
 namespace App\Services\Dashboard;
 
 use App\Models\CoachingSession;
+use App\Models\Meeting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -34,6 +35,24 @@ class CoachDashboardService
         ];
     }
 
+    public function weeklyAdminMeetings(int $coachId, ?string $anchor = null): Collection
+    {
+        [$from, $to] = $this->weekRange($anchor);
+
+        return Meeting::query()
+            ->with(['organizer:id,name,email', 'attendees:id,name,email'])
+            ->whereBetween('starts_at', [$from, $to])
+            ->where('status', 'scheduled')
+            ->where(function ($q) use ($coachId) {
+                // Broadcast meetings to coaches
+                $q->whereIn('audience', ['all_coaches', 'all'])
+                    // Or explicitly targeted to this coach
+                    ->orWhereHas('attendees', fn($a) => $a->where('users.id', $coachId));
+            })
+            ->orderBy('starts_at')
+            ->get();
+    }
+
     /**
      * Sessions for a coach within the current week.
      */
@@ -56,42 +75,101 @@ class CoachDashboardService
     {
         [$from, $to] = $this->weekRange($anchor);
 
-        return CoachingSession::query()
+        // Coaching sessions (existing)
+        $sessionCount = CoachingSession::query()
             ->where('coach_id', $coachId)
             ->where('status', '!=', 'cancelled')
             ->whereBetween('starts_at', [$from, $to])
             ->count();
+
+        // Admin meetings that apply to this coach
+        $adminMeetingCount = Meeting::query()
+            ->whereBetween('starts_at', [$from, $to])
+            ->where('status', 'scheduled')
+            ->where(function ($q) use ($coachId) {
+                $q->whereIn('audience', ['all_coaches', 'all'])
+                    ->orWhereHas('attendees', fn($a) => $a->where('users.id', $coachId));
+            })
+            ->count();
+
+        return $sessionCount + $adminMeetingCount;
     }
+
 
     /**
      * Format sessions to a handy array for the dashboard schedule.
      * Converts to the app (or provided) timezone for display.
      */
-    public function formatSessionsForDashboard(Collection $sessions, ?string $tz = null): array
-    {
+    public function formatSessionsForDashboard(
+        Collection $sessions,
+        ?string $tz = null,
+        ?Collection $adminMeetings = null
+    ): array {
         $tz = $tz ?: config('app.timezone', 'UTC');
 
-        return $sessions->map(function ($s) use ($tz) {
-
+        // Coaching sessions
+        $sessionItems = collect($sessions)->map(function (CoachingSession $s) use ($tz) {
             $start = $s->starts_at->clone()->setTimezone($tz);
             $end   = $s->ends_at->clone()->setTimezone($tz);
 
             return [
                 'id'        => $s->id,
-                'date'      => $s->starts_at->clone()->setTimezone($tz)->toDateString(),
-                'time'      => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),
+                'date'      => $start->toDateString(),
+                'time'      => $start->format('g:i A'),
                 'client'    => $s->client?->name ?? '—',
                 'client_id' => $s->client?->id,
                 'title'     => $s->title,
                 'type'      => $s->type ?? 'Session',
                 'status'    => $s->status,
                 'join_url'  => $s->location_url,
-                'starts_at' => $start->format('ga'),     // e.g., "10am"
+                'starts_at' => $start->format('ga'), // e.g. 10am
                 'ends_at'   => $end->format('ga'),
                 'notes'     => $s->notes ?? '',
+                'source'    => 'coach_session',
             ];
-        })->values()->all();
+        });
+
+        // Admin meetings (for this coach)
+        $adminItems = collect($adminMeetings ?: [])->map(function (Meeting $m) use ($tz) {
+            $start = $m->starts_at->clone()->setTimezone($tz);
+            $end   = $m->ends_at->clone()->setTimezone($tz);
+
+            $audienceLabel = match ($m->audience ?? 'single') {
+                'all_clients' => 'All Clients',
+                'all_coaches' => 'All Coaches',
+                'all'         => 'All Clients & Coaches',
+                default       => null,
+            };
+
+            $clientLabel = $audienceLabel ? "Admin ({$audienceLabel})" : 'Admin';
+
+            return [
+                'id'        => $m->id,
+                'date'      => $start->toDateString(),
+                'time'      => $start->format('g:i A'),
+                'client'    => $clientLabel,
+                'client_id' => null,
+                'title'     => $m->notes
+                    ? "Admin Meeting • {$m->notes}"
+                    : 'Admin Meeting',
+                'type'      => 'Admin Meeting',
+                'status'    => $m->status,
+                'join_url'  => $m->meeting_link,
+                'starts_at' => $start->format('ga'),
+                'ends_at'   => $end->format('ga'),
+                'notes'     => $m->notes ?? '',
+                'source'    => 'admin_meeting',
+            ];
+        });
+
+        // Merge and sort by date & time
+        return $sessionItems
+            ->merge($adminItems)
+            ->sortBy(fn($row) => $row['date'].' '.$row['time'])
+            ->values()
+            ->all();
     }
+
 
     /**
      * Recent activities by the coach (Spatie activity log).
