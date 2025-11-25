@@ -3,6 +3,7 @@
 namespace App\Services\Schedule;
 
 use App\Models\CoachingSession;
+use App\Models\Meeting;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -111,6 +112,39 @@ class CoachScheduleService
             ->get();
     }
 
+    public function listAdminMeetingsForCoachBetween(int $coachId, $from, $to): Collection
+    {
+        $from = Carbon::parse($from)->utc()->startOfSecond();
+        $to   = Carbon::parse($to)->utc()->endOfSecond();
+
+        return Meeting::query()
+            ->with(['organizer:id,name,email', 'attendees:id,name,email'])
+            ->whereBetween('starts_at', [$from, $to])
+            ->where('status', 'scheduled')
+            ->where(function ($q) use ($coachId) {
+                $q->whereIn('audience', ['all_coaches', 'all'])  // broadcast to coaches
+                ->orWhereHas('attendees', fn ($a) => $a->where('users.id', $coachId)); // single targeted
+            })
+            ->orderBy('starts_at')
+            ->get();
+    }
+
+    public function listAdminMeetingsForCoach(int $coachId, string $view = 'week', ?string $start = null): Collection
+    {
+        [$from, $to] = $this->rangeFor($view, $start);
+
+        return Meeting::query()
+            ->with(['organizer:id,name,email', 'attendees:id,name,email'])
+            ->whereBetween('starts_at', [$from, $to])
+            ->where('status', 'scheduled')
+            ->where(function ($q) use ($coachId) {
+                $q->whereIn('audience', ['all_coaches', 'all'])
+                    ->orWhereHas('attendees', fn ($a) => $a->where('users.id', $coachId));
+            })
+            ->orderBy('starts_at')
+            ->get();
+    }
+
     /**
      * Group sessions by date string (YYYY-MM-DD) for calendar grid rendering.
      */
@@ -186,20 +220,59 @@ class CoachScheduleService
         };
     }
 
-    public function formatForCalendar(Collection $sessions, ?string $tz = null): array
+    public function formatForCalendar(Collection $sessions, ?string $tz = null, ?Collection $adminMeetings = null): array
     {
         $tz = $tz ?: config('app.timezone', 'UTC');
 
-        return $sessions->map(function ($s) use ($tz) {
+        // 1) normal coaching sessions payload (unchanged)
+        $sessionItems = $sessions->map(function (CoachingSession $s) use ($tz) {
             return [
-                'date'   => $s->starts_at->clone()->setTimezone($tz)->toDateString(),     // e.g. 2025-10-13
-                'time'   => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),    // e.g. 10:00 AM
+                'date'   => $s->starts_at->clone()->setTimezone($tz)->toDateString(),
+                'time'   => $s->starts_at->clone()->setTimezone($tz)->format('g:i A'),
                 'client' => $s->client?->name ?? '—',
                 'type'   => $s->type ?? 'Session',
-                'title' => $s->title,
+                'title'  => $s->title,
+                'source' => 'coach_session', // helpful for UI badges (optional)
+                'id'     => $s->id,
             ];
-        })->values()->all();
+        });
+
+        // 2) admin meetings payload mapped to same shape
+        $adminItems = collect($adminMeetings ?: [])->map(function (Meeting $m) use ($tz) {
+            $start = $m->starts_at->clone()->setTimezone($tz);
+
+            $audienceLabel = match ($m->audience ?? 'single') {
+                'all_clients' => 'All Clients',
+                'all_coaches' => 'All Coaches',
+                'all'         => 'All Clients & Coaches',
+                default       => null,
+            };
+
+            // If broadcast, show audience. If single, show "Admin"
+            $clientLabel = $audienceLabel ? "Admin ({$audienceLabel})" : 'Admin';
+
+            return [
+                'date'   => $start->toDateString(),
+                'time'   => $start->format('g:i A'),
+                'client' => $clientLabel,
+                'type'   => 'Admin Meeting',
+                'title'  => $m->notes
+                    ? "Admin Meeting • {$m->notes}"
+                    : "Admin Meeting",
+                'source' => 'admin_meeting',
+                'id'     => $m->id,
+                'meeting_link' => $m->meeting_link, // optional for popover/open
+            ];
+        });
+
+        // 3) merge + sort chronologically
+        return $sessionItems
+            ->merge($adminItems)
+            ->sortBy(fn ($i) => $i['date'].' '.$i['time'])
+            ->values()
+            ->all();
     }
+
 
     public function listForCoachBetween(int $coachId, $from, $to): Collection
     {

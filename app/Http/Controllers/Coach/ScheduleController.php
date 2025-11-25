@@ -81,17 +81,25 @@ class ScheduleController extends Controller
         try {
             if ($start && $end) {
                 $sessions = $this->service->listForCoachBetween($coachId, $start, $end);
+
+                // admin meetings that apply to this coach (single/all_coaches/all)
+                $adminMeetings = $this->service->listAdminMeetingsForCoachBetween($coachId, $start, $end);
             } else {
                 // Back-compat: view + optional base start
                 $view  = $request->query('view', 'week');
                 $base  = $request->query('start');
+
                 $sessions = $this->service->listForCoach($coachId, $view, $base);
+
+                // admin meetings for same view window
+                $adminMeetings = $this->service->listAdminMeetingsForCoach($coachId, $view, $base);
             }
         } catch (\Throwable $e) {
             return response()->json(['error' => 'Invalid date parameters.'], 422);
         }
 
-        $payload = $this->service->formatForCalendar($sessions, $tz);
+        // pass admin meetings into formatter so payload includes both
+        $payload = $this->service->formatForCalendar($sessions, $tz, $adminMeetings);
 
         return response()->json($payload);
     }
