@@ -110,12 +110,13 @@
                                     @if($isLocked)
                                         <button class="module-btn locked" disabled>Locked</button>
                                     @else
-                                        <a href="{{ $linkUrl }}"
+                                        <a href="{{ route('resources.learn', ['resourceCollection' => $collection, 'resourceModule' => $module]) }}"
                                            target="_blank"
                                            class="module-btn {{ $isModuleComplete ? 'secondary' : 'primary' }} mark-complete-btn"
                                            data-module-id="{{ $module->id }}"
                                            data-type="{{ $module->type }}"
-                                           data-title="{{ $module->title }}">
+                                           data-title="{{ $module->title }}"
+                                        >
                                             {{ $isModuleComplete ? 'View Again' : 'Open Resource' }}
                                         </a>
                                     @endif

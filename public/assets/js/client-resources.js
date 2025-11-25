@@ -28,76 +28,76 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // --- Module Logic (Completion + Viewing) ---
-    if (resourceLibrary) {
-        resourceLibrary.addEventListener('click', function (event) {
-            const completeButton = event.target.closest('a.mark-complete-btn, button.mark-complete-btn');
-
-            if (completeButton) {
-                // 1. IMMEDIATELY prevent default link behavior (stopping the download)
-                event.preventDefault();
-
-                const moduleId = completeButton.dataset.moduleId;
-                const moduleType = completeButton.dataset.type;
-                const moduleTitle = completeButton.dataset.title;
-                const resourceUrl = completeButton.href;
-
-                const moduleItem = completeButton.closest('[data-module-id]');
-                const collectionCard = completeButton.closest('.phase-card');
-
-                if (!moduleId || !moduleItem) return;
-
-                // 2. OPTIMISTIC UI UPDATE (Update visual state instantly)
-                if (!moduleItem.classList.contains('completed')) {
-                    // Store original state for revert on error
-                    const originalBtnText = completeButton.innerHTML;
-                    const wasPrimary = completeButton.classList.contains('primary');
-
-                    // Apply "Completed" styles
-                    moduleItem.classList.add('completed');
-                    completeButton.classList.remove('primary');
-                    completeButton.classList.add('secondary');
-
-                    if (moduleItem.classList.contains('tool-card')) {
-                        completeButton.innerHTML = '<i class="fas fa-eye"></i> View Again';
-                    } else {
-                        completeButton.textContent = 'View Again';
-                    }
-
-                    // Update Progress Bar (if part of a collection)
-                    if (collectionCard) updateCollectionProgress(collectionCard);
-
-                    // 3. Send Backend Request (Background "Fire & Forget")
-                    fetch(`/modules/${moduleId}/complete`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: JSON.stringify({})
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        console.log(`Module ${moduleId} synced completion.`);
-                    }).catch(error => {
-                        console.error('Error marking completion, reverting UI:', error);
-                        // Revert UI changes on error
-                        moduleItem.classList.remove('completed');
-                        if(wasPrimary) {
-                            completeButton.classList.add('primary');
-                            completeButton.classList.remove('secondary');
-                        }
-                        completeButton.innerHTML = originalText;
-                        if (collectionCard) updateCollectionProgress(collectionCard);
-                    });
-                }
-
-                // 4. Open Viewer (Immediately after UI update)
-                openResourceViewer(resourceUrl, moduleType, moduleTitle);
-            }
-        });
-    }
+    // if (resourceLibrary) {
+    //     resourceLibrary.addEventListener('click', function (event) {
+    //         const completeButton = event.target.closest('a.mark-complete-btn, button.mark-complete-btn');
+    //
+    //         if (completeButton) {
+    //             // 1. IMMEDIATELY prevent default link behavior (stopping the download)
+    //             event.preventDefault();
+    //
+    //             const moduleId = completeButton.dataset.moduleId;
+    //             const moduleType = completeButton.dataset.type;
+    //             const moduleTitle = completeButton.dataset.title;
+    //             const resourceUrl = completeButton.href;
+    //
+    //             const moduleItem = completeButton.closest('[data-module-id]');
+    //             const collectionCard = completeButton.closest('.phase-card');
+    //
+    //             if (!moduleId || !moduleItem) return;
+    //
+    //             // 2. OPTIMISTIC UI UPDATE (Update visual state instantly)
+    //             if (!moduleItem.classList.contains('completed')) {
+    //                 // Store original state for revert on error
+    //                 const originalBtnText = completeButton.innerHTML;
+    //                 const wasPrimary = completeButton.classList.contains('primary');
+    //
+    //                 // Apply "Completed" styles
+    //                 moduleItem.classList.add('completed');
+    //                 completeButton.classList.remove('primary');
+    //                 completeButton.classList.add('secondary');
+    //
+    //                 if (moduleItem.classList.contains('tool-card')) {
+    //                     completeButton.innerHTML = '<i class="fas fa-eye"></i> View Again';
+    //                 } else {
+    //                     completeButton.textContent = 'View Again';
+    //                 }
+    //
+    //                 // Update Progress Bar (if part of a collection)
+    //                 if (collectionCard) updateCollectionProgress(collectionCard);
+    //
+    //                 // 3. Send Backend Request (Background "Fire & Forget")
+    //                 fetch(`/modules/${moduleId}/complete`, {
+    //                     method: 'POST',
+    //                     headers: {
+    //                         'Content-Type': 'application/json',
+    //                         'Accept': 'application/json',
+    //                         'X-CSRF-TOKEN': csrfToken
+    //                     },
+    //                     body: JSON.stringify({})
+    //                 }).then(response => {
+    //                     if (!response.ok) {
+    //                         throw new Error('Network response was not ok');
+    //                     }
+    //                     console.log(`Module ${moduleId} synced completion.`);
+    //                 }).catch(error => {
+    //                     console.error('Error marking completion, reverting UI:', error);
+    //                     // Revert UI changes on error
+    //                     moduleItem.classList.remove('completed');
+    //                     if(wasPrimary) {
+    //                         completeButton.classList.add('primary');
+    //                         completeButton.classList.remove('secondary');
+    //                     }
+    //                     completeButton.innerHTML = originalText;
+    //                     if (collectionCard) updateCollectionProgress(collectionCard);
+    //                 });
+    //             }
+    //
+    //             // 4. Open Viewer (Immediately after UI update)
+    //             openResourceViewer(resourceUrl, moduleType, moduleTitle);
+    //         }
+    //     });
+    // }
 
     // --- Viewer Functionality ---
     function openResourceViewer(url, type, title) {

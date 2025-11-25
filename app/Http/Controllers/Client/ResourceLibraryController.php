@@ -119,4 +119,32 @@ class ResourceLibraryController extends Controller
 
         return view('client.resource-library.index', ['collections' => $collections, 'toolsAndTemplates' => $toolsAndTemplates]);
     }
+
+    public function learn(ResourceCollection $resourceCollection, ResourceModule $resourceModule)
+    {
+        $collection = $resourceCollection->load('modules');
+        $modules = $collection->modules->values(); // reindex 0..n-1
+
+        // Find current index
+        $currentIndex = $modules->search(fn ($m) => $m->id === $resourceModule->id);
+
+        $prevModule = null;
+        $nextModule = null;
+
+        if ($currentIndex !== false) {
+            if ($currentIndex > 0) {
+                $prevModule = $modules[$currentIndex - 1];
+            }
+            if ($currentIndex < $modules->count() - 1) {
+                $nextModule = $modules[$currentIndex + 1];
+            }
+        }
+
+        return view('client.learning.index', [
+            'collection'  => $collection,
+            'module'      => $resourceModule,
+            'prevModule'  => $prevModule,
+            'nextModule'  => $nextModule,
+        ]);
+    }
 }

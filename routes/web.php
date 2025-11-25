@@ -145,6 +145,7 @@ Route::middleware(['auth', 'role:client'])->group(function () {
         ->name('dashboard.client');
 
     Route::get('/resources/library', [ResourceLibraryController::class, 'index'])->name('resources.library');
+    Route::get('/resources/learn/{resourceCollection}/{resourceModule?}', [ResourceLibraryController::class, 'learn'])->name('resources.learn');
     Route::get('/ai/client', [\App\Http\Controllers\Client\AI::class, 'index'])->name('ai.client');
     Route::get('/coaching/client', [\App\Http\Controllers\Client\CoachingController::class, 'index'])->name('coaching.client');
     Route::get('/messages/client', [\App\Http\Controllers\Client\MessagingController::class, 'index'])->name('messages.client');
