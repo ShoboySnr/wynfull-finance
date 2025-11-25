@@ -14,7 +14,7 @@
 
             <div class="coaching-sections">
                 <div class="coaching-section">
-                    <h2>1:1 Coaching Sessions</h2>
+                    <h2>Book a session</h2>
                     <div class="session-card">
                         <div class="coach-info">
                             @if($coach && $coach->coachProfile && $coach->profile)
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="coaching-section">
-                    <h2>Group Workshops</h2>
+                    <h2>1:1 Coaching Sessions</h2>
                     <div class="workshop-list">
                         @foreach($upcoming as $session)
                             @php
@@ -66,6 +66,38 @@
                     </div>
                 </div>
 
+                <div class="coaching-section">
+                    <h2>Group Workshops</h2>
+                    <div class="workshop-list">
+                        @foreach($adminUpcoming as $session)
+                            @php
+                                $tz = config('app.timezone');
+
+                                $dateStr = $session->starts_at
+                                    ? $session->starts_at->clone()->setTimezone($tz)->format('F j, Y')
+                                    : '—';
+
+                                $timeStr = $session->starts_at
+                                    ? $session->starts_at->clone()->setTimezone($tz)->format('g:i A T')
+                                    : '—';
+                            @endphp
+                            <div class="workshop-item">
+                                <div class="workshop-info">
+                                    <h3>{{ $session->mode ?? 'Admin Session' }}</h3>
+                                    <p>{{ $session->notes ?? '' }}</p>
+                                    <div class="workshop-meta">
+                                        <span><i class="fas fa-calendar"></i> {{ $dateStr }}</span>
+                                        <span><i class="fas fa-clock"></i> {{ $timeStr }}</span>
+                                    </div>
+                                </div>
+                                @if (!empty($session->meeting_link))
+                                    <a class="btn-secondary" href="{{ $session->meeting_link }}" target="_blank" rel="noopener">Join</a>
+                                @endif
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
                 <div class="coaching-section" style="display: none;">
                     <h2>Workshop Notes</h2>
                     <div class="notes-container">

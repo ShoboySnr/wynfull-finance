@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\CoachingSession;
+use App\Models\Meeting;
 use App\Services\Schedule\ClientBookingService;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,19 @@ class CoachingController extends Controller
             ->orderByDesc('pivot_assigned_at')
             ->first();
 
+        // --- Admin upcoming meetings for this client ---
+        $adminUpcoming = Meeting::query()
+            ->with(['organizer:id,name,email'])
+            ->where('status', 'scheduled')
+            ->where('starts_at', '>=', now()->utc())
+            ->where(function ($q) use ($client) {
+                $q->whereIn('audience', ['all_clients', 'all'])   // broadcast to clients
+                ->orWhereHas('attendees', fn($a) => $a->where('users.id', $client->id)); // explicitly invited
+            })
+            ->orderBy('starts_at')
+            ->limit(10)
+            ->get();
+
         // Log the view
         activity()
             ->useLog('clients')
@@ -45,6 +59,7 @@ class CoachingController extends Controller
             return view('client.coaching.index', [
                 'coach'        => null,
                 'upcoming'     => collect(),
+                'adminUpcoming'  => $adminUpcoming,
                 'availability' => collect(),
                 'notice'       => 'No active coach assigned yet. Please contact support or wait for an assignment.',
             ]);
@@ -78,6 +93,7 @@ class CoachingController extends Controller
         return view('client.coaching.index', [
             'coach' => $coach,
             'upcoming' => $upcoming,
+            'adminUpcoming' => $adminUpcoming,
             'availability' => $slots,
         ]);
     }
