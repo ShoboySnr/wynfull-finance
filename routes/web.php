@@ -179,9 +179,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('users/{user}', [UserController::class, 'show'])
         ->name('users.show');
 
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
+    Route::put('/users/{user}/password', [UserController::class, 'updatePassword'])->name('users.password.update');
+
     Route::post('/users/{user}/activate', UserActivationController::class)->name('users.activate');
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
 
     Route::get('schedules', [AdminScheduleController::class, 'index'])->name('schedules');
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
@@ -213,5 +215,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/meetings/feed', [MeetingsCalendarController::class, 'feed'])->name('meetings.feed');
     Route::patch('/meetings/{meeting}/reschedule', [MeetingsController::class, 'reschedule'])->name('meetings.reschedule');
     Route::patch('/meetings/{meeting}/cancel', [MeetingsController::class, 'cancel'])->name('meetings.cancel');
+
 
 });

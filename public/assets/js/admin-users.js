@@ -1,48 +1,52 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // --- Helper Functions ---
+    const openModal = (modal) => {
+        if (modal) modal.classList.add('active');
+    };
+
+    const closeModal = (modal) => {
+        if (modal) {
+            modal.classList.remove('active');
+            const form = modal.querySelector('form');
+            if (form) form.reset();
+        }
+    };
 
     // --- Assign Coach Modal Logic ---
     const assignCoachBtn = document.getElementById('assignCoachBtn');
     const assignCoachModal = document.getElementById('assignCoachModal');
-    const closeBtn = document.getElementById('closeAssignCoachModal');
-    const cancelBtn = document.getElementById('cancelAssignCoach');
 
-    if (assignCoachBtn) {
-        assignCoachBtn.addEventListener('click', () => {
-            if (assignCoachModal) assignCoachModal.classList.add('active');
-        });
-    }
+    if (assignCoachBtn && assignCoachModal) {
+        const closeBtn = document.getElementById('closeAssignCoachModal');
+        const cancelBtn = document.getElementById('cancelAssignCoach');
 
-    const closeModal = () => {
-        if (assignCoachModal) assignCoachModal.classList.remove('active');
-    };
+        assignCoachBtn.addEventListener('click', () => openModal(assignCoachModal));
 
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
-    if (assignCoachModal) {
+        if (closeBtn) closeBtn.addEventListener('click', () => closeModal(assignCoachModal));
+        if (cancelBtn) cancelBtn.addEventListener('click', () => closeModal(assignCoachModal));
+
         assignCoachModal.addEventListener('click', (event) => {
             if (event.target === assignCoachModal) {
-                closeModal();
+                closeModal(assignCoachModal);
             }
         });
     }
 
-    // START: New Tab Switching Logic
+    // --- Tab Switching Logic ---
     const tabsContainer = document.querySelector('.profile-tabs');
-    const tabContents = document.querySelectorAll('.profile-tab-content');
-    const tabButtons = document.querySelectorAll('.profile-tab');
-
     if (tabsContainer) {
+        const tabContents = document.querySelectorAll('.profile-tab-content');
+        const tabButtons = document.querySelectorAll('.profile-tab');
+
         tabsContainer.addEventListener('click', (event) => {
             const clickedTab = event.target.closest('.profile-tab');
-            if (!clickedTab) return; // Exit if click wasn't on a tab button
+            if (!clickedTab) return;
 
             const targetTabId = clickedTab.dataset.tab;
 
-            // 1. Deactivate all tabs and content
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // 2. Activate the clicked tab and its content
             clickedTab.classList.add('active');
             const targetContent = document.getElementById(targetTabId);
             if (targetContent) {
@@ -50,42 +54,85 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    // END: New Tab Switching Logic
 
-    // START: Add User Modal Logic
+    // --- Add User Modal Logic ---
     const addUserBtn = document.getElementById('addUserBtn');
     const addUserModal = document.getElementById('addUserModal');
 
     if (addUserBtn && addUserModal) {
-        const closeBtn = addUserModal.querySelector('.modal-close');
-        const cancelBtn = addUserModal.querySelector('.btn-secondary'); // Assuming second button is cancel
-        const form = document.getElementById('addUserForm');
+        const addUserCloseBtn = addUserModal.querySelector('.modal-close');
+        const addUserCancelBtn = document.getElementById('addUserModalCancel');
 
-        const openModal = () => addUserModal.classList.add('active');
-        const closeModal = () => {
-            addUserModal.classList.remove('active');
-            if(form) form.reset(); // Clear form on close
+        addUserBtn.addEventListener('click', () => openModal(addUserModal));
+
+        if(addUserCloseBtn) addUserCloseBtn.addEventListener('click', () => closeModal(addUserModal));
+        if(addUserCancelBtn) addUserCancelBtn.addEventListener('click', () => closeModal(addUserModal));
+
+        addUserModal.addEventListener('click', (event) => {
+            if (event.target === addUserModal) closeModal(addUserModal);
+        });
+
+        // Re-open modal if validation errors occurred FOR ADD USER
+        const errorInput = addUserModal.querySelector('input[name="has_add_errors"]');
+        if (errorInput && errorInput.value === 'true') {
+            openModal(addUserModal);
+        }
+    }
+
+    // --- Change Password Modal Logic ---
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    if (changePasswordModal) {
+        const cpCloseBtn = document.getElementById('changePasswordModalClose');
+        const cpCancelBtn = document.getElementById('changePasswordModalCancel');
+        const cpForm = document.getElementById('changePasswordForm');
+        const cpUserName = document.getElementById('cpUserName');
+        const cpHiddenUserId = document.getElementById('cp_hidden_user_id');
+
+        // Function to setup and open modal
+        const setupAndOpenPasswordModal = (userId, userName, actionUrl) => {
+            if(cpUserName) cpUserName.textContent = userName;
+            if(cpForm) cpForm.action = actionUrl;
+            if(cpHiddenUserId) cpHiddenUserId.value = userId;
+            openModal(changePasswordModal);
         };
 
-        addUserBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
+        // Event Delegation for "Change Password" buttons
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('change-password-btn')) {
+                const userId = event.target.dataset.userId;
+                const userName = event.target.dataset.userName;
+                const actionUrl = event.target.dataset.action;
 
-        // Optional: Close modal if background is clicked
-        addUserModal.addEventListener('click', function(event) {
-            if (event.target === addUserModal) {
-                closeModal();
+                // Close dropdown
+                const dropdown = event.target.closest('.dropdown-menu');
+                if(dropdown) dropdown.classList.remove('show');
+
+                setupAndOpenPasswordModal(userId, userName, actionUrl);
             }
         });
 
-        // Re-open modal if validation errors occurred
-        const errorInput = addUserModal.querySelector('input[name="has_add_errors"]');
-        if (errorInput && errorInput.value === 'true') {
-            openModal();
+        if(cpCloseBtn) cpCloseBtn.addEventListener('click', () => closeModal(changePasswordModal));
+        if(cpCancelBtn) cpCancelBtn.addEventListener('click', () => closeModal(changePasswordModal));
+        changePasswordModal.addEventListener('click', (event) => {
+            if (event.target === changePasswordModal) closeModal(changePasswordModal);
+        });
+
+        // START: Re-open password modal on error
+        // We check if there's a hidden input indicating which user failed
+        const passwordErrorUser = document.getElementById('password_error_user_id');
+        if (passwordErrorUser && passwordErrorUser.value) {
+            const failedUserId = passwordErrorUser.value;
+            // Find the button corresponding to this user to get the data
+            const triggerBtn = document.querySelector(`.change-password-btn[data-user-id="${failedUserId}"]`);
+            if (triggerBtn) {
+                // Simulate a click or call setup directly
+                setupAndOpenPasswordModal(
+                    triggerBtn.dataset.userId,
+                    triggerBtn.dataset.userName,
+                    triggerBtn.dataset.action
+                );
+            }
         }
-
+        // END: Re-open password modal on error
     }
-    // END: Add User Modal Logic
 });
-
-

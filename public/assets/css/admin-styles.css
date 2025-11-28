@@ -280,3 +280,53 @@
     }
 }
 /* END: Manage Modules Page Styles */
+
+/* START: Dropdown Menu Styles */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 50;
+    min-width: 180px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.dropdown-menu.show {
+    display: block;
+    animation: fadeIn 0.1s ease-out;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: inherit;
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-light);
+    color: var(--wynfull-blue);
+}
+
+.dropdown-item.danger {
+    color: var(--error-red);
+    border-top: 1px solid var(--border-light);
+}
+
+.dropdown-item.danger:hover {
+    background-color: #FEF2F2;
+}
+/* END: Dropdown Menu Styles */
