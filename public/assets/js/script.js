@@ -1,7 +1,7 @@
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Check if onboarding has been completed
-    // checkOnboardingStatus();
+    checkOnboardingStatus();
 
     // Initialize download popup functionality
     initializeDownloadPopup();
@@ -928,6 +928,7 @@ function closeWelcomeModal() {
 function completeOnboarding() {
     // Collect all form data
     const formData = collectOnboardingData();
+    alert('hello this');
 
     // Save onboarding completion status to localStorage
     localStorage.setItem('wynfullOnboardingCompleted', 'true');
@@ -1343,19 +1344,19 @@ function initializeTheme() {
 
 function initializeScriptThemeToggle(retryCount = 0) {
     const themeToggle = document.getElementById('themeToggle');
-    
+
     if (themeToggle && !themeToggle.hasAttribute('data-theme-initialized')) {
         // Mark as initialized to prevent duplicate event listeners
         themeToggle.setAttribute('data-theme-initialized', 'true');
-        
+
         themeToggle.addEventListener('click', function(e) {
             e.preventDefault();
             const body = document.body;
             const currentTheme = body.getAttribute('data-theme');
-            
+
             // If data-theme is set to 'dark', switch to light. Otherwise, switch to dark.
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             setTheme(newTheme);
             localStorage.setItem('wynfullTheme', newTheme);
         });

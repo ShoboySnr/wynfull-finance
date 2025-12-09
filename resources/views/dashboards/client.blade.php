@@ -441,6 +441,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('assets/js/script.js') }}"></script>
 <script>
 function closeWelcomeModal() {
     const welcomeModal = document.getElementById('welcomeModal');
@@ -457,7 +458,7 @@ const tooltipData = {
         title: 'Phase Status',
         content: `<strong>Purpose:</strong><br>
         Shows where you are across the four Wynfull phases — Reset & Rewire, Take Control, Grow & Multiply, and Sustain & Scale.<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • The height of each bar reflects where your attention is most needed.<br>
         • Bar heights are determined by your answers to the onboarding questionnaire.<br>
@@ -467,7 +468,7 @@ const tooltipData = {
         &nbsp;&nbsp;- Grow: "Saving regularly and want to invest"<br>
         &nbsp;&nbsp;- Sustain: "Confident and focused on long-term wealth"<br>
         &nbsp;&nbsp;- Other: All bars will appear at equal height.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Focus your next steps and conversations on the phase with the highest bar — that's where your current financial journey is centered.`
     },
@@ -475,11 +476,11 @@ const tooltipData = {
         title: 'Primary Goals',
         content: `<strong>Purpose:</strong><br>
         Displays your main focus areas for this pilot phase of your financial journey.<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • These goals are automatically set based on your onboarding questionnaire.<br>
         • They can be updated anytime in collaboration with your coach.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Use your goals as your North Star — revisit and adjust as you hit milestones or refine your priorities.`
     },
@@ -487,14 +488,14 @@ const tooltipData = {
         title: 'Confidence Score',
         content: `<strong>Purpose:</strong><br>
         Reflects how confident you feel managing your personal finances.<br><br>
-        
+
         <strong>Scale:</strong><br>
         25 (Low) → 100 (High)<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • A lower score indicates financial stress or uncertainty.<br>
         • A higher score represents clarity, control, and progress.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Your confidence grows through habit — track your progress, build consistency, and celebrate small wins.`
     },
@@ -502,14 +503,14 @@ const tooltipData = {
         title: 'Debt Journey',
         content: `<strong>Purpose:</strong><br>
         Tracks your current stage in managing or paying off debt.<br><br>
-        
+
         <strong>Stages:</strong><br>
         Overwhelmed → Managing → Taking Control → Debt-Free<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • The progress bar shows how far you've moved toward full debt control.<br>
         • Your stage is updated based on questionnaire responses and future progress inputs.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Use your Wynfull Debt Tracker and coaching sessions to reflect on progress and strategies. Each milestone moves you closer to financial peace.`
     },
@@ -517,14 +518,14 @@ const tooltipData = {
         title: 'Investing Knowledge',
         content: `<strong>Purpose:</strong><br>
         Shows your current level of understanding and experience with investing.<br><br>
-        
+
         <strong>Levels:</strong><br>
         Beginner (1–2/5) → Intermediate (3–4/5) → Expert (5/5)<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • Based on your questionnaire responses about your investing habits and knowledge.<br>
         • Updated as you complete learning modules or coaching milestones.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Use Wynfull's Resource Library and your coach's guidance to build confidence and move to the next investing tier.`
     },
@@ -532,14 +533,14 @@ const tooltipData = {
         title: 'Emergency Fund',
         content: `<strong>Purpose:</strong><br>
         Displays your current amount saved for unexpected events or emergencies.<br><br>
-        
+
         <strong>Goal Benchmark:</strong><br>
         3–6 months of essential and priority expenses.<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • The number reflects your estimated savings level, based on your responses or updated progress.<br>
         • You'll see this number increase as you grow your buffer fund and update your response.<br><br>
-        
+
         <strong>Action Tip:</strong><br>
         Building an emergency fund is one of the strongest financial defenses — even small, consistent contributions make a big difference over time.`
     },
@@ -547,13 +548,13 @@ const tooltipData = {
         title: 'Investing (Contribution Score)',
         content: `<strong>Purpose:</strong><br>
         Tracks your consistency in contributing to investment or retirement accounts.<br><br>
-        
+
         <strong>Scale:</strong><br>
         Not Started → Just Starting → Consistent<br><br>
-        
+
         <strong>How to Read It:</strong><br>
         • Measures how regularly you contribute, not how much you invest.<br>
         • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>
-        
+
 </script>
 @endpush
