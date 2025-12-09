@@ -554,7 +554,8 @@ const tooltipData = {
 
         <strong>How to Read It:</strong><br>
         • Measures how regularly you contribute, not how much you invest.<br>
-        • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>
-
+        • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>`
+    }
+}
 </script>
 @endpush
