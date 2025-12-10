@@ -1070,11 +1070,11 @@ function updatePrimaryGoalCard(primaryGoal) {
     if (!goalText || !goalProgress) return;
 
     const goalMap = {
-        'pay-off-debt': 'Pay Off Debt',
-        'emergency-fund': 'Build Emergency Fund',
-        'big-purchase': 'Save for Big Purchase',
-        'start-investing': 'Start Investing',
-        'wealth-retirement': 'Build Wealth'
+        'not-confident': 'Not Confident',
+        'somewhat-confident': 'Somewhat Confident',
+        'confident': 'Confident',
+        'very-confident': 'Very Confident',
+        // 'wealth-retirement': 'Build Wealth'
     };
 
     goalText.textContent = goalMap[primaryGoal] || 'Not Set';

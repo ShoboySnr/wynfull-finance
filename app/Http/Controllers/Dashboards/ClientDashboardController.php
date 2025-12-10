@@ -23,8 +23,9 @@ class ClientDashboardController extends Controller
         $user = $request->user();
 
         $label = OnboardingGoals::primaryGoalLabelForUser($request->user()->id);
-        $picked = $label ? [$label] : [];
+        $picked = $label ?: 0;
 
+//        dd($picked);
         $result = $storeConfidenceService->forUser($request->user(), persist: true);
         $journey = $debtJourneyService->forUser($user);
 

@@ -50,10 +50,10 @@ class WealthCardsService
         $savedNumeric = $midMap[$savings] ?? null;
         $savedDisplay = match ($savings) {
             'zero'      => '$0',
-            'under-1k'  => '$500',
-            '1k-5k'     => '$3,000',
-            '5k-20k'    => '$12,500',
-            '20k-plus'  => '$20K+',
+            'under-1k'  => '$1 - $1,000',
+            '1k-5k'     => '$1,000 - $5,000',
+            '5k-20k'    => '$5,000 - $20,000',
+            '20k-plus'  => '$20,000+',
             default     => '—',
         };
 

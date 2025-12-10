@@ -64,27 +64,9 @@
                     </div>
                 </div>
 
-                <div class="primary-goals-card">
-                    <div class="card-header-with-info">
-                        <h2>Primary Goals</h2>
-                        <div class="info-indicator" data-tooltip="primary-goals">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                    </div>
-                    <ul class="goals-list">
-                        @forelse($pickedGoals as $goal)
-                            <li>{{ $goal }}</li>
-                        @empty
-                            <li>No goal selected yet</li>
-                        @endforelse
-                    </ul>
-                </div>
-            </div>
-
-            <div class="dashboard-grid">
                 <div class="metric-card confidence-card">
                     <div class="card-header-with-info">
-                        <h3>Confidence Score</h3>
+                        <h3>Budget Confidence Score</h3>
                         <div class="info-indicator" data-tooltip="confidence-score">
                             <i class="fas fa-info-circle"></i>
                         </div>
@@ -92,6 +74,26 @@
                     <div class="confidence-circle">
                         @php
                             $score = $confidence['score'] ?? 0;
+                            $degree = round($score * 3.6); // 1% = 3.6 degrees
+                        @endphp
+                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">
+                            <span class="confidence-value">{{ $score }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="metric-card confidence-card">
+                    <div class="card-header-with-info">
+                        <h3>Personal Finance Confidence Score</h3>
+                        <div class="info-indicator" data-tooltip="confidence-score">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="confidence-circle">
+                        @php
+                            $score = $pickedGoals;
                             $degree = round($score * 3.6); // 1% = 3.6 degrees
                         @endphp
                         <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">

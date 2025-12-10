@@ -37,19 +37,12 @@
             </div>
 
             <div class="onboarding-step" id="step2">
-                <h2>What's your #1 money goal for the next 12 months?</h2>
+                <h2>How confident are you in creating and managing your personal budget?</h2>
                 <div class="radio-group">
-                    <label><input type="radio" name="primary-goal" value="pay-off-debt"> Pay off or reduce debt</label>
-                    <label><input type="radio" name="primary-goal" value="emergency-fund"> Build an emergency fund</label>
-                    <label><input type="radio" name="primary-goal" value="big-purchase"> Save for a big purchase (home, car, travel)</label>
-                    <label><input type="radio" name="primary-goal" value="start-investing"> Start investing or invest more</label>
-                    <label><input type="radio" name="primary-goal" value="wealth-retirement"> Grow wealth for retirement/financial independence</label>
-                    <label class="other-option">
-                        <div>
-                            <input type="radio" name="primary-goal" value="other"> Other:
-                        </div>
-                        <input type="text" id="primary-goal-other" placeholder="Please specify..." class="other-input">
-                    </label>
+                    <label><input type="radio" name="primary-goal" value="not-confident"> Not Confident</label>
+                    <label><input type="radio" name="primary-goal" value="somewhat-confident"> Somewhat Confident</label>
+                    <label><input type="radio" name="primary-goal" value="confident"> Confident</label>
+                    <label><input type="radio" name="primary-goal" value="very-confident"> Very Confident</label>
                 </div>
             </div>
 

@@ -26,7 +26,7 @@ class ClientOnboardingController extends Controller
             'financial_situation_other' => ['nullable', 'string', 'max:500'],
 
             'primary_goal' => ['required', Rule::in([
-                'pay-off-debt','emergency-fund','big-purchase','start-investing','wealth-retirement','other'
+                'not-confident','somewhat-confident','confident','very-confident'
             ])],
             'primary_goal_other' => ['nullable', 'string', 'max:500'],
 

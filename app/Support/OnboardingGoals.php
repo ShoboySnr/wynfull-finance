@@ -20,12 +20,10 @@ class OnboardingGoals
         $other = trim((string) Arr::get($co->answers, 'primary_goal_other', ''));
 
         return match ($key) {
-            'pay-off-debt'      => 'Pay off or reduce debt',
-            'emergency-fund'    => 'Build an emergency fund',
-            'big-purchase'      => 'Save for a big purchase',
-            'start-investing'   => 'Start investing or invest more',
-            'wealth-retirement' => 'Grow wealth for retirement/financial independence',
-            'other'             => ($other !== '' ? $other : 'Other'),
+            'not-confident'      => '25',
+            'somewhat-confident'      => '50',
+            'confident'      => '75',
+            'very-confident'      => '100',
             default             => null,
         };
     }
