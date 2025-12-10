@@ -176,6 +176,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('users', [UserController::class, 'index'])
         ->name('users');
 
+    Route::post('users', [UserController::class, 'store'])
+        ->name('users.store');
+
     Route::get('users/{user}', [UserController::class, 'show'])
         ->name('users.show');
 

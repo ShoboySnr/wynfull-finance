@@ -100,7 +100,7 @@
             z-index: 2;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none;}
         .brand .logo {
             width: 48px; height: 48px; border-radius: 12px;
             background: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2);
@@ -345,23 +345,26 @@
         }
     </style>
 
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle-guest" id="themeToggle" title="Toggle Dark/Light Mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
     <div class="auth-wrap">
         <div class="auth-grid">
 
             {{-- Left / Brand --}}
             <section class="auth-hero">
                 <div>
-                    <div class="brand">
+                    <a href="/" class="brand">
                         <div class="logo">
-                            <a href="/">
-                                <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
-                            </a>
+                            <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
                         </div>
                         <div>
                             <h1>Wynfull</h1>
                             <small>Finance</small>
                         </div>
-                    </div>
+                    </a>
 
                     <div class="hero-copy">
                         <h2 class="hero-title">Build real financial skills. <br>Sign in to continue your journey.</h2>
@@ -508,5 +511,69 @@
         }
     </script>
 @endsection
+
+@push('styles')
+    <style>
+        /* Theme Toggle Button for Login Page */
+        .theme-toggle-guest {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+        }
+
+        .theme-toggle-guest:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] .theme-toggle-guest {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle-guest {
+                top: 1rem;
+                right: 1rem;
+                width: 44px;
+                height: 44px;
+                padding: 0.65rem;
+            }
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        // Theme initialization for login page
+        (function() {
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const systemTheme = systemPrefersDark ? 'dark' : 'light';
+            const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
+            
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+@endpush
 
 

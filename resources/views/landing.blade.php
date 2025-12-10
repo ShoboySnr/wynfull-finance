@@ -31,6 +31,9 @@
             </div>
             <div class="nav-cta-container">
                 <a href="#contact" class="nav-cta">Join the Community</a>
+                @guest
+                    <a href="{{ route('login') }}" class="nav-cta dashboard-nav-btn">Login</a>
+                @endguest
                 @auth
                     @if(auth()->user()->hasRole('client'))
                         <a href="{{ route('dashboard.client') }}" class="nav-cta dashboard-nav-btn">Go to Dashboard</a>

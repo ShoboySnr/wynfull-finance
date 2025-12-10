@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\NewUserPendingActivation;
+use App\Notifications\YourAccountActivatedNotification;
 use App\Services\Admin\UserAdminService;
 use App\Services\Admin\ViewUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Activitylog\Models\Activity;
 
@@ -42,6 +45,91 @@ class UserController extends Controller
             'totalCoaches'  => $stats['totalCoaches'],
             'users'         => $users,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|in:client,coach,admin',
+            'is_active' => 'nullable|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput([
+                'form_type' => 'add_user'
+            ]);
+        }
+
+        $user = DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_active' => $request->boolean('is_active', false),
+                'activated_at' => $request->boolean('is_active') ? now() : null,
+                'activated_by_id' => $request->boolean('is_active') ? $request->user()->id : null,
+                'email_verified_at' => now(), // Auto-verify admin-created users
+            ]);
+
+            // Assign role
+            $user->assignRole($request->role);
+
+            // Create profile based on role
+            if ($request->role === 'client') {
+                $user->clientProfile()->create([]);
+            } elseif ($request->role === 'coach') {
+                $user->coachProfile()->create([]);
+            }
+
+            // Log activity
+            activity()
+                ->performedOn($user)
+                ->causedBy($request->user())
+                ->withProperties([
+                    'user_name' => $user->name,
+                    'user_email' => $user->email,
+                    'user_role' => $request->role,
+                    'is_active' => $user->is_active,
+                ])
+                ->log('user_created');
+
+            return $user;
+        });
+
+        // Send appropriate notification based on activation status
+        if ($user->is_active) {
+            // User is activated - send activation email with password reset link
+            $token = Password::createToken($user);
+            $resetUrl = route('password.reset', [
+                'token' => $token,
+                'email' => $user->email,
+            ]);
+
+            $user->notify(new YourAccountActivatedNotification($resetUrl));
+
+            activity()->causedBy($request->user())
+                ->performedOn($user)
+                ->withProperties(['notification' => 'YourAccountActivatedNotification'])
+                ->log('notification_dispatched');
+
+            $message = 'User created and activated successfully! Activation email sent.';
+        } else {
+            // User is pending activation - send pending activation email
+            $user->notify(new NewUserPendingActivation($user));
+
+            activity()->causedBy($request->user())
+                ->performedOn($user)
+                ->withProperties(['notification' => 'NewUserPendingActivation'])
+                ->log('notification_dispatched');
+
+            $message = 'User created successfully! Pending activation email sent.';
+        }
+
+        return redirect()->route('admin.users')
+            ->with('success', $message);
     }
 
     public function show(User $user, Request $request)

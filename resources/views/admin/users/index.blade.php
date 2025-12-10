@@ -184,7 +184,7 @@
                 <button class="modal-close" id="addUserModalClose">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="{{-- route('admin.users.store') --}}" method="POST" id="addUserForm">
+                <form action="{{ route('admin.users.store') }}" method="POST" id="addUserForm">
                     @csrf
                     {{-- Identification for error handling --}}
                     <input type="hidden" name="form_type" value="add_user">

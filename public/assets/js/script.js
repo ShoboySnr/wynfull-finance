@@ -928,7 +928,6 @@ function closeWelcomeModal() {
 function completeOnboarding() {
     // Collect all form data
     const formData = collectOnboardingData();
-    alert('hello this');
 
     // Save onboarding completion status to localStorage
     localStorage.setItem('wynfullOnboardingCompleted', 'true');
