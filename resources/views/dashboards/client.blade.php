@@ -185,67 +185,67 @@
                 </div>
             </div>
 
-            <div class="dashboard-sections two-columns">
-                <div class="ai-insights">
-                    <h2>AI Insights</h2>
-                    <div class="insight-card">
-                        <i class="fas fa-lightbulb"></i>
-                        <p>Based on your spending patterns, you could save an additional $200/month by optimizing your
-                            subscription services.</p>
-                    </div>
-                </div>
+{{--            <div class="dashboard-sections two-columns">--}}
+{{--                <div class="ai-insights">--}}
+{{--                    <h2>AI Insights</h2>--}}
+{{--                    <div class="insight-card">--}}
+{{--                        <i class="fas fa-lightbulb"></i>--}}
+{{--                        <p>Based on your spending patterns, you could save an additional $200/month by optimizing your--}}
+{{--                            subscription services.</p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
-                <div class="recent-activity">
-                    <h2>Recent Activity</h2>
-                    <div class="activity-list">
-                        @forelse($activities as $a)
-                            @php
-                                $event = (string) ($a->event ?? '');
-                                $desc  = trim((string) ($a->description ?? ''));
-                                $props = $a->properties ?? collect();
+{{--                <div class="recent-activity">--}}
+{{--                    <h2>Recent Activity</h2>--}}
+{{--                    <div class="activity-list">--}}
+{{--                        @forelse($activities as $a)--}}
+{{--                            @php--}}
+{{--                                $event = (string) ($a->event ?? '');--}}
+{{--                                $desc  = trim((string) ($a->description ?? ''));--}}
+{{--                                $props = $a->properties ?? collect();--}}
 
-                                // Friendly text fallback
-                                $text = $desc !== '' ? $desc : ($event !== '' ? ucfirst(str_replace(['.', '-', '_'], ' ', $event)) : ucfirst($a->log_name ?? 'activity'));
+{{--                                // Friendly text fallback--}}
+{{--                                $text = $desc !== '' ? $desc : ($event !== '' ? ucfirst(str_replace(['.', '-', '_'], ' ', $event)) : ucfirst($a->log_name ?? 'activity'));--}}
 
-                                // Optional richer messages based on common events you log
-                                if ($event === 'clients.card.emergency_fund.view' && isset($props['progress'])) {
-                                    // e.g., "Emergency fund progress: 35%"
-                                    $text = 'Emergency fund progress: ' . (int)$props['progress'] . '%';
-                                } elseif ($event === 'clients.card.investing.view' && isset($props['score'])) {
-                                    // e.g., "Investing contribution score: 72"
-                                    $text = 'Investing contribution score: ' . (int)$props['score'];
-                                } elseif ($event === 'onboarding_completed') {
-                                    $text = 'Completed onboarding';
-                                } elseif (str_contains($event, 'logout')) {
-                                    $text = 'Signed out';
-                                }
+{{--                                // Optional richer messages based on common events you log--}}
+{{--                                if ($event === 'clients.card.emergency_fund.view' && isset($props['progress'])) {--}}
+{{--                                    // e.g., "Emergency fund progress: 35%"--}}
+{{--                                    $text = 'Emergency fund progress: ' . (int)$props['progress'] . '%';--}}
+{{--                                } elseif ($event === 'clients.card.investing.view' && isset($props['score'])) {--}}
+{{--                                    // e.g., "Investing contribution score: 72"--}}
+{{--                                    $text = 'Investing contribution score: ' . (int)$props['score'];--}}
+{{--                                } elseif ($event === 'onboarding_completed') {--}}
+{{--                                    $text = 'Completed onboarding';--}}
+{{--                                } elseif (str_contains($event, 'logout')) {--}}
+{{--                                    $text = 'Signed out';--}}
+{{--                                }--}}
 
-                                // Icon map
-                                $icon = match (true) {
-                                    str_contains($event, 'emergency_fund') => 'fas fa-piggy-bank',
-                                    str_contains($event, 'invest')         => 'fas fa-chart-line',
-                                    str_contains($event, 'primary_goals')  => 'fas fa-bullseye',
-                                    str_contains($event, 'onboarding')     => 'fas fa-check-circle',
-                                    str_contains($event, 'login')          => 'fas fa-sign-in-alt',
-                                    str_contains($event, 'logout')         => 'fas fa-sign-out-alt',
-                                    default                                => 'fas fa-clipboard-list',
-                                };
-                            @endphp
-                            <div class="activity-item">
-                                <i class="{{ $icon }}"></i>
-                                <span>{{ $text }}</span>
-                                <time>{{ $a->created_at?->timezone(config('app.timezone'))->diffForHumans() }}</time>
-                            </div>
-                        @empty
-                            <div class="activity-item">
-                                <i class="fas fa-clipboard-list"></i>
-                                <span>No recent activity yet</span>
-                                <time>—</time>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
+{{--                                // Icon map--}}
+{{--                                $icon = match (true) {--}}
+{{--                                    str_contains($event, 'emergency_fund') => 'fas fa-piggy-bank',--}}
+{{--                                    str_contains($event, 'invest')         => 'fas fa-chart-line',--}}
+{{--                                    str_contains($event, 'primary_goals')  => 'fas fa-bullseye',--}}
+{{--                                    str_contains($event, 'onboarding')     => 'fas fa-check-circle',--}}
+{{--                                    str_contains($event, 'login')          => 'fas fa-sign-in-alt',--}}
+{{--                                    str_contains($event, 'logout')         => 'fas fa-sign-out-alt',--}}
+{{--                                    default                                => 'fas fa-clipboard-list',--}}
+{{--                                };--}}
+{{--                            @endphp--}}
+{{--                            <div class="activity-item">--}}
+{{--                                <i class="{{ $icon }}"></i>--}}
+{{--                                <span>{{ $text }}</span>--}}
+{{--                                <time>{{ $a->created_at?->timezone(config('app.timezone'))->diffForHumans() }}</time>--}}
+{{--                            </div>--}}
+{{--                        @empty--}}
+{{--                            <div class="activity-item">--}}
+{{--                                <i class="fas fa-clipboard-list"></i>--}}
+{{--                                <span>No recent activity yet</span>--}}
+{{--                                <time>—</time>--}}
+{{--                            </div>--}}
+{{--                        @endforelse--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
         </div>
     </div>
