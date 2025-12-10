@@ -6,6 +6,7 @@ use App\Models\ClientProfile;
 use App\Models\CoachProfile;
 use App\Models\User;
 use App\Notifications\NewUserPendingActivation;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,19 +18,19 @@ class RegistrationService
     public function registerClient(array $data): User
     {
         return DB::transaction(function () use ($data) {
-            $randomPassword = Str::random(20);
-
             $user = User::create([
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'password' => Hash::make($randomPassword),
-                'is_active'=> false, // pending admin activation
+                'password' => Hash::make($data['password']),
+                'is_active'=> true, // auto-activate on registration
+                'activated_at' => now(),
+                'email_verified_at' => now(), // auto-verify email
             ]);
             $user->assignRole('client');
 
             ClientProfile::create([
                 'user_id'    => $user->id,
-                'goal'       => $data['goal'],
+                'goal'       => $data['goal'] ?? null,
                 'other_goal' => $data['other-goal'] ?? null,
                 'community'  => $data['community'] ?? null,
                 'notes'      => $data['notes'] ?? null,
@@ -39,16 +40,16 @@ class RegistrationService
                 ->performedOn($user)->causedBy($user)
                 ->withProperties([
                     'type'   => 'client',
-                    'goal'   => $data['goal'],
-                    'status' => 'pending_activation'
+                    'goal'   => $data['goal'] ?? null,
+                    'status' => 'active'
                 ])->log('client_registered');
 
-
-             Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
+            // Send welcome email
+            $user->notify(new WelcomeNotification($user));
 
             activity()->causedBy($user)
                 ->performedOn($user)
-                ->withProperties(['notification' => 'NewUserPendingActivation'])
+                ->withProperties(['notification' => 'WelcomeNotification'])
                 ->log('notification_dispatched');
 
             return $user;
@@ -58,20 +59,20 @@ class RegistrationService
     public function registerCoach(array $data): User
     {
         return DB::transaction(function () use ($data) {
-            $randomPassword = \Illuminate\Support\Str::random(20);
-
             $user = User::create([
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'password' => Hash::make($randomPassword),
-                'is_active'=> false,
+                'password' => Hash::make($data['password']),
+                'is_active'=> true, // auto-activate on registration
+                'activated_at' => now(),
+                'email_verified_at' => now(), // auto-verify email
             ]);
 
             $user->assignRole('coach');
 
             CoachProfile::create([
                 'user_id'     => $user->id,
-                'experience'  => $data['experience'],
+                'experience'  => $data['experience'] ?? null,
                 'specialties' => $data['specialties'] ?? [],
                 'linkedin'    => $data['linkedin'] ?? null,
                 'website'     => $data['website'] ?? null,
@@ -81,15 +82,16 @@ class RegistrationService
                 ->performedOn($user)->causedBy($user)
                 ->withProperties([
                     'type'       => 'coach',
-                    'experience' => $data['experience'],
-                    'status'     => 'pending_activation'
+                    'experience' => $data['experience'] ?? null,
+                    'status'     => 'active'
                 ])->log('coach_registered');
 
-            Notification::send(User::role('admin')->get(), new NewUserPendingActivation($user));
+            // Send welcome email
+            $user->notify(new WelcomeNotification($user));
 
             activity()->causedBy($user)
                 ->performedOn($user)
-                ->withProperties(['notification' => 'NewUserPendingActivation'])
+                ->withProperties(['notification' => 'WelcomeNotification'])
                 ->log('notification_dispatched');
 
             return $user;

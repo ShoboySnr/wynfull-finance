@@ -67,6 +67,15 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+// Registration routes
+Route::get('/register/client', function () {
+    return view('auth.register-client');
+})->name('register.client.form');
+
+Route::get('/register/coach', function () {
+    return view('auth.register-coach');
+})->name('register.coach.form');
+
 Route::post('/register/client', [RegisterController::class,'registerClient'])->name('register.client');
 Route::post('/register/coach',  [RegisterController::class,'registerCoach'])->name('register.coach');
 

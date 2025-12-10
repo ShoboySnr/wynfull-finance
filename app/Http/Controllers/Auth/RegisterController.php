@@ -20,13 +20,21 @@ class RegisterController extends Controller
     {
         $user = $this->service->registerClient($request->validated());
 
-        return redirect()->route('auth.login')->with('status', 'Registration successful, awaiting admin approval');
+        // Log the user in
+        Auth::login($user);
+
+        // Redirect to client dashboard
+        return redirect()->route('dashboard.client')->with('success', 'Welcome to Wynfull Finance! Your account has been created successfully.');
     }
 
     public function registerCoach(RegisterCoachRequest $request): RedirectResponse
     {
         $user = $this->service->registerCoach($request->validated());
 
-        return redirect()->route('auth.login')->with('status', 'Registration successful, awaiting admin approval');
+        // Log the user in
+        Auth::login($user);
+
+        // Redirect to coach dashboard
+        return redirect()->route('coach.dashboard')->with('success', 'Welcome to Wynfull Finance! Your coach account has been created successfully.');
     }
 }
