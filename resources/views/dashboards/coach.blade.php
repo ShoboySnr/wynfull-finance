@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Coach Dashboard')
+@section('title', 'Trainer Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-subtitle', 'Manage your clients and coaching sessions')
-@section('breadcrumb', 'Coach Dashboard')
+@section('page-subtitle', 'Manage your clients and training sessions')
+@section('breadcrumb', 'Trainer Dashboard')
 
 @section('content')
         <!-- Coach Dashboard Page -->
@@ -130,7 +130,7 @@
                         <div class="quick-action-card">
                             <i class="fas fa-calendar-plus"></i>
                             <h3>Schedule Session</h3>
-                            <p>Book a new coaching session</p>
+                            <p>Book a new training session</p>
                             <a href="{{ route('coach.schedule') }}" class="btn-secondary">Schedule</a>
                         </div>
                     </div>

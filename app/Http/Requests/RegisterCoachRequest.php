@@ -11,12 +11,13 @@ class RegisterCoachRequest extends FormRequest
         return [
             'name'        => ['required','string','max:255'],
             'email'       => ['required','email','max:255','unique:users,email'],
-            'experience'  => ['required','in:1-3,3-5,5+'],
-            'specialties' => ['array'],
+            'password'    => ['required','string','min:8','confirmed'],
+            'experience'  => ['nullable','in:1-3,3-5,5+'],
+            'specialties' => ['nullable','array'],
             'specialties.*' => ['string','max:255'],
             'linkedin'    => ['nullable','url','max:255'],
             'website'     => ['nullable','url','max:255'],
-            'accept'      => ['accepted'],
+            'accept'      => ['nullable','boolean'],
         ];
     }
 
@@ -24,7 +25,6 @@ class RegisterCoachRequest extends FormRequest
     {
         $this->merge([
             'specialties' => (array) $this->input('specialties', []),
-            'accept' => $this->boolean('accept'),
         ]);
     }
     public function authorize(): bool

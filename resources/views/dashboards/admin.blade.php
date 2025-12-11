@@ -21,7 +21,7 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-content">
-                        <h3>Coaches</h3>
+                        <h3>Trainers</h3>
                         <p class="stat-value">{{ $totals['coaches'] }}</p>
                     </div>
                 </div>

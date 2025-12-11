@@ -34,7 +34,7 @@
         <li class="nav-item {{ request()->routeIs('coaching.client') ? 'active' : '' }}">
             <a href="{{ route('coaching.client') }}" class="nav-link" data-page="coaching">
                 <i class="fas fa-user-tie"></i>
-                <span>Coaching</span>
+                <span>Training</span>
             </a>
         </li>
         <li class="nav-item {{ request()->routeIs('messages.client') ? 'active' : '' }}">

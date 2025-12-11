@@ -11,17 +11,13 @@ class RegisterClientRequest extends FormRequest
         return [
             'name'       => ['required','string','max:255'],
             'email'      => ['required','email','max:255','unique:users,email'],
-            'goal'       => ['required','string','max:255'],
+            'password'   => ['required','string','min:8','confirmed'],
+            'goal'       => ['nullable','string','max:255'],
             'other-goal' => ['nullable','string','max:255'],
             'community'  => ['nullable','string','max:255'],
             'notes'      => ['nullable','string','max:5000'],
-            'accept'     => ['accepted'],
+            'accept'     => ['nullable','boolean'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge(['accept' => $this->boolean('accept')]);
     }
     public function authorize(): bool
     {

@@ -481,7 +481,7 @@ const tooltipData = {
 
         <strong>How to Read It:</strong><br>
         • These goals are automatically set based on your onboarding questionnaire.<br>
-        • They can be updated anytime in collaboration with your coach.<br><br>
+        • They can be updated anytime in collaboration with your trainer.<br><br>
 
         <strong>Action Tip:</strong><br>
         Use your goals as your North Star — revisit and adjust as you hit milestones or refine your priorities.`
@@ -514,7 +514,7 @@ const tooltipData = {
         • Your stage is updated based on questionnaire responses and future progress inputs.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Use your Wynfull Debt Tracker and coaching sessions to reflect on progress and strategies. Each milestone moves you closer to financial peace.`
+        Use your Wynfull Debt Tracker and training sessions to reflect on progress and strategies. Each milestone moves you closer to financial peace.`
     },
     'investing-knowledge': {
         title: 'Investing Knowledge',
@@ -526,10 +526,10 @@ const tooltipData = {
 
         <strong>How to Read It:</strong><br>
         • Based on your questionnaire responses about your investing habits and knowledge.<br>
-        • Updated as you complete learning modules or coaching milestones.<br><br>
+        • Updated as you complete learning modules or training milestones.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Use Wynfull's Resource Library and your coach's guidance to build confidence and move to the next investing tier.`
+        Use Wynfull's Resource Library and your trainer's guidance to build confidence and move to the next investing tier.`
     },
     'emergency-fund': {
         title: 'Emergency Fund',
@@ -556,7 +556,7 @@ const tooltipData = {
 
         <strong>How to Read It:</strong><br>
         • Measures how regularly you contribute, not how much you invest.<br>
-        • Based on your onboarding questionnaire and updates made through your coach or the dashboard.<br><br>`
+        • Based on your onboarding questionnaire and updates made through your trainer or the dashboard.<br><br>`
     }
 }
 </script>

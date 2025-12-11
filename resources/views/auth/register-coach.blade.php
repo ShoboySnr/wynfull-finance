@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 
-@section('title', 'Sign Up as Coach — Wynfull Finance')
+@section('title', 'Sign Up as Trainer — Wynfull Finance')
 
 @section('content')
     <style>
@@ -304,7 +304,7 @@
                     <div class="hero-copy">
                         <h2 class="hero-title">Empower others to achieve financial wellness</h2>
                         <p class="hero-sub">
-                            Join our community of expert coaches helping clients build better financial futures through personalized guidance.
+                            Join our community of expert trainers helping clients build better financial futures through personalized guidance.
                         </p>
 
                         <div class="hero-cards">
@@ -314,7 +314,7 @@
                             </div>
                             <div class="h-card">
                                 <div class="h-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg></div>
-                                <div class="h-text"><h4>Coach Support</h4><p>Accountability and guidance.</p></div>
+                                <div class="h-text"><h4>Trainer Support</h4><p>Accountability and guidance.</p></div>
                             </div>
                         </div>
                     </div>
@@ -332,7 +332,7 @@
                         <div class="logo">
                             <img src="{{ asset('assets/img/wynfull-logo.png') }}" alt="Wynfull Finance Logo">
                         </div>
-                        <h2>Welcome, Let's Onboard You.</h2>
+                        <h2>Create Trainer Account</h2>
                         <p>Help clients achieve their financial goals</p>
                     </div>
 
@@ -406,12 +406,6 @@
 
                     <div class="card-footer">
                         Already have an account? <a href="{{ route('login') }}">Sign in</a>
-                    </div>
-
-                    <div class="divider">or</div>
-
-                    <div class="card-footer">
-                        Are you a client? <a href="{{ route('register.client.form') }}">Sign up as a client</a>
                     </div>
                 </div>
             </section>

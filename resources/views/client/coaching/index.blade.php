@@ -8,8 +8,8 @@
     <div class="" id="coaching">
         <div class="page-content">
             <div class="page-header">
-                <h1>Coach Access & Workshops</h1>
-                <p>Connect with certified coaches for personalized guidance and support</p>
+                <h1>Trainer Access & Workshops</h1>
+                <p>Connect with certified trainers for personalized guidance and support</p>
             </div>
 
             <div class="coaching-sections">
@@ -24,7 +24,7 @@
                                     <p>{{ $coach->profile->bio }}</p>
                                 </div>
                             @else
-                                <p>You are not currently assigned to a coach.</p>
+                                <p>You are not currently assigned to a trainer.</p>
                             @endif
                         </div>
                         @if($coach)
@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="coaching-section">
-                    <h2>1:1 Coaching Sessions</h2>
+                    <h2>1:1 Training Sessions</h2>
                     <div class="workshop-list">
                         @foreach($upcoming as $session)
                             @php
@@ -119,7 +119,7 @@
     <div class="modal-overlay" id="bookSessionModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Book a Session with {{ $coach->name ?? 'your coach' }}</h2>
+                <h2>Book a Session with {{ $coach->name ?? 'your trainer' }}</h2>
                 <button class="modal-close" id="bookSessionModalClose">&times;</button>
             </div>
             <div class="modal-body">
@@ -145,7 +145,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="session_notes">3. Notes for your coach (Optional)</label>
+                            <label for="session_notes">3. Notes for your trainer (Optional)</label>
                             <textarea id="session_notes" name="notes" class="form-textarea" rows="3" placeholder="What would you like to discuss?"></textarea>
                         </div>
 

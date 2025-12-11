@@ -175,8 +175,8 @@
                 </div>
                 <div class="step-card">
                     <div class="step-icon"><i class="fas fa-users"></i></div>
-                    <h3>AI + Real Coaching</h3>
-                    <p>Get support from Wynfull AI co-researcher plus real coaches for accountability and personalized guidance.</p>
+                    <h3>AI + Real Training</h3>
+                    <p>Get support from Wynfull AI co-researcher plus real trainers for accountability and personalized guidance.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-icon"><i class="fas fa-chart-line"></i></div>
@@ -237,8 +237,8 @@
                 </div>
                 <div class="difference-card">
                     <div class="difference-icon"><i class="fas fa-user-friends"></i></div>
-                    <h3>Personalized Coaching</h3>
-                    <p>Coaches guide you through your unique journey.</p>
+                    <h3>Personalized Training</h3>
+                    <p>Trainers guide you through your unique journey.</p>
                 </div>
                 <div class="difference-card">
                     <div class="difference-icon"><i class="fas fa-brain"></i></div>
@@ -249,7 +249,7 @@
 
             <div class="why-different-cta">
                 <p class="why-different-description">
-                    We're redefining financial coaching with clarity, self-action,<br>
+                    We're redefining financial training with clarity, self-action,<br>
                     and real results - so you can build confidence, take control,<br>
                     and grow your wealth step by step.
                 </p>
@@ -270,7 +270,7 @@
                         <img src="{{ asset('assets/img/join-the-community-1.jpeg') }}" alt="Diverse community working together on financial goals" class="signup-lifestyle-image">
                     </div>
                     <div class="signup-image-right">
-                        <img src="{{ asset('assets/img/join-the-community-2.jpeg') }}" alt="Financial coaching and mentorship session" class="signup-lifestyle-image">
+                        <img src="{{ asset('assets/img/join-the-community-2.jpeg') }}" alt="Financial training and mentorship session" class="signup-lifestyle-image">
                     </div>
                 </div>
             </div>
@@ -278,7 +278,7 @@
             <div class="signup-container">
                 <div class="signup-tabs">
                     <button class="signup-tab active" data-form="client">For Clients</button>
-                    <button class="signup-tab" data-form="coach">For Coaches</button>
+                    <button class="signup-tab" data-form="coach">For Trainers</button>
                 </div>
 
                 {{-- CLIENT FORM --}}
@@ -355,8 +355,8 @@
                 {{-- COACH FORM --}}
                 <div class="form-container" id="coach-form">
                     <div class="form-header">
-                        <h3>Join Our Coach Network</h3>
-                        <p>Help build financial warriors and grow your coaching practice with Wynfull's platform.</p>
+                        <h3>Join Our Trainer Network</h3>
+                        <p>Help build financial warriors and grow your training practice with Wynfull's platform.</p>
                     </div>
 
                     <form class="signup-form" name="coach-signup" method="POST" action="{{ route('register.coach') }}">
@@ -393,22 +393,22 @@
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="specialties[]" value="financial-coaching" {{ $spec->contains('financial-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
-                                    Financial Coaching
+                                    Financial Training
                                 </label>
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="specialties[]" value="life-coaching" {{ $spec->contains('life-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
-                                    Life Coaching
+                                    Life Training
                                 </label>
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="specialties[]" value="accountability-coaching" {{ $spec->contains('accountability-coaching') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
-                                    Accountability Coaching
+                                    Accountability Training
                                 </label>
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="specialties[]" value="mindset-motivation" {{ $spec->contains('mindset-motivation') ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
-                                    Mindset & Motivation Coaching
+                                    Mindset & Motivation Training
                                 </label>
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="specialties[]" value="other" id="specialty-other" {{ $spec->contains('other') ? 'checked' : '' }}>
