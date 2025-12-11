@@ -24,7 +24,7 @@
 .sidebar-header {
     padding: 1.5rem;
     border-bottom: 1px solid var(--border-light);
-    background: #fff;
+    background: var(--background-light);
 }
 
 .back-btn {
@@ -59,12 +59,12 @@
 }
 
 .module-nav-item:hover {
-    background: #fff;
+    background: var(--wynfull-blue-dark);
     color: var(--text-primary);
 }
 
 .module-nav-item.active {
-    background: #F0F9FF; /* Light blue */
+    background: var(--background-light); /* Light blue */
     border-left: 4px solid var(--wynfull-blue);
     color: var(--text-primary);
 }
@@ -95,8 +95,16 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: #fff;
+    background: var(--background-light);
     overflow-y: auto;
+}
+
+.progress-container {
+    position: relative;
+}
+
+.progress-text {
+    margin-top: 5px;
 }
 
 .content-header {
@@ -111,7 +119,7 @@
 
 .content-viewer {
     flex: 1;
-    background: #F8F9FA; /* Darker/different bg for contrast */
+    background: var(--background-light);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,7 +162,7 @@
 .content-footer {
     padding: 1.5rem 3rem;
     border-top: 1px solid var(--border-light);
-    background: #fff;
+    background: var(--background-light);
 }
 
 .nav-buttons {
