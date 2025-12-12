@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme on page load
     initializeTheme();
-    
+
     // Initialize other common functionality
     initializeUserDropdowns();
     initializeNotifications();
@@ -18,11 +18,11 @@ function initializeTheme() {
     // Get system preference
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const systemTheme = systemPrefersDark ? 'dark' : 'light';
-    
+
     // Load saved theme or use system preference as default
     const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
     setTheme(savedTheme);
-    
+
     // Listen for system theme changes (optional - updates when user changes system preference)
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', function(e) {
@@ -32,26 +32,26 @@ function initializeTheme() {
             setTheme(newSystemTheme);
         }
     });
-    
+
     // Initialize theme toggle with retry mechanism
     initializeThemeToggle();
 }
 
 function initializeThemeToggle(retryCount = 0) {
     const themeToggle = document.getElementById('themeToggle');
-    
+
     if (themeToggle && !themeToggle.hasAttribute('data-theme-initialized')) {
         // Mark as initialized to prevent duplicate event listeners
         themeToggle.setAttribute('data-theme-initialized', 'true');
-        
+
         themeToggle.addEventListener('click', function(e) {
             e.preventDefault();
             const body = document.body;
             const currentTheme = body.getAttribute('data-theme');
-            
+
             // If data-theme is set to 'dark', switch to light. Otherwise, switch to dark.
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             setTheme(newTheme);
             localStorage.setItem('wynfullTheme', newTheme);
         });
@@ -66,7 +66,7 @@ function setTheme(theme) {
     const documentElement = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
     const icon = themeToggle?.querySelector('i');
-    
+
     if (theme === 'dark') {
         // Set theme on both elements to match inline script behavior
         documentElement.setAttribute('data-theme', 'dark');
@@ -88,19 +88,19 @@ function setTheme(theme) {
 function initializeUserDropdowns() {
     const userDropdownToggle = document.getElementById('userDropdownToggle');
     const userDropdown = document.getElementById('userDropdown');
-    
+
     if (userDropdownToggle && userDropdown) {
         userDropdownToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             userDropdown.classList.toggle('show');
         });
-        
+
         // Prevent dropdown from closing when clicking inside it
         userDropdown.addEventListener('click', function(e) {
             e.stopPropagation();
         });
-        
+
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             if (!userDropdownToggle.contains(e.target) && !userDropdown.contains(e.target)) {
@@ -117,13 +117,13 @@ function initializeNotifications() {
     const closeNotifications = document.getElementById('closeNotifications');
     const markAllReadBtn = document.getElementById('markAllReadBtn');
     const notificationList = document.getElementById('notificationList');
-    
-    
+
+
     if (notificationBtn && notificationPanel) {
         // Load initial notifications and count
         loadNotifications();
         updateNotificationCount();
-        
+
         // Set up periodic updates (every 30 seconds)
         setInterval(() => {
             updateNotificationCount();
@@ -146,7 +146,7 @@ function initializeNotifications() {
             });
         }
     }
-    
+
     // Close notification panel when clicking outside
     document.addEventListener('click', function(e) {
         if (notificationPanel && !notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
@@ -242,12 +242,12 @@ function renderNotifications(notifications) {
             const notificationId = this.dataset.id;
             const notificationType = this.dataset.type;
             const assignmentId = this.dataset.assignmentId;
-            
+
             // Mark as read if unread
             if (this.classList.contains('unread')) {
                 markNotificationAsRead(notificationId, this);
             }
-            
+
             // Handle different notification types
             if (notificationType === 'message' && assignmentId) {
                 // Redirect to messaging page based on user role
@@ -277,12 +277,12 @@ function getNotificationIcon(type) {
 function getTimeAgo(date) {
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-    
+
     if (diffInSeconds < 60) return 'Just now';
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    
+
     return date.toLocaleDateString();
 }
 
@@ -376,7 +376,7 @@ function showNotificationError(message) {
 function initializeLogoutConfirmation() {
     // Handle all logout forms (both sidebar and dropdown)
     const logoutForms = document.querySelectorAll('form[action*="logout"]');
-    
+
     logoutForms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -405,22 +405,22 @@ function showLogoutModal(form) {
             </div>
         </div>
     `;
-    
+
     // Add modal to page
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     const modal = document.getElementById('logoutModalOverlay');
     const cancelBtn = document.getElementById('cancelLogout');
     const confirmBtn = document.getElementById('confirmLogout');
-    
+
     // Show modal
     modal.style.display = 'flex';
-    
+
     // Handle cancel
     cancelBtn.addEventListener('click', function() {
         closeLogoutModal();
     });
-    
+
     // Handle confirm
     confirmBtn.addEventListener('click', function() {
         closeLogoutModal();
@@ -431,14 +431,14 @@ function showLogoutModal(form) {
         }
         form.submit(); // Actually submit the logout form
     });
-    
+
     // Handle click outside modal
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             closeLogoutModal();
         }
     });
-    
+
     // Handle escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -470,23 +470,23 @@ window.toggleTheme = function() {
 function initializeMobileMenu() {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const sidebar = document.querySelector('.sidebar');
-    
+
     if (mobileMenuToggle && sidebar) {
         // Remove any existing event listeners
         mobileMenuToggle.removeEventListener('click', toggleMobileMenu);
-        
+
         // Add click event listener
         mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        
+
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
-            if (sidebar.classList.contains('mobile-active') && 
-                !sidebar.contains(event.target) && 
+            if (sidebar.classList.contains('mobile-active') &&
+                !sidebar.contains(event.target) &&
                 !mobileMenuToggle.contains(event.target)) {
                 closeMobileMenu();
             }
         });
-        
+
         // Close mobile menu when window is resized to desktop size
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
@@ -499,7 +499,7 @@ function initializeMobileMenu() {
 function toggleMobileMenu() {
     const sidebar = document.querySelector('.sidebar');
     const body = document.body;
-    
+
     if (sidebar) {
         if (sidebar.classList.contains('mobile-active')) {
             closeMobileMenu();
@@ -514,11 +514,11 @@ function openMobileMenu() {
     const body = document.body;
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const toggleIcon = mobileMenuToggle ? mobileMenuToggle.querySelector('i') : null;
-    
+
     if (sidebar) {
         sidebar.classList.add('mobile-active');
         body.style.overflow = 'hidden'; // Prevent background scrolling
-        
+
         // Change hamburger to X icon
         if (mobileMenuToggle) {
             mobileMenuToggle.classList.add('active');
@@ -534,11 +534,11 @@ function closeMobileMenu() {
     const body = document.body;
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const toggleIcon = mobileMenuToggle ? mobileMenuToggle.querySelector('i') : null;
-    
+
     if (sidebar) {
         sidebar.classList.remove('mobile-active');
         body.style.overflow = ''; // Restore scrolling
-        
+
         // Change X back to hamburger icon
         if (mobileMenuToggle) {
             mobileMenuToggle.classList.remove('active');
@@ -553,37 +553,37 @@ function closeMobileMenu() {
 function initializeInfoPanel() {
     const infoPanel = document.getElementById('infoPanel');
     const closeInfoBtn = document.getElementById('closeInfo');
-    
+
     if (!infoPanel) return;
-    
+
     // Close info panel
     if (closeInfoBtn) {
         closeInfoBtn.addEventListener('click', function() {
             closeInfoPanel();
         });
     }
-    
+
     // Close panel when clicking outside
     document.addEventListener('click', function(e) {
-        if (infoPanel.classList.contains('active') && 
-            !infoPanel.contains(e.target) && 
+        if (infoPanel.classList.contains('active') &&
+            !infoPanel.contains(e.target) &&
             !e.target.closest('.info-indicator')) {
             closeInfoPanel();
         }
     });
-    
+
     // Initialize info indicators
     initializeInfoIndicators();
 }
 
 function initializeInfoIndicators() {
     const infoIndicators = document.querySelectorAll('.info-indicator');
-    
+
     infoIndicators.forEach(indicator => {
         indicator.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            
+
             const tooltipType = this.getAttribute('data-tooltip');
             openInfoPanel(tooltipType);
         });
@@ -594,14 +594,14 @@ function openInfoPanel(tooltipType) {
     const infoPanel = document.getElementById('infoPanel');
     const infoPanelTitle = document.getElementById('infoPanelTitle');
     const infoContent = document.getElementById('infoContent');
-    
+
     if (!infoPanel || !infoPanelTitle || !infoContent) return;
-    
+
     // Set title and content based on tooltip type
     const infoData = getInfoContent(tooltipType);
     infoPanelTitle.textContent = infoData.title;
     infoContent.innerHTML = infoData.content;
-    
+
     // Show panel
     infoPanel.classList.add('active');
 }
@@ -620,18 +620,18 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Understanding Your Financial Journey</h4>
                 <p>Your phase status shows where you currently stand in your financial journey. Each phase represents a different stage of financial growth and stability.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Current Phase Indicators:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Reset & Rewire:</strong> Addressing debt and financial challenges</li>
                     <li><strong>Take Control:</strong> Building budgeting skills and emergency funds</li>
                     <li><strong>Grow & Multiply:</strong> Investing and growing your wealth</li>
                     <li><strong>Sustain & Scale:</strong> Advanced wealth management and planning</li>
                 </ul>
-                
+
                 <p>Your coach will help you progress through these phases at your own pace, providing personalized guidance and support along the way.</p>
             `
         },
@@ -640,18 +640,18 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Your Financial Confidence</h4>
                 <p>This metric tracks how confident you feel about your financial decisions and future.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Confidence Levels:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Low (1-3):</strong> Feeling uncertain about financial decisions</li>
                     <li><strong>Moderate (4-6):</strong> Some confidence but room for improvement</li>
                     <li><strong>High (7-8):</strong> Generally confident in financial planning</li>
                     <li><strong>Expert (9-10):</strong> Very confident and knowledgeable</li>
                 </ul>
-                
+
                 <p>Your confidence level helps your coach understand how to best support you and what areas need more focus.</p>
             `
         },
@@ -660,11 +660,11 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Your Financial Objectives</h4>
                 <p>Primary goals are the main financial objectives you want to achieve. These form the foundation of your financial planning strategy.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Goal Types:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Emergency Fund:</strong> Building financial security</li>
                     <li><strong>Debt Payoff:</strong> Eliminating high-interest debt</li>
@@ -672,27 +672,48 @@ function getInfoContent(tooltipType) {
                     <li><strong>Investment:</strong> Growing money through investments</li>
                     <li><strong>Major Purchase:</strong> House, car, or other significant expenses</li>
                 </ul>
-                
+
                 <p>Your coach will help you prioritize and create actionable plans for each goal.</p>
             `
         },
         'confidence-score': {
-            title: 'Confidence Score',
+            title: 'Budget Confidence Score',
             content: `
-                <h4>Your Financial Confidence Level</h4>
-                <p>This score reflects how confident you feel about making financial decisions and managing your money.</p>
-                
+                <h4>Your Budget Confidence Level</h4>
+                <p>This score reflects how confident you feel about creating, managing, and maintaining a budget. It measures your ability to track spending, plan ahead, and make intentional day-to-day financial decisions.
+</p>
+
                 <div class="info-highlight">
-                    <strong>Score Ranges:</strong>
+                    <strong>Score Levels:</strong>
                 </div>
-                
+
                 <ul>
-                    <li><strong>1-3 (Building):</strong> Just starting your financial journey</li>
-                    <li><strong>4-6 (Growing):</strong> Developing financial knowledge and skills</li>
-                    <li><strong>7-8 (Confident):</strong> Comfortable with most financial decisions</li>
-                    <li><strong>9-10 (Expert):</strong> High level of financial expertise</li>
+                    <li><strong>25% (Building):</strong> Just starting to build budgeting habits and understand your income and expenses.</li>
+                    <li><strong>50% (Growing):</strong> Developing stronger budgeting skills and gaining better control over your spending.</li>
+                    <li><strong>75% (Confident):</strong> Comfortable creating and managing a budget, with consistent tracking and adjustments.</li>
+                    <li><strong>100% (Expert):</strong> Highly confident in budgeting, with strong discipline and proactive financial planning.</li>
                 </ul>
-                
+
+                <p>This score helps your coach tailor their guidance to your comfort level and experience.</p>
+            `
+        },
+        'personal-finance-confidence-score': {
+            title: 'Personal Finance Confidence Score',
+            content: `
+                <h4>Your Personal Finance Confidence Level</h4>
+                <p>This score reflects how confident you feel about making financial decisions and managing your money.</p>
+
+                <div class="info-highlight">
+                    <strong>Score Level:</strong>
+                </div>
+
+                <ul>
+                    <li><strong>25% (Building):</strong> Just starting your financial journey</li>
+                    <li><strong>50% (Growing):</strong> Developing financial knowledge and skills</li>
+                    <li><strong>75% (Confident):</strong> Comfortable with most financial decisions</li>
+                    <li><strong>100% (Expert):</strong> High level of financial expertise</li>
+                </ul>
+
                 <p>This score helps your coach tailor their guidance to your comfort level and experience.</p>
             `
         },
@@ -701,18 +722,18 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Your Path to Debt Freedom</h4>
                 <p>Track your progress in eliminating debt and building a stronger financial foundation.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Debt Reduction Strategies:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Snowball Method:</strong> Pay off smallest debts first</li>
                     <li><strong>Avalanche Method:</strong> Target highest interest rates first</li>
                     <li><strong>Consolidation:</strong> Combine debts for easier management</li>
                     <li><strong>Balance Transfer:</strong> Move to lower interest options</li>
                 </ul>
-                
+
                 <p>Your coach will help you choose the best strategy based on your specific situation.</p>
             `
         },
@@ -721,11 +742,11 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Your Investment Understanding</h4>
                 <p>This measures your current knowledge and comfort level with investment concepts and strategies.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Knowledge Areas:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Basic Concepts:</strong> Stocks, bonds, mutual funds</li>
                     <li><strong>Risk Management:</strong> Diversification and asset allocation</li>
@@ -733,7 +754,7 @@ function getInfoContent(tooltipType) {
                     <li><strong>Investment Vehicles:</strong> 401k, IRA, brokerage accounts</li>
                     <li><strong>Tax Implications:</strong> Tax-efficient investing strategies</li>
                 </ul>
-                
+
                 <p>Your coach will provide education and guidance to improve your investment knowledge.</p>
             `
         },
@@ -742,18 +763,18 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Your Financial Safety Net</h4>
                 <p>An emergency fund provides financial security for unexpected expenses or income loss.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Emergency Fund Guidelines:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Starter Fund:</strong> $1,000 for immediate emergencies</li>
                     <li><strong>Basic Fund:</strong> 3-6 months of essential expenses</li>
                     <li><strong>Enhanced Fund:</strong> 6-12 months for extra security</li>
                     <li><strong>Accessibility:</strong> Keep in high-yield savings account</li>
                 </ul>
-                
+
                 <p>Building an emergency fund is often the first step in creating financial stability.</p>
             `
         },
@@ -762,18 +783,18 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Building Wealth Through Investing</h4>
                 <p>Regular investing contributions help build long-term wealth and achieve your financial goals.</p>
-                
+
                 <div class="info-highlight">
                     <strong>Investment Strategies:</strong>
                 </div>
-                
+
                 <ul>
                     <li><strong>Dollar-Cost Averaging:</strong> Regular, consistent investments</li>
                     <li><strong>Target-Date Funds:</strong> Age-appropriate asset allocation</li>
                     <li><strong>Index Funds:</strong> Low-cost, diversified investing</li>
                     <li><strong>Employer Match:</strong> Maximize free money from 401k match</li>
                 </ul>
-                
+
                 <p>Your coach will help you determine the right investment amount and strategy for your situation.</p>
             `
         },
@@ -782,12 +803,12 @@ function getInfoContent(tooltipType) {
             content: `
                 <h4>Help & Information</h4>
                 <p>This section provides additional context and explanations for the various elements on your dashboard.</p>
-                
+
                 <p>If you need more specific help, please don't hesitate to reach out to your coach or our support team.</p>
             `
         }
     };
-    
+
     return infoContents[tooltipType] || infoContents['default'];
 }
 
