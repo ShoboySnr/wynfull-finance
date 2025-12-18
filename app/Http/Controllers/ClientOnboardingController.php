@@ -20,8 +20,8 @@ class ClientOnboardingController extends Controller
         $validated = $request->validate([
             'financial_situation' => ['required', 'array', 'min:1'],
             'financial_situation.*' => ['string', Rule::in([
-                'struggling-debt', 'paycheck-to-paycheck', 'okay-not-saving',
-                'saving-regularly', 'confident-focused', 'other'
+                'debt-management', 'cash-flow', 'savings-habits',
+                'investing-basics', 'wealth-building', 'financial-education', 'other'
             ])],
             'financial_situation_other' => ['nullable', 'string', 'max:500'],
 
@@ -35,15 +35,15 @@ class ClientOnboardingController extends Controller
             ])],
 
             'debt_feeling' => ['required', Rule::in([
-                'overwhelmed','managing-stressful','comfortable','debt-free'
+                'no-knowledge','basics-stressful','comfortable-applying','confident-teaching'
             ])],
 
             'savings_amount' => ['required', Rule::in([
-                'zero','under-1k','1k-5k','5k-20k','20k-plus'
+                'not-confident','somewhat-confident','confident','very-confident'
             ])],
 
             'investing_status' => ['required', Rule::in([
-                'not-yet','just-starting','consistently'
+                'not-familiar','familiar-basics','comfortable-applying','advanced-understanding'
             ])],
 
             'investing_experience' => ['required', Rule::in([

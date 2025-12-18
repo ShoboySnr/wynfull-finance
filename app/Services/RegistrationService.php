@@ -30,6 +30,7 @@ class RegistrationService
 
             ClientProfile::create([
                 'user_id'    => $user->id,
+                'phone'      => $data['phone'] ?? null,
                 'goal'       => $data['goal'] ?? null,
                 'other_goal' => $data['other-goal'] ?? null,
                 'community'  => $data['community'] ?? null,

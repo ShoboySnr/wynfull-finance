@@ -34,16 +34,17 @@
                            ];
 
                         $clientAnswers = is_array($financialSituations) ? $financialSituations : (array)$financialSituations;
-                                    if (in_array('struggling with debt', $clientAnswers)) {
+                                    // Map new learning focus options to phases
+                                    if (in_array('debt-management', $clientAnswers)) {
                                         $barStates['reset-rewire'] = 'active';
                                     }
-                                    if (in_array('paycheck to paycheck', $clientAnswers) || in_array('okay not saving', $clientAnswers)) {
+                                    if (in_array('cash-flow', $clientAnswers) || in_array('savings-habits', $clientAnswers)) {
                                         $barStates['take-control'] = 'active';
                                     }
-                                    if (in_array('saving regularly', $clientAnswers) || in_array('okay not saving', $clientAnswers)) {
+                                    if (in_array('investing-basics', $clientAnswers) || in_array('savings-habits', $clientAnswers)) {
                                         $barStates['grow-multiply'] = 'active';
                                     }
-                                    if (in_array('confident and focused', $clientAnswers)) {
+                                    if (in_array('wealth-building', $clientAnswers) || in_array('financial-education', $clientAnswers)) {
                                         $barStates['sustain-scale'] = 'active';
                                     }
 
@@ -87,25 +88,25 @@
                 <div class="metric-card confidence-card">
                     <div class="card-header-with-info">
                         <h3>Personal Finance Confidence Score</h3>
-                        <div class="info-indicator" data-tooltip="confidence-score">
+                        <div class="info-indicator" data-tooltip="personal-finance-confidence">
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
                     <div class="confidence-circle">
                         @php
-                            $score = $pickedGoals;
-                            $degree = round($score * 3.6); // 1% = 3.6 degrees
+                            $pfScore = $personalFinanceConfidence['score'] ?? 0;
+                            $pfDegree = round($pfScore * 3.6); // 1% = 3.6 degrees
                         @endphp
-                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">
-                            <span class="confidence-value">{{ $score }}</span>
+                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $pfDegree }}deg, #E5E7EB {{ $pfDegree }}deg 360deg)">
+                            <span class="confidence-value">{{ $pfScore }}</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card debt-progress-card">
                     <div class="card-header-with-info">
-                        <h3>Debt Journey</h3>
-                        <div class="info-indicator" data-tooltip="debt-journey">
+                        <h3>Debt Knowledge Journey</h3>
+                        <div class="info-indicator" data-tooltip="debt-knowledge-journey">
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
@@ -146,42 +147,45 @@
 
                 <div class="metric-card emergency-fund-card">
                     <div class="card-header-with-info">
-                        <h3>Emergency Fund</h3>
-                        <div class="info-indicator" data-tooltip="emergency-fund">
+                        <h3>Emergency Readiness Level</h3>
+                        <div class="info-indicator" data-tooltip="emergency-readiness">
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="fund-amount">{{ $wealthCards['saved_display'] ?? ''}}</div>
-                    <div class="fund-progress">
-                        <div class="fund-bar">
-                            <div class="fund-fill"></div>
+                    <div class="confidence-circle">
+                        @php
+                            $erScore = $emergencyReadiness['score'] ?? 0;
+                            $erDegree = round($erScore * 3.6); // 1% = 3.6 degrees
+                        @endphp
+                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $erDegree }}deg, #E5E7EB {{ $erDegree }}deg 360deg)">
+                            <span class="confidence-value">{{ $erScore }}</span>
                         </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <span class="badge badge-{{ $emergencyReadiness['badge']['style'] ?? 'secondary' }}">
+                            {{ $emergencyReadiness['badge']['text'] ?? 'Not Set' }}
+                        </span>
                     </div>
                 </div>
 
-                @php
-                    $investingWidth = '15%'; // Default for 'Not yet investing'
-                    $investingLabel = $investingStatus['label'] ?? 'Not yet investing';
-                    if ($investingLabel === 'Just starting') {
-                        $investingWidth = '50%';
-                    } elseif ($investingLabel === 'Investing consistently') {
-                        $investingWidth = '100%';
-                    }
-                @endphp
                 <div class="metric-card investing-card">
                     <div class="card-header-with-info">
-                        <h3>Investing</h3>
-                        <div class="info-indicator" data-tooltip="investing-contribution">
+                        <h3>Investing Habit / Contribution Readiness</h3>
+                        <div class="info-indicator" data-tooltip="investing-habit">
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
                     <div class="investing-content">
-                        <span class="investing-label">Contribution score</span>
-                        <span class="investing-status">{{ $investingStatus['label'] ?? '' }}</span>
+                        <span class="investing-label">{{ $investingHabit['label'] ?? 'Not Set' }}</span>
                         <div class="investing-progress">
                             <div class="investing-bar">
-                                <div class="investing-fill" style="width: {{ $investingWidth ?? 0 }};"></div>
+                                <div class="investing-fill" style="width: {{ $investingHabit['percentage'] ?? 0 }}%;"></div>
                             </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px;">
+                            <span class="badge badge-{{ $investingHabit['badge']['style'] ?? 'secondary' }}">
+                                {{ $investingHabit['badge']['text'] ?? 'Not Set' }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -464,15 +468,15 @@ const tooltipData = {
         <strong>How to Read It:</strong><br>
         • The height of each bar reflects where your attention is most needed.<br>
         • Bar heights are determined by your answers to the onboarding questionnaire.<br>
-        • Each phase corresponds to your current financial situation:<br>
-        &nbsp;&nbsp;- Reset & Rewire: "Struggling with debt"<br>
-        &nbsp;&nbsp;- Take Control: "Living paycheck to paycheck" or "Doing okay but not saving much"<br>
-        &nbsp;&nbsp;- Grow: "Saving regularly and want to invest"<br>
-        &nbsp;&nbsp;- Sustain: "Confident and focused on long-term wealth"<br>
-        &nbsp;&nbsp;- Other: All bars will appear at equal height.<br><br>
+        • Each phase corresponds to your current financial learning focus:<br>
+        &nbsp;&nbsp;- Reset & Rewire: "Building a stronger understanding of debt management"<br>
+        &nbsp;&nbsp;- Take Control: "Learning how to manage cash flow more effectively" or "Improving savings habits and consistency"<br>
+        &nbsp;&nbsp;- Grow: "Learning how investing works and how to get started" or "Improving savings habits and consistency"<br>
+        &nbsp;&nbsp;- Sustain: "Strengthening long-term wealth-building skills" or "Exploring financial education broadly"<br>
+        &nbsp;&nbsp;- Other: Custom learning focus specified by you.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Focus your next steps and conversations on the phase with the highest bar — that's where your current financial journey is centered.`
+        Focus your next steps and conversations on the phase with the highest bar — that's where your current financial learning journey is centered.`
     },
     'primary-goals': {
         title: 'Primary Goals',
@@ -487,49 +491,84 @@ const tooltipData = {
         Use your goals as your North Star — revisit and adjust as you hit milestones or refine your priorities.`
     },
     'confidence-score': {
-        title: 'Confidence Score',
+        title: 'Budget Confidence Score',
         content: `<strong>Purpose:</strong><br>
-        Reflects how confident you feel managing your personal finances.<br><br>
+        Reflects how confident you are in understanding how a personal budget works.<br><br>
 
         <strong>Scale:</strong><br>
-        25 (Low) → 100 (High)<br><br>
+        25 (Not confident) → 50 (Somewhat confident) → 75 (Confident) → 100 (Very confident)<br><br>
 
         <strong>How to Read It:</strong><br>
-        • A lower score indicates financial stress or uncertainty.<br>
-        • A higher score represents clarity, control, and progress.<br><br>
+        • Based on your answer to the onboarding question about budget understanding.<br>
+        • A lower score indicates you're still learning budget fundamentals.<br>
+        • A higher score represents strong understanding of budgeting concepts.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Your confidence grows through habit — track your progress, build consistency, and celebrate small wins.`
+        Use Wynfull's budgeting resources and tools to strengthen your understanding and build confidence in managing your budget.`
     },
-    'debt-journey': {
-        title: 'Debt Journey',
+    'personal-finance-confidence': {
+        title: 'Personal Finance Confidence Score',
         content: `<strong>Purpose:</strong><br>
-        Tracks your current stage in managing or paying off debt.<br><br>
+        Reflects how confident you feel understanding core personal financial concepts.<br><br>
+
+        <strong>Scale:</strong><br>
+        25 (Not confident) → 50 (Somewhat confident) → 75 (Confident) → 100 (Very confident)<br><br>
+
+        <strong>How to Read It:</strong><br>
+        • Based on your answer to the onboarding question about understanding personal finance concepts.<br>
+        • A lower score indicates you're still building foundational financial knowledge.<br>
+        • A higher score represents strong grasp of core financial principles.<br><br>
+
+        <strong>Action Tip:</strong><br>
+        Explore Wynfull's educational resources and work with your trainer to strengthen your understanding of personal finance fundamentals.`
+    },
+    'debt-knowledge-journey': {
+        title: 'Debt Knowledge Journey',
+        content: `<strong>Purpose:</strong><br>
+        Tracks your understanding and confidence in applying debt management strategies.<br><br>
 
         <strong>Stages:</strong><br>
-        Overwhelmed → Managing → Taking Control → Debt-Free<br><br>
+        No Knowledge → Learning Basics → Applying Strategies → Expert Level<br><br>
 
         <strong>How to Read It:</strong><br>
-        • The progress bar shows how far you've moved toward full debt control.<br>
-        • Your stage is updated based on questionnaire responses and future progress inputs.<br><br>
+        • Based on your answer to the onboarding question about debt management understanding.<br>
+        • The progress bar shows your current knowledge level (10% to 100%).<br>
+        • Your stage reflects how comfortable you are with debt management strategies.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Use your Wynfull Debt Tracker and training sessions to reflect on progress and strategies. Each milestone moves you closer to financial peace.`
+        Use Wynfull's debt management resources and work with your trainer to strengthen your understanding and confidence in applying debt strategies effectively.`
     },
     'investing-knowledge': {
         title: 'Investing Knowledge',
         content: `<strong>Purpose:</strong><br>
-        Shows your current level of understanding and experience with investing.<br><br>
+        Shows your current level of familiarity with investing concepts.<br><br>
 
         <strong>Levels:</strong><br>
-        Beginner (1–2/5) → Intermediate (3–4/5) → Expert (5/5)<br><br>
+        Not Familiar Yet (1/5) → Familiar with Basics (2/5) → Comfortable Applying (4/5) → Advanced Understanding (5/5)<br><br>
 
         <strong>How to Read It:</strong><br>
-        • Based on your questionnaire responses about your investing habits and knowledge.<br>
-        • Updated as you complete learning modules or training milestones.<br><br>
+        • Based on your answer to the onboarding question about investing concepts familiarity.<br>
+        • The dots represent your knowledge level from 1 to 5.<br>
+        • More filled dots indicate greater familiarity with investing concepts.<br><br>
 
         <strong>Action Tip:</strong><br>
-        Use Wynfull's Resource Library and your trainer's guidance to build confidence and move to the next investing tier.`
+        Use Wynfull's Resource Library and your trainer's guidance to build your understanding of investing concepts and move to the next knowledge tier.`
+    },
+    'emergency-readiness': {
+        title: 'Emergency Readiness Level',
+        content: `<strong>Purpose:</strong><br>
+        Reflects your confidence in understanding the steps involved in preparing for unexpected financial situations.<br><br>
+
+        <strong>Scale:</strong><br>
+        25 (Not Prepared) → 50 (Building Readiness) → 75 (Well Prepared) → 100 (Fully Prepared)<br><br>
+
+        <strong>How to Read It:</strong><br>
+        • Based on your answer to the onboarding question about emergency preparedness understanding.<br>
+        • A lower score indicates you're still learning about emergency financial planning.<br>
+        • A higher score represents strong understanding of how to prepare for unexpected situations.<br><br>
+
+        <strong>Action Tip:</strong><br>
+        Work with your trainer to build an emergency fund strategy and learn the essential steps for financial preparedness. Understanding comes before action!`
     },
     'emergency-fund': {
         title: 'Emergency Fund',
@@ -546,17 +585,22 @@ const tooltipData = {
         <strong>Action Tip:</strong><br>
         Building an emergency fund is one of the strongest financial defenses — even small, consistent contributions make a big difference over time.`
     },
-    'investing-contribution': {
-        title: 'Investing (Contribution Score)',
+    'investing-habit': {
+        title: 'Investing Habit / Contribution Readiness',
         content: `<strong>Purpose:</strong><br>
-        Tracks your consistency in contributing to investment or retirement accounts.<br><br>
+        Reflects your investing experience level and readiness to contribute to investment accounts.<br><br>
 
-        <strong>Scale:</strong><br>
-        Not Started → Just Starting → Consistent<br><br>
+        <strong>Levels:</strong><br>
+        Building Foundation (33%) → Growing Confidence (66%) → Experienced Investor (100%)<br><br>
 
         <strong>How to Read It:</strong><br>
-        • Measures how regularly you contribute, not how much you invest.<br>
-        • Based on your onboarding questionnaire and updates made through your trainer or the dashboard.<br><br>`
+        • Based on your answer to the onboarding question about investing experience.<br>
+        • Beginner: Building foundation and learning the basics.<br>
+        • Intermediate: Growing confidence with practical experience.<br>
+        • Advanced: Experienced investor with strong knowledge.<br><br>
+
+        <strong>Action Tip:</strong><br>
+        Work with your trainer to develop investing habits that match your experience level. Start small, stay consistent, and grow your confidence over time.`
     }
 }
 </script>

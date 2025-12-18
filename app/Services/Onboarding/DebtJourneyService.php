@@ -11,9 +11,9 @@ class DebtJourneyService
     /**
      * Returns:
      * [
-     *   'status'   => 'overwhelmed|managing-stressful|comfortable|debt-free',
-     *   'badge'    => ['text' => 'Overwhelmed', 'style' => 'danger'], // for UI
-     *   'label'    => 'Overwhelmed|Taking control|Building momentum|Debt-free',
+     *   'status'   => 'no-knowledge|basics-stressful|comfortable-applying|confident-teaching',
+     *   'badge'    => ['text' => 'No Knowledge', 'style' => 'danger'], // for UI
+     *   'label'    => 'No Knowledge|Learning Basics|Applying Strategies|Expert Level',
      *   'score'    => 0..100,  // journey progress
      *   'source_at'=> Carbon|null (completed_at of onboarding)
      * ]
@@ -28,12 +28,12 @@ class DebtJourneyService
 
         $feeling = Arr::get($co->answers, 'debt_feeling');
 
-        // Map to small badge + dashboard label
+        // Map to small badge + dashboard label (based on debt management understanding)
         $map = [
-            'overwhelmed'         => ['badge' => ['text' => 'Overwhelmed',        'style' => 'danger'],  'label' => 'Overwhelmed',        'score' => 10],
-            'managing-stressful'  => ['badge' => ['text' => 'Managing, stressful','style' => 'warning'], 'label' => 'Taking control',     'score' => 40],
-            'comfortable'         => ['badge' => ['text' => 'Comfortable',        'style' => 'info'],    'label' => 'Building momentum', 'score' => 70],
-            'debt-free'           => ['badge' => ['text' => 'Debt-free',          'style' => 'success'], 'label' => 'Debt-free',          'score' => 100],
+            'no-knowledge'         => ['badge' => ['text' => 'No Knowledge',        'style' => 'danger'],  'label' => 'No Knowledge',        'score' => 10],
+            'basics-stressful'     => ['badge' => ['text' => 'Learning Basics',     'style' => 'warning'], 'label' => 'Learning Basics',     'score' => 40],
+            'comfortable-applying' => ['badge' => ['text' => 'Applying Strategies', 'style' => 'info'],    'label' => 'Applying Strategies', 'score' => 70],
+            'confident-teaching'   => ['badge' => ['text' => 'Expert Level',        'style' => 'success'], 'label' => 'Expert Level',        'score' => 100],
         ];
 
         $base = $map[$feeling] ?? ['badge' => ['text' => 'Unknown', 'style' => 'secondary'], 'label' => '—', 'score' => 0];

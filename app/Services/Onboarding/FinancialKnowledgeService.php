@@ -11,9 +11,9 @@ class FinancialKnowledgeService
     /**
      * Returns:
      * [
-     *   'experience_key' => 'beginner|intermediate|advanced',
-     *   'experience_label' => 'Beginner|Intermediate|Advanced',
-     *   'score' => 2|3|5,
+     *   'experience_key' => 'not-familiar|familiar-basics|comfortable-applying|advanced-understanding',
+     *   'experience_label' => 'Not Familiar|Familiar with Basics|Comfortable Applying|Advanced Understanding',
+     *   'score' => 1|2|4|5,
      *   'source_at' => Carbon|null
      * ]
      */
@@ -25,21 +25,23 @@ class FinancialKnowledgeService
 
         if (!$co) return null;
 
-        $raw = strtolower((string) Arr::get($co->answers, 'investing_experience', ''));
+        $raw = strtolower((string) Arr::get($co->answers, 'investing_status', ''));
 
-        // Normalize common variants
+        // Normalize to key
         $key = match ($raw) {
-            'beginner'                          => 'beginner',
-            'intermediate', 'intermediary'      => 'intermediate',
-            'advanced', 'advance'               => 'advanced',
-            default                             => 'beginner', // safe fallback
+            'not-familiar'           => 'not-familiar',
+            'familiar-basics'        => 'familiar-basics',
+            'comfortable-applying'   => 'comfortable-applying',
+            'advanced-understanding' => 'advanced-understanding',
+            default                  => 'not-familiar', // safe fallback
         };
 
-        // Map to label + score
+        // Map to label + score (1-5 scale for dots display)
         $map = [
-            'beginner'     => ['label' => 'Beginner',     'score' => 2],
-            'intermediate' => ['label' => 'Intermediate', 'score' => 3],
-            'advanced'     => ['label' => 'Advanced',     'score' => 5],
+            'not-familiar'           => ['label' => 'Not Familiar Yet',           'score' => 1],
+            'familiar-basics'        => ['label' => 'Familiar with Basics',       'score' => 2],
+            'comfortable-applying'   => ['label' => 'Comfortable Applying',       'score' => 4],
+            'advanced-understanding' => ['label' => 'Advanced Understanding',     'score' => 5],
         ];
 
         return [

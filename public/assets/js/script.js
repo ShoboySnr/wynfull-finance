@@ -580,7 +580,6 @@ function initializeMessaging() {
 function checkOnboardingStatus() {
     const onboardingCompleted = localStorage.getItem('wynfullOnboardingCompleted');
 
-    console.log(window.WYNFULL.onboardingCompleted);
     if (!window.WYNFULL || window.WYNFULL.onboardingCompleted !== false) return;
 
     if (onboardingCompleted === 'true') {
@@ -1142,11 +1141,12 @@ function updateInvestingKnowledgeCard(investingExperience) {
 
 function updatePhaseProgress(financialSituation) {
     const phaseMap = {
-        'struggling-debt': { reset: 100, control: 0, grow: 0, sustain: 0 },
-        'paycheck-to-paycheck': { reset: 80, control: 20, grow: 0, sustain: 0 },
-        'okay-not-saving': { reset: 60, control: 40, grow: 0, sustain: 0 },
-        'saving-regularly': { reset: 100, control: 80, grow: 30, sustain: 0 },
-        'confident-focused': { reset: 100, control: 100, grow: 70, sustain: 20 }
+        'debt-management': { reset: 100, control: 0, grow: 0, sustain: 0 },
+        'cash-flow': { reset: 60, control: 80, grow: 0, sustain: 0 },
+        'savings-habits': { reset: 40, control: 100, grow: 60, sustain: 0 },
+        'investing-basics': { reset: 0, control: 60, grow: 100, sustain: 20 },
+        'wealth-building': { reset: 0, control: 40, grow: 80, sustain: 100 },
+        'financial-education': { reset: 50, control: 50, grow: 50, sustain: 50 }
     };
 
     // Handle array of financial situations (multiple checkboxes)

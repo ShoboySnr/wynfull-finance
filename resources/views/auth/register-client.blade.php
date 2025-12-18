@@ -366,6 +366,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="phone">Phone Number <span style="color: var(--text-muted); font-weight: 400;">(Optional)</span></label>
+                            <input type="tel" id="phone" name="phone" class="input" 
+                                   placeholder="+1 (555) 123-4567" value="{{ old('phone') }}">
+                            @error('phone')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" name="email" class="input" 
                                    placeholder="john@example.com" value="{{ old('email') }}" required>

@@ -130,7 +130,8 @@ class ConfidenceScoringService
             }
         }
 
-        $key = strtolower(trim((string) Arr::get($answers, 'confidence_level', '')));
+        // Use primary_goal (Step 2: Budget understanding confidence)
+        $key = strtolower(trim((string) Arr::get($answers, 'primary_goal', '')));
 
         // Canonical mapping (max = 100)
         $map = [
@@ -155,8 +156,8 @@ class ConfidenceScoringService
             'band'      => $band,
             'raw_total' => $score,
             'breakdown' => [
-                'confidence_level' => $key !== '' ? $key : 'not-provided',
-                'mapped_score'     => $score,
+                'primary_goal' => $key !== '' ? $key : 'not-provided',
+                'mapped_score' => $score,
             ],
         ];
     }

@@ -20,13 +20,14 @@
             </div>
 
             <div class="onboarding-step active" id="step1">
-                <h2>Which best describes your current financial situation?</h2>
+                <h2>Which statement best reflects your current financial learning focus?</h2>
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="financial-situation" value="struggling-debt"> Struggling with debt</label>
-                    <label><input type="checkbox" name="financial-situation" value="paycheck-to-paycheck"> Living paycheck-to-paycheck</label>
-                    <label><input type="checkbox" name="financial-situation" value="okay-not-saving"> Doing okay but not saving much</label>
-                    <label><input type="checkbox" name="financial-situation" value="saving-regularly"> Saving regularly and want to invest</label>
-                    <label><input type="checkbox" name="financial-situation" value="confident-focused"> Confident and focused on long-term wealth</label>
+                    <label><input type="checkbox" name="financial-situation" value="debt-management"> Building a stronger understanding of debt management</label>
+                    <label><input type="checkbox" name="financial-situation" value="cash-flow"> Learning how to manage cash flow more effectively</label>
+                    <label><input type="checkbox" name="financial-situation" value="savings-habits"> Improving savings habits and consistency</label>
+                    <label><input type="checkbox" name="financial-situation" value="investing-basics"> Learning how investing works and how to get started</label>
+                    <label><input type="checkbox" name="financial-situation" value="wealth-building"> Strengthening long-term wealth-building skills</label>
+                    <label><input type="checkbox" name="financial-situation" value="financial-education"> Exploring financial education broadly</label>
                     <label class="other-option">
                         <div>
                             <input type="checkbox" name="financial-situation" value="other"> Other:
@@ -37,17 +38,17 @@
             </div>
 
             <div class="onboarding-step" id="step2">
-                <h2>How confident are you in creating and managing your personal budget?</h2>
+                <h2>How confident are you in understanding how a personal budget works?</h2>
                 <div class="radio-group">
-                    <label><input type="radio" name="primary-goal" value="not-confident"> Not Confident</label>
-                    <label><input type="radio" name="primary-goal" value="somewhat-confident"> Somewhat Confident</label>
+                    <label><input type="radio" name="primary-goal" value="not-confident"> Not confident</label>
+                    <label><input type="radio" name="primary-goal" value="somewhat-confident"> Somewhat confident</label>
                     <label><input type="radio" name="primary-goal" value="confident"> Confident</label>
-                    <label><input type="radio" name="primary-goal" value="very-confident"> Very Confident</label>
+                    <label><input type="radio" name="primary-goal" value="very-confident"> Very confident</label>
                 </div>
             </div>
 
             <div class="onboarding-step" id="step3">
-                <h2>How confident do you feel managing your finances right now?</h2>
+                <h2>How confident do you feel understanding core personal financial concepts?</h2>
                 <div class="radio-group">
                     <label><input type="radio" name="confidence-level" value="not-confident"> Not confident</label>
                     <label><input type="radio" name="confidence-level" value="somewhat-confident"> Somewhat confident</label>
@@ -57,32 +58,32 @@
             </div>
 
             <div class="onboarding-step" id="step4">
-                <h2>How do you feel about your current debt?</h2>
+                <h2>How would you describe your understanding of debt management strategies?</h2>
                 <div class="radio-group">
-                    <label><input type="radio" name="debt-feeling" value="overwhelmed"> I feel overwhelmed</label>
-                    <label><input type="radio" name="debt-feeling" value="managing-stressful"> I'm managing but it's stressful</label>
-                    <label><input type="radio" name="debt-feeling" value="comfortable"> I'm comfortable with it</label>
-                    <label><input type="radio" name="debt-feeling" value="debt-free"> I'm debt-free</label>
+                    <label><input type="radio" name="debt-feeling" value="no-knowledge"> I have no knowledge of debt management strategies</label>
+                    <label><input type="radio" name="debt-feeling" value="basics-stressful"> I understand the basics but find them stressful to apply</label>
+                    <label><input type="radio" name="debt-feeling" value="comfortable-applying"> I'm comfortable applying debt management strategies</label>
+                    <label><input type="radio" name="debt-feeling" value="confident-teaching"> I'm confident teaching or explaining debt strategies</label>
                 </div>
             </div>
 
             <div class="onboarding-step" id="step5">
-                <h2>How much cash do you currently have saved (emergency or otherwise)?</h2>
+                <h2>How confident are you in understanding the steps involved in preparing for unexpected financial situations?</h2>
                 <div class="radio-group">
-                    <label><input type="radio" name="savings-amount" value="zero"> $0</label>
-                    <label><input type="radio" name="savings-amount" value="under-1k"> Less than $1,000</label>
-                    <label><input type="radio" name="savings-amount" value="1k-5k"> $1,000–$5,000</label>
-                    <label><input type="radio" name="savings-amount" value="5k-20k"> $5,000–$20,000</label>
-                    <label><input type="radio" name="savings-amount" value="20k-plus"> $20,000+</label>
+                    <label><input type="radio" name="savings-amount" value="not-confident"> Not confident</label>
+                    <label><input type="radio" name="savings-amount" value="somewhat-confident"> Somewhat confident</label>
+                    <label><input type="radio" name="savings-amount" value="confident"> Confident</label>
+                    <label><input type="radio" name="savings-amount" value="very-confident"> Very confident</label>
                 </div>
             </div>
 
             <div class="onboarding-step" id="step6">
-                <h2>Do you currently invest money, e.g. stock market (outside of savings)?</h2>
+                <h2>How familiar are you with investing concepts?</h2>
                 <div class="radio-group">
-                    <label><input type="radio" name="investing-status" value="not-yet"> Not yet</label>
-                    <label><input type="radio" name="investing-status" value="just-starting"> Yes, but just starting</label>
-                    <label><input type="radio" name="investing-status" value="consistently"> Yes, consistently</label>
+                    <label><input type="radio" name="investing-status" value="not-familiar"> Not familiar yet</label>
+                    <label><input type="radio" name="investing-status" value="familiar-basics"> Familiar with basics</label>
+                    <label><input type="radio" name="investing-status" value="comfortable-applying"> Comfortable applying concepts</label>
+                    <label><input type="radio" name="investing-status" value="advanced-understanding"> Advanced understanding</label>
                 </div>
             </div>
 

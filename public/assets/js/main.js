@@ -697,105 +697,103 @@ function getInfoContent(tooltipType) {
                 <p>This score helps your coach tailor their guidance to your comfort level and experience.</p>
             `
         },
-        'personal-finance-confidence-score': {
+        'personal-finance-confidence': {
             title: 'Personal Finance Confidence Score',
             content: `
                 <h4>Your Personal Finance Confidence Level</h4>
-                <p>This score reflects how confident you feel about making financial decisions and managing your money.</p>
+                <p>This score reflects how confident you feel understanding core personal financial concepts.</p>
 
                 <div class="info-highlight">
                     <strong>Score Level:</strong>
                 </div>
 
                 <ul>
-                    <li><strong>25% (Building):</strong> Just starting your financial journey</li>
-                    <li><strong>50% (Growing):</strong> Developing financial knowledge and skills</li>
-                    <li><strong>75% (Confident):</strong> Comfortable with most financial decisions</li>
-                    <li><strong>100% (Expert):</strong> High level of financial expertise</li>
+                    <li><strong>25% (Not confident):</strong> Still building foundational financial knowledge</li>
+                    <li><strong>50% (Somewhat confident):</strong> Developing understanding of core concepts</li>
+                    <li><strong>75% (Confident):</strong> Strong grasp of core financial principles</li>
+                    <li><strong>100% (Very confident):</strong> Excellent understanding of personal finance concepts</li>
                 </ul>
 
                 <p>This score helps your coach tailor their guidance to your comfort level and experience.</p>
             `
         },
-        'debt-journey': {
-            title: 'Debt Journey',
+        'debt-knowledge-journey': {
+            title: 'Debt Knowledge Journey',
             content: `
-                <h4>Your Path to Debt Freedom</h4>
-                <p>Track your progress in eliminating debt and building a stronger financial foundation.</p>
+                <h4>Your Debt Management Understanding</h4>
+                <p>Tracks your understanding and confidence in applying debt management strategies.</p>
 
                 <div class="info-highlight">
-                    <strong>Debt Reduction Strategies:</strong>
+                    <strong>Knowledge Stages:</strong>
                 </div>
 
                 <ul>
-                    <li><strong>Snowball Method:</strong> Pay off smallest debts first</li>
-                    <li><strong>Avalanche Method:</strong> Target highest interest rates first</li>
-                    <li><strong>Consolidation:</strong> Combine debts for easier management</li>
-                    <li><strong>Balance Transfer:</strong> Move to lower interest options</li>
+                    <li><strong>No Knowledge (10%):</strong> Just starting to learn about debt management</li>
+                    <li><strong>Learning Basics (40%):</strong> Understanding basics but finding them stressful to apply</li>
+                    <li><strong>Applying Strategies (70%):</strong> Comfortable applying debt management strategies</li>
+                    <li><strong>Expert Level (100%):</strong> Confident teaching or explaining debt strategies</li>
                 </ul>
 
-                <p>Your coach will help you choose the best strategy based on your specific situation.</p>
+                <p>Your coach will help you strengthen your understanding and confidence in managing debt effectively.</p>
             `
         },
         'investing-knowledge': {
             title: 'Investing Knowledge',
             content: `
-                <h4>Your Investment Understanding</h4>
-                <p>This measures your current knowledge and comfort level with investment concepts and strategies.</p>
+                <h4>Your Familiarity with Investing Concepts</h4>
+                <p>Shows your current level of familiarity with investing concepts.</p>
 
                 <div class="info-highlight">
-                    <strong>Knowledge Areas:</strong>
+                    <strong>Knowledge Levels:</strong>
                 </div>
 
                 <ul>
-                    <li><strong>Basic Concepts:</strong> Stocks, bonds, mutual funds</li>
-                    <li><strong>Risk Management:</strong> Diversification and asset allocation</li>
-                    <li><strong>Market Understanding:</strong> How markets work and behave</li>
-                    <li><strong>Investment Vehicles:</strong> 401k, IRA, brokerage accounts</li>
-                    <li><strong>Tax Implications:</strong> Tax-efficient investing strategies</li>
+                    <li><strong>Not Familiar Yet (1/5):</strong> Just starting to learn about investing</li>
+                    <li><strong>Familiar with Basics (2/5):</strong> Understanding fundamental investing concepts</li>
+                    <li><strong>Comfortable Applying (4/5):</strong> Can apply investing concepts with confidence</li>
+                    <li><strong>Advanced Understanding (5/5):</strong> Deep knowledge of investing strategies</li>
                 </ul>
 
-                <p>Your coach will provide education and guidance to improve your investment knowledge.</p>
+                <p>Your coach will help you build understanding and move to the next knowledge tier.</p>
             `
         },
-        'emergency-fund': {
-            title: 'Emergency Fund',
+        'emergency-readiness': {
+            title: 'Emergency Readiness Level',
             content: `
-                <h4>Your Financial Safety Net</h4>
-                <p>An emergency fund provides financial security for unexpected expenses or income loss.</p>
+                <h4>Your Emergency Preparedness Understanding</h4>
+                <p>Reflects your confidence in understanding the steps involved in preparing for unexpected financial situations.</p>
 
                 <div class="info-highlight">
-                    <strong>Emergency Fund Guidelines:</strong>
+                    <strong>Readiness Levels:</strong>
                 </div>
 
                 <ul>
-                    <li><strong>Starter Fund:</strong> $1,000 for immediate emergencies</li>
-                    <li><strong>Basic Fund:</strong> 3-6 months of essential expenses</li>
-                    <li><strong>Enhanced Fund:</strong> 6-12 months for extra security</li>
-                    <li><strong>Accessibility:</strong> Keep in high-yield savings account</li>
+                    <li><strong>Not Prepared (25%):</strong> Still learning about emergency financial planning</li>
+                    <li><strong>Building Readiness (50%):</strong> Developing understanding of emergency preparedness</li>
+                    <li><strong>Well Prepared (75%):</strong> Strong understanding of how to prepare for emergencies</li>
+                    <li><strong>Fully Prepared (100%):</strong> Confident in emergency financial planning strategies</li>
                 </ul>
 
-                <p>Building an emergency fund is often the first step in creating financial stability.</p>
+                <p>Work with your trainer to build an emergency fund strategy and learn essential preparedness steps.</p>
             `
         },
-        'investing-contribution': {
-            title: 'Investing Contributions',
+        'investing-habit': {
+            title: 'Investing Habit / Contribution Readiness',
             content: `
-                <h4>Building Wealth Through Investing</h4>
-                <p>Regular investing contributions help build long-term wealth and achieve your financial goals.</p>
+                <h4>Your Investing Experience Level</h4>
+                <p>Reflects your investing experience level and readiness to contribute to investment accounts.</p>
 
                 <div class="info-highlight">
-                    <strong>Investment Strategies:</strong>
+                    <strong>Experience Levels:</strong>
                 </div>
 
                 <ul>
-                    <li><strong>Dollar-Cost Averaging:</strong> Regular, consistent investments</li>
-                    <li><strong>Target-Date Funds:</strong> Age-appropriate asset allocation</li>
-                    <li><strong>Index Funds:</strong> Low-cost, diversified investing</li>
-                    <li><strong>Employer Match:</strong> Maximize free money from 401k match</li>
+                    <li><strong>Building Foundation (33%):</strong> Beginner - Learning the basics of investing</li>
+                    <li><strong>Growing Confidence (66%):</strong> Intermediate - Practical experience with investments</li>
+                    <li><strong>Experienced Investor (100%):</strong> Advanced - Strong investing knowledge and experience</li>
                 </ul>
 
-                <p>Your coach will help you determine the right investment amount and strategy for your situation.</p>
+                <p>Your coach will help you develop investing habits that match your experience level.</p>
             `
         },
         'default': {

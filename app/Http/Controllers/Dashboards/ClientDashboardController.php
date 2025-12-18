@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Dashboards;
 use App\Http\Controllers\Controller;
 use App\Services\Onboarding\ComputeAndStoreConfidenceService;
 use App\Services\Onboarding\DebtJourneyService;
+use App\Services\Onboarding\EmergencyReadinessService;
 use App\Services\Onboarding\FinancialKnowledgeService;
+use App\Services\Onboarding\InvestingHabitService;
+use App\Services\Onboarding\PersonalFinanceConfidenceService;
 use App\Services\Onboarding\WealthCardsService;
 use App\Support\OnboardingGoals;
 use Illuminate\Http\Request;
@@ -16,14 +19,18 @@ class ClientDashboardController extends Controller
     public function index(Request $request,
                           ComputeAndStoreConfidenceService $storeConfidenceService,
                           DebtJourneyService $debtJourneyService,
+                          EmergencyReadinessService $emergencyReadinessService,
                           FinancialKnowledgeService $financialKnowledgeService,
+                          InvestingHabitService $investingHabitService,
+                          PersonalFinanceConfidenceService $personalFinanceConfidenceService,
                           WealthCardsService $wealthCardsService
     )
     {
         $user = $request->user();
 
-        $label = OnboardingGoals::primaryGoalLabelForUser($request->user()->id);
-        $picked = $label ?: 0;
+        $personalFinanceConfidence = $personalFinanceConfidenceService->forUser($user);
+        $emergencyReadiness = $emergencyReadinessService->forUser($user);
+        $investingHabit = $investingHabitService->forUser($user);
 
 //        dd($picked);
         $result = $storeConfidenceService->forUser($request->user(), persist: true);
@@ -74,7 +81,9 @@ class ClientDashboardController extends Controller
 
         return view('dashboards.client', [
             'user' => $user,
-            'pickedGoals' => $picked,
+            'personalFinanceConfidence' => $personalFinanceConfidence,
+            'emergencyReadiness' => $emergencyReadiness,
+            'investingHabit' => $investingHabit,
             'confidence' => $result,
             'journey' => $journey,
             'financialKnowledge' => $financialKnowledge,
