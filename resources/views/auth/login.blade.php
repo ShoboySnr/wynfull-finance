@@ -150,7 +150,7 @@
             background: var(--background-light);
         }
         .auth-card {
-            width: 100%; 
+            width: 100%;
             max-width: 440px;
             animation: fadeIn 0.6s ease-out 0.2s;
             animation-fill-mode: both;
@@ -334,7 +334,7 @@
             .auth-card {
                 padding: 20px;
             }
-            
+
             .theme-toggle-guest {
                 top: 1rem;
                 right: 1rem;
@@ -386,7 +386,7 @@
                     </div>
                 </div>
 
-                <div style="font-size:.9rem; opacity: 0.8;">
+                <div style="font-size:.9rem; color: #ffffff;">
                     © {{ date('Y') }} Wynfull Finance. All rights reserved.
                 </div>
             </section>
@@ -498,7 +498,7 @@
             const passwordField = document.getElementById(fieldId);
             const eyeClosed = document.getElementById(fieldId + '-eye-closed');
             const eyeOpen = document.getElementById(fieldId + '-eye-open');
-            
+
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 eyeClosed.style.display = 'none';
@@ -566,7 +566,7 @@
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const systemTheme = systemPrefersDark ? 'dark' : 'light';
             const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
-            
+
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 document.body.setAttribute('data-theme', 'dark');

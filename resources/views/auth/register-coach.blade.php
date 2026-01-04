@@ -149,7 +149,7 @@
             background: var(--background-light);
         }
         .auth-card {
-            width: 100%; 
+            width: 100%;
             max-width: 440px;
             animation: fadeIn 0.6s ease-out 0.2s;
             animation-fill-mode: both;
@@ -320,7 +320,7 @@
                     </div>
                 </div>
 
-                <div style="font-size:.9rem; opacity: 0.8;">
+                <div style="font-size:.9rem; color: #ffffff;">
                     © {{ date('Y') }} Wynfull Finance. All rights reserved.
                 </div>
             </section>
@@ -358,7 +358,7 @@
 
                         <div class="form-group">
                             <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" class="input" 
+                            <input type="text" id="name" name="name" class="input"
                                    placeholder="John Doe" value="{{ old('name') }}" required autofocus>
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -367,7 +367,7 @@
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" class="input" 
+                            <input type="email" id="email" name="email" class="input"
                                    placeholder="john@example.com" value="{{ old('email') }}" required>
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
@@ -377,7 +377,7 @@
                         <div class="form-group">
                             <label for="password">Password</label>
                             <div class="password-field">
-                                <input type="password" id="password" name="password" class="input" 
+                                <input type="password" id="password" name="password" class="input"
                                        placeholder="••••••••" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('password', 'eye-closed-1', 'eye-open-1')">
                                     <i class="fas fa-eye-slash" id="eye-closed-1"></i>
@@ -392,7 +392,7 @@
                         <div class="form-group">
                             <label for="password_confirmation">Re-enter Password</label>
                             <div class="password-field">
-                                <input type="password" id="password_confirmation" name="password_confirmation" class="input" 
+                                <input type="password" id="password_confirmation" name="password_confirmation" class="input"
                                        placeholder="••••••••" required>
                                 <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation', 'eye-closed-2', 'eye-open-2')">
                                     <i class="fas fa-eye-slash" id="eye-closed-2"></i>
@@ -486,7 +486,7 @@
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const systemTheme = systemPrefersDark ? 'dark' : 'light';
             const savedTheme = localStorage.getItem('wynfullTheme') || systemTheme;
-            
+
             if (savedTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 document.body.setAttribute('data-theme', 'dark');
