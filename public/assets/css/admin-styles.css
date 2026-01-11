@@ -330,3 +330,337 @@
     background-color: #FEF2F2;
 }
 /* END: Dropdown Menu Styles */
+
+/* START: Dashboard Preview Styles */
+.admin-dashboard-preview {
+    padding: 1rem 0;
+}
+
+.dashboard-preview-note {
+    background: var(--background-light);
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.dashboard-preview-note i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.dashboard-preview-note strong {
+    color: var(--text-primary);
+}
+
+.client-dashboard-preview {
+    width: 100%;
+}
+
+.phase-status-card {
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.phase-status-card h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.phases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.phase-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.phase-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.phase-percentage {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.phase-bar {
+    background: var(--border-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.phase-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.dashboard-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.metric-card {
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/* Preserve knowledge card gradient from styles.css */
+.metric-card.knowledge-card {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: white;
+    border: none;
+}
+
+.metric-card.knowledge-card h3 {
+    color: white;
+}
+
+.card-header-with-info {
+    margin-bottom: 1rem;
+}
+
+.card-header-with-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.circular-progress {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.circular-progress svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.circular-progress .progress-bg {
+    fill: none;
+    stroke: var(--border-light);
+    stroke-width: 8;
+}
+
+.circular-progress .progress-bar {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-weight: 500;
+}
+
+.journey-content,
+.investing-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.journey-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Preserve client dashboard styling for investing card */
+.investing-card .investing-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.journey-progress,
+.investing-progress {
+    width: 100%;
+}
+
+.journey-bar {
+    height: 12px;
+    background: var(--border-light);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Preserve client dashboard styling for investing bar */
+.investing-card .investing-bar {
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.journey-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+/* Preserve client dashboard styling for investing fill */
+.investing-card .investing-fill {
+    height: 100%;
+    background: #3B82F6;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Preserve client dashboard styling for debt progress card */
+.debt-progress-card .debt-status {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.debt-progress-card .debt-icon {
+    background: var(--success-green);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.debt-progress-card .debt-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.debt-progress-card .debt-text {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+}
+
+.debt-progress-card .debt-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--background-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.debt-progress-card .debt-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-green), #10B981);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.debt-progress-card .debt-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.knowledge-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.knowledge-dots {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.knowledge-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--border-light);
+    transition: all 0.3s ease;
+}
+
+.knowledge-dot.active {
+    background: var(--primary-color);
+    box-shadow: 0 0 10px rgba(14, 77, 164, 0.3);
+}
+
+.knowledge-label {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .dashboard-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .circular-progress {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .progress-value {
+        font-size: 1.25rem;
+    }
+}
+/* END: Dashboard Preview Styles */

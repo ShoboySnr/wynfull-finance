@@ -78,13 +78,33 @@
         <!-- Profile Details Section -->
         <div class="profile-details-section">
             <div class="profile-tabs">
-                <button class="profile-tab active" data-tab="activity">Recent Activity</button>
                 @if(strtolower($role) === 'client')
+                    <button class="profile-tab active" data-tab="dashboard">Dashboard</button>
+                    <button class="profile-tab" data-tab="activity">Recent Activity</button>
                     <button class="profile-tab" data-tab="assignments">Coach Assignments</button>
+                @else
+                    <button class="profile-tab active" data-tab="activity">Recent Activity</button>
                 @endif
             </div>
 
-            <div class="profile-tab-content active" id="activity">
+            @if(strtolower($role) === 'client' && $dashboardData)
+                <div class="profile-tab-content active" id="dashboard">
+                    @include('admin.users.partials.client-dashboard-preview', [
+                        'user' => $user,
+                        'personalFinanceConfidence' => $dashboardData['personalFinanceConfidence'],
+                        'emergencyReadiness' => $dashboardData['emergencyReadiness'],
+                        'investingHabit' => $dashboardData['investingHabit'],
+                        'confidence' => $dashboardData['confidence'],
+                        'journey' => $dashboardData['journey'],
+                        'financialKnowledge' => $dashboardData['financialKnowledge'],
+                        'wealthCards' => $dashboardData['wealthCards'],
+                        'financialSituations' => $dashboardData['financialSituations'],
+                        'investingStatus' => $dashboardData['investingStatus']
+                    ])
+                </div>
+            @endif
+
+            <div class="profile-tab-content {{ strtolower($role) !== 'client' ? 'active' : '' }}" id="activity">
                 <div class="activity-list">
                     @forelse($activities as $activity)
                         <div class="activity-item">
@@ -110,6 +130,8 @@
 
                 </div>
             </div>
+
+
             {{-- START: New Coach Assignments Tab Content --}}
             @if(strtolower($role) === 'client')
                 <div class="profile-tab-content" id="assignments">

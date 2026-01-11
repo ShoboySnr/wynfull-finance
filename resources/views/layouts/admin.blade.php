@@ -119,6 +119,19 @@
             <button class="mark-all-read-btn" id="markAllReadBtn">Mark All as Read</button>
         </div>
     </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-header">
+            <h3 id="infoPanelTitle">Information</h3>
+            <button class="close-info" id="closeInfo">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="info-content" id="infoContent">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
 </div>
 
 <script src="{{ asset('assets/js/main.js') }}"></script>

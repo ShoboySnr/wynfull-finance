@@ -8,6 +8,14 @@ use App\Notifications\NewUserPendingActivation;
 use App\Notifications\YourAccountActivatedNotification;
 use App\Services\Admin\UserAdminService;
 use App\Services\Admin\ViewUserService;
+use App\Services\Onboarding\ComputeAndStoreConfidenceService;
+use App\Services\Onboarding\DebtJourneyService;
+use App\Services\Onboarding\EmergencyReadinessService;
+use App\Services\Onboarding\FinancialKnowledgeService;
+use App\Services\Onboarding\InvestingHabitService;
+use App\Services\Onboarding\PersonalFinanceConfidenceService;
+use App\Services\Onboarding\WealthCardsService;
+use App\Support\OnboardingGoals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +27,14 @@ class UserController extends Controller
 {
     public function __construct(
         private readonly UserAdminService $service,
-        private readonly ViewUserService $viewService
+        private readonly ViewUserService $viewService,
+        private readonly ComputeAndStoreConfidenceService $storeConfidenceService,
+        private readonly DebtJourneyService $debtJourneyService,
+        private readonly EmergencyReadinessService $emergencyReadinessService,
+        private readonly FinancialKnowledgeService $financialKnowledgeService,
+        private readonly InvestingHabitService $investingHabitService,
+        private readonly PersonalFinanceConfidenceService $personalFinanceConfidenceService,
+        private readonly WealthCardsService $wealthCardsService
     )
     {
     }
@@ -168,7 +183,35 @@ class UserController extends Controller
                 'ip'      => $request->ip()
             ])->log('Admin viewed User profile for ' . $user->name);
 
-//        dd($coachAssignments);
+        // Fetch client dashboard data if user is a client
+        $dashboardData = null;
+        if ($user->hasRole('client')) {
+            $personalFinanceConfidence = $this->personalFinanceConfidenceService->forUser($user);
+            $emergencyReadiness = $this->emergencyReadinessService->forUser($user);
+            $investingHabit = $this->investingHabitService->forUser($user);
+            $confidence = $this->storeConfidenceService->forUser($user, persist: false);
+            $journey = $this->debtJourneyService->forUser($user);
+            $financialKnowledge = $this->financialKnowledgeService->forUser($user);
+            
+            $monthlyExpenses = (float) ($user->monthly_expenses ?? 1000);
+            $wealthCards = $this->wealthCardsService->emergencyFundCard($user, $monthlyExpenses);
+            
+            $financialSituations = OnboardingGoals::financialSituationsForUser($user->id);
+            $investingStatus = OnboardingGoals::investingStatusForUser($user->id);
+            
+            $dashboardData = [
+                'personalFinanceConfidence' => $personalFinanceConfidence,
+                'emergencyReadiness' => $emergencyReadiness,
+                'investingHabit' => $investingHabit,
+                'confidence' => $confidence,
+                'journey' => $journey,
+                'financialKnowledge' => $financialKnowledge,
+                'wealthCards' => $wealthCards,
+                'financialSituations' => $financialSituations,
+                'investingStatus' => $investingStatus
+            ];
+        }
+
         return view('admin.users.show', [
             'user'    => $user,
             'coaches' => $coaches,
@@ -177,7 +220,8 @@ class UserController extends Controller
             'totalSessions' => $context['totalSessions'],
             'assignedCoachIds' => $context['assignedCoachIds'],
             'profile' => $user->profile,
-            'coachAssignments' => $coachAssignments
+            'coachAssignments' => $coachAssignments,
+            'dashboardData' => $dashboardData
         ]);
     }
 
