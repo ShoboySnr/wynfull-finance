@@ -31,6 +31,7 @@
                         <option value="pdf" {{ old('type') == 'pdf' ? 'selected' : '' }}>PDF</option>
                         <option value="excel" {{ old('type') == 'excel' ? 'selected' : '' }}>Excel</option>
                         <option value="video" {{ old('type') == 'video' ? 'selected' : '' }}>Video</option>
+                        <option value="assessment" {{ old('type') == 'assessment' ? 'selected' : '' }}>Assessment</option>
                     </select>
                 </div>
 

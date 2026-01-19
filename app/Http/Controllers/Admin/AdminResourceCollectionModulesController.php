@@ -22,7 +22,7 @@ class AdminResourceCollectionModulesController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string'],
-            'type' => ['required', 'in:file,template,word,pdf,excel,video'],
+            'type' => ['required', 'in:file,template,word,pdf,excel,video,assessment'],
             'file' => ['nullable', 'file', 'max:51200'], // 50MB
             'video_link' => ['nullable', 'url'],
             'video_file'   => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/x-msvideo,video/x-matroska', 'max:204800'],
@@ -85,9 +85,10 @@ class AdminResourceCollectionModulesController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string'],
-            'type' => ['required', 'in:file,template,word,pdf,excel,video'],
+            'type' => ['required', 'in:file,template,word,pdf,excel,video,assessment'],
             'file' => ['nullable', 'file', 'max:51200'],
             'video_link' => ['nullable', 'url'],
+            'video_file' => ['nullable', 'file', 'mimes:mp4,mov,avi,wmv', 'max:512000'],
         ]);
 
         if ($request->hasFile('file')) {

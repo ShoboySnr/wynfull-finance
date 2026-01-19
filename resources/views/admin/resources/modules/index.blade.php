@@ -68,6 +68,7 @@
                             'word' => 'fa-file-word',
                             'excel' => 'fa-file-excel',
                             'video' => 'fa-video',
+                            'assessment' => 'fa-clipboard-question',
                             default => 'fa-file',
                         };
                     @endphp
@@ -86,6 +87,11 @@
                             <span class="resource-type">{{ Str::ucfirst($module->type) }}</span>
                         </div>
                         <div class="module-actions">
+                            @if($module->type === 'assessment')
+                                <a href="{{ route('admin.modules.assessments.index', $module) }}" class="btn-primary btn-sm">
+                                    <i class="fas fa-clipboard-question"></i> Manage Questions
+                                </a>
+                            @endif
                             <button class="btn-secondary btn-sm editModuleBtn"
                                     data-id="{{ $module->id }}"
                                     data-title="{{ $module->title }}"
@@ -93,6 +99,7 @@
                                     data-type="{{ $module->type }}"
                                     data-video_link="{{ $module->video_link }}"
                                     data-file_name="{{ $module->file_name }}"
+                                    data-time_limit_minutes="{{ $module->time_limit_minutes }}"
                                     data-action="{{ route('admin.resources.collection.modules.update', [$collection, $module]) }}">
                                 <i class="fas fa-edit"></i> Edit
                             </button>

@@ -21,8 +21,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleModuleFields = (modalOrForm, selectedType) => {
         const fileField = modalOrForm.querySelector('.file-field-container');
         const videoField = modalOrForm.querySelector('.video-link-field-container');
+        const timeLimitField = modalOrForm.querySelector('.time-limit-field-container');
         const fileInput = modalOrForm.querySelector('.file-input');
         const videoInput = modalOrForm.querySelector('.video-link-field-container input');
+
+        // Handle time limit field for assessments
+        if (timeLimitField) {
+            timeLimitField.style.display = selectedType === 'assessment' ? 'block' : 'none';
+        }
 
         if (fileField && videoField && fileInput && videoInput) {
             if (selectedType === 'video') {
@@ -33,6 +39,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 fileInput.value = ''; // Clear file input if switching to video
                 const fileDisplay = fileField.querySelector('.file-name-display');
                 if(fileDisplay) fileDisplay.textContent = '';
+            } else if (selectedType === 'assessment') {
+                // Assessments don't need file or video fields
+                videoField.style.display = 'none';
+                fileField.style.display = 'none';
+                videoInput.required = false;
+                fileInput.required = false;
             } else if (selectedType) { // Any other type requires a file
                 videoField.style.display = 'none';
                 fileField.style.display = 'block';
@@ -94,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const descriptionInput = document.getElementById('edit_module_description');
                 const typeSelect = document.getElementById('edit_module_type');
                 const videoLinkInput = document.getElementById('edit_module_video_link');
+                const timeLimitInput = document.getElementById('edit_module_time_limit');
                 const currentFileNameSpan = document.getElementById('edit_current_file_name');
 
                 // Populate common fields
@@ -101,6 +114,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 descriptionInput.value = editButton.dataset.description || '';
                 typeSelect.value = editButton.dataset.type || '';
                 videoLinkInput.value = editButton.dataset.video_link || '';
+                if (timeLimitInput) {
+                    timeLimitInput.value = editButton.dataset.time_limit_minutes || '';
+                }
 
                 // Update current file name display
                 currentFileNameSpan.textContent = editButton.dataset.file_name || 'None';

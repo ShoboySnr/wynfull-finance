@@ -176,6 +176,12 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::post('modules/{resourceModule}/complete', [ModuleCompletionController::class, 'store'])
         ->name('client.modules.complete');
+
+    // Assessment routes
+    Route::get('resources/{resourceCollection}/assessments/{resourceModule}', [\App\Http\Controllers\Client\AssessmentController::class, 'show'])->name('client.assessments.show');
+    Route::post('resources/{resourceCollection}/assessments/{resourceModule}/submit', [\App\Http\Controllers\Client\AssessmentController::class, 'submit'])->name('client.assessments.submit');
+    Route::get('resources/{resourceCollection}/assessments/{resourceModule}/results/{submission}', [\App\Http\Controllers\Client\AssessmentController::class, 'results'])->name('client.assessments.results');
+    Route::get('resources/{resourceCollection}/assessments/{resourceModule}/history', [\App\Http\Controllers\Client\AssessmentController::class, 'history'])->name('client.assessments.history');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -209,6 +215,17 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('resources/{resourceCollection}/modules', [AdminResourceCollectionModulesController::class, 'store'])->name('resources.collection.modules.store');
     Route::put('resources/{resourceCollection}/modules/{resourceModule}', [AdminResourceCollectionModulesController::class, 'update'])->name('resources.collection.modules.update');
     Route::delete('resources/{resourceCollection}/modules/{resourceModule}', [AdminResourceCollectionModulesController::class, 'destroy'])->name('resources.collection.modules.destroy');
+
+    // Assessment Question Management
+    Route::get('modules/{module}/assessments', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'index'])->name('modules.assessments.index');
+    Route::post('modules/{module}/assessments', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'store'])->name('modules.assessments.store');
+    Route::put('modules/{module}/assessments/{question}', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'update'])->name('modules.assessments.update');
+    Route::delete('modules/{module}/assessments/{question}', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'destroy'])->name('modules.assessments.destroy');
+    Route::post('modules/{module}/assessments/reorder', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'reorder'])->name('modules.assessments.reorder');
+    
+    // Assessment Results & Submissions
+    Route::get('modules/{module}/assessments/results', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'results'])->name('modules.assessments.results');
+    Route::get('modules/{module}/assessments/submissions/{submission}', [\App\Http\Controllers\Admin\AssessmentQuestionController::class, 'viewSubmission'])->name('modules.assessments.submissions.view');
 
     Route::post('/resource-modules/{module}/approve', [ResourceModuleApprovalController::class, 'approve'])->name('resource-modules.approve');
     Route::post('/resource-modules/{module}/reject', [ResourceModuleApprovalController::class, 'reject'])->name('resource-modules.reject');

@@ -329,7 +329,6 @@ body {
 
 .page-content {
     padding: 2rem;
-    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -8489,6 +8488,13 @@ button.join-call {
     opacity: 0.6;
     /* pointer-events: none; Remove this if using disabled buttons */
 }
+
+/* Assessment modules in locked collections should appear fully accessible */
+.phase-card.locked .module-item:has(.resource-tag.assessment),
+.phase-card.locked .module-item:not(.locked) {
+    opacity: 1 !important;
+}
+
 .phase-card.locked .phase-header,
 .phase-card.locked .phase-progress {
     /* Optional: Slightly muted background */

@@ -35,7 +35,7 @@
                         $completedModules = $collection->modules->filter(fn($module) => !$module->completions->isEmpty())->count();
                         $completionPercentage = ($totalModules > 0) ? round(($completedModules / $totalModules) * 100) : 0;
                         $isCollectionComplete = ($totalModules > 0 && $completedModules === $totalModules);
-                        $isLocked = !$previousCollectionComplete;
+                        $isLocked = false;
 
                         $statusClass = 'locked';
                         $statusIcon = 'fa-lock';
@@ -52,7 +52,7 @@
                         }
                     @endphp
 
-                    <div class="phase-card {{ $isLocked ? 'locked' : '' }} {{ $statusClass }}"
+                    <div class="phase-card {{ $statusClass }}"
                          data-collection-id="{{ $collection->id }}">
                         <div class="phase-header">
                             <div class="phase-icon">
@@ -74,21 +74,25 @@
                             </div>
                             <span class="progress-text">
                                 @if($isLocked)
-                                    Complete previous phase to unlock
+                                    @php
+                                        $hasAssessments = $collection->modules->contains('type', 'assessment');
+                                    @endphp
+                                    Complete previous phase to unlock{{ $hasAssessments ? ' (Assessments available)' : '' }}
                                 @else
                                     {{ $completedModules }}/{{ $totalModules }} modules • {{ $completionPercentage }}% complete
                                 @endif
                             </span>
                         </div>
 
-                        <div class="phase-modules {{ $isLocked ? 'locked' : '' }}">
+                        <div class="phase-modules">
                             @forelse ($collection->modules as $module)
                                 @php
                                     $isModuleComplete = !$module->completions->isEmpty();
                                     $moduleIconClass = match ($module->type) {
                                         'template' => 'fa-file-alt', 'pdf' => 'fa-file-pdf',
                                         'word' => 'fa-file-word', 'excel' => 'fa-file-excel',
-                                        'video' => 'fa-video', default => 'fa-file',
+                                        'video' => 'fa-video', 'assessment' => 'fa-clipboard-check',
+                                        default => 'fa-file',
                                     };
                                     $linkUrl = '#';
                                     if ($module->type === 'video' && $module->video_link) {
@@ -96,8 +100,14 @@
                                     } elseif ($module->file_path) {
                                         $linkUrl = asset('storage/' . $module->file_path);
                                     }
+                                    // Assessments are never locked - clients can access them anytime
+                                    $isModuleLocked = $isLocked && $module->type !== 'assessment';
+                                    $moduleClasses = $isModuleComplete ? 'completed' : '';
+                                    if ($isModuleLocked) {
+                                        $moduleClasses .= ' locked';
+                                    }
                                 @endphp
-                                <div class="module-item {{ $isModuleComplete ? 'completed' : '' }}"
+                                <div class="module-item {{ $moduleClasses }}"
                                      data-module-id="{{ $module->id }}">
                                     <div class="module-info">
                                         <i class="fas {{ $moduleIconClass }} module-type-icon"></i>
@@ -106,8 +116,13 @@
                                     </div>
                                     <div class="module-resources">
                                         <span class="resource-tag {{ strtolower($module->type) }}">{{ Str::ucfirst($module->type) }}</span>
+                                        @if($isLocked && $module->type === 'assessment')
+                                            <span class="resource-tag" style="background: #2EB67D; color: white; margin-left: 0.5rem;">
+                                                <i class="fas fa-unlock"></i> Available
+                                            </span>
+                                        @endif
                                     </div>
-                                    @if($isLocked)
+                                    @if($isModuleLocked)
                                         <button class="module-btn locked" disabled>Locked</button>
                                     @else
                                         <a href="{{ route('resources.learn', ['resourceCollection' => $collection, 'resourceModule' => $module]) }}"

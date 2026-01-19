@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const videoSourceField = modalOrForm.querySelector('.video-source-field-container');
         const videoLinkField = modalOrForm.querySelector('.video-link-field-container');
         const videoUploadField = modalOrForm.querySelector('.video-upload-field-container');
+        const timeLimitField = modalOrForm.querySelector('.time-limit-field-container');
 
         // Inputs (to manage required attribute)
         const fileInput = modalOrForm.querySelector('.file-field-container .file-input');
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (videoSourceField) videoSourceField.style.display = 'none';
         if (videoLinkField) videoLinkField.style.display = 'none';
         if (videoUploadField) videoUploadField.style.display = 'none';
+        if (timeLimitField) timeLimitField.style.display = 'none';
 
         if (fileInput) fileInput.required = false;
         if (videoLinkInput) videoLinkInput.required = false;
@@ -65,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Clear standard file input value if switching to video
             if(fileInput) fileInput.value = '';
 
+        } else if (selectedType === 'assessment') {
+            // Assessment type: Show time limit field, no file upload needed
+            if (timeLimitField) timeLimitField.style.display = 'block';
+            
         } else if (selectedType) {
             // Template, Word, PDF, Excel -> Show Standard File Upload
             if (fileField) fileField.style.display = 'block';
@@ -127,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const descriptionInput = document.getElementById('edit_module_description');
                 const typeSelect = document.getElementById('edit_module_type');
                 const videoLinkInput = document.getElementById('edit_module_video_link');
+                const timeLimitInput = document.getElementById('edit_module_time_limit');
                 const currentFileNameSpan = document.getElementById('edit_current_file_name');
 
                 // Populate form
@@ -137,6 +144,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Handle Video Link population
                 if(videoLinkInput) videoLinkInput.value = editButton.dataset.video_link || '';
 
+                // Handle Time Limit population
+                if(timeLimitInput) timeLimitInput.value = editButton.dataset.time_limit_minutes || '';
+
                 // Handle File Name display
                 if(currentFileNameSpan) currentFileNameSpan.textContent = editButton.dataset.file_name || 'None';
 
@@ -144,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Set initial state of fields
                 toggleModuleFields(editModuleModal, typeSelect.value);
-
                 openModal(editModuleModal);
             }
         });

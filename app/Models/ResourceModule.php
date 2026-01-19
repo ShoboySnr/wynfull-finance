@@ -95,4 +95,14 @@ class ResourceModule extends Model
             ->withPivot(['assigned_by','assigned_at'])
             ->withTimestamps();
     }
+
+    public function assessmentQuestions()
+    {
+        return $this->hasMany(AssessmentQuestion::class)->orderBy('sort_order');
+    }
+
+    public function assessmentSubmissions()
+    {
+        return $this->hasMany(AssessmentSubmission::class);
+    }
 }

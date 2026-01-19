@@ -25,13 +25,16 @@
                 </div>
                 <div class="form-group">
                     <label for="edit_module_type">Module Type</label>
-                    <select id="edit_module_type" name="type" class="form-select module-type-select" required>
+                    <select id="edit_module_type" name="type" class="form-select module-type-select" required disabled style="cursor: not-allowed;">
                         <option value="template" {{ old('type') == 'template' ? 'selected' : '' }}>Template</option>
                         <option value="word" {{ old('type') == 'word' ? 'selected' : '' }}>Word Document</option>
                         <option value="pdf" {{ old('type') == 'pdf' ? 'selected' : '' }}>PDF</option>
                         <option value="excel" {{ old('type') == 'excel' ? 'selected' : '' }}>Excel</option>
                         <option value="video" {{ old('type') == 'video' ? 'selected' : '' }}>Video Link</option>
+                        <option value="assessment" {{ old('type') == 'assessment' ? 'selected' : '' }}>Assessment</option>
                     </select>
+                    <input type="hidden" id="edit_module_type_hidden" name="type" value="">
+                    <small class="form-help">Module type cannot be changed after creation</small>
                 </div>
 
                 {{-- File Upload Field (Conditional) --}}

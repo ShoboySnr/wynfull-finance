@@ -122,6 +122,11 @@ class ResourceLibraryController extends Controller
 
     public function learn(ResourceCollection $resourceCollection, ResourceModule $resourceModule)
     {
+        // If this is an assessment module, redirect to the assessment taking page
+        if ($resourceModule->type === 'assessment') {
+            return redirect()->route('client.assessments.show', [$resourceCollection->id, $resourceModule->id]);
+        }
+
         $collection = $resourceCollection->load('modules');
         $modules = $collection->modules->values(); // reindex 0..n-1
 
