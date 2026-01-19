@@ -126,7 +126,6 @@
                                         <button class="module-btn locked" disabled>Locked</button>
                                     @else
                                         <a href="{{ route('resources.learn', ['resourceCollection' => $collection, 'resourceModule' => $module]) }}"
-                                           target="_blank"
                                            class="module-btn {{ $isModuleComplete ? 'secondary' : 'primary' }} mark-complete-btn"
                                            data-module-id="{{ $module->id }}"
                                            data-type="{{ $module->type }}"
@@ -180,7 +179,6 @@
                             </div>
                         </div>
                         <a href="{{ $linkUrl }}"
-                           target="_blank"
                            class="tool-download-btn mark-complete-btn {{ $isModuleComplete ? 'secondary' : 'primary' }}"
                            data-module-id="{{ $module->id }}"
                            data-type="{{ $module->type }}"

@@ -181,7 +181,6 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::get('resources/{resourceCollection}/assessments/{resourceModule}', [\App\Http\Controllers\Client\AssessmentController::class, 'show'])->name('client.assessments.show');
     Route::post('resources/{resourceCollection}/assessments/{resourceModule}/submit', [\App\Http\Controllers\Client\AssessmentController::class, 'submit'])->name('client.assessments.submit');
     Route::get('resources/{resourceCollection}/assessments/{resourceModule}/results/{submission}', [\App\Http\Controllers\Client\AssessmentController::class, 'results'])->name('client.assessments.results');
-    Route::get('resources/{resourceCollection}/assessments/{resourceModule}/history', [\App\Http\Controllers\Client\AssessmentController::class, 'history'])->name('client.assessments.history');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

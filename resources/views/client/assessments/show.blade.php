@@ -50,7 +50,7 @@
             <h3><i class="fas fa-history"></i> Previous Submissions</h3>
             <p>You have completed this assessment {{ $previousSubmissions->count() }} {{ $previousSubmissions->count() === 1 ? 'time' : 'times' }}.</p>
             <div class="submissions-list">
-                @foreach($previousSubmissions->take(3) as $submission)
+                @foreach($previousSubmissions as $submission)
                     <a href="{{ route('client.assessments.results', [$resourceCollection, $module, $submission]) }}" class="submission-item">
                         <i class="fas fa-file-alt"></i>
                         <span>{{ $submission->submitted_at->format('M d, Y \a\t g:i A') }}</span>
@@ -58,11 +58,6 @@
                     </a>
                 @endforeach
             </div>
-            @if($previousSubmissions->count() > 3)
-                <a href="{{ route('client.assessments.history', [$resourceCollection, $module]) }}" class="view-all-link">
-                    View all {{ $previousSubmissions->count() }} submissions <i class="fas fa-arrow-right"></i>
-                </a>
-            @endif
         </div>
     @endif
 

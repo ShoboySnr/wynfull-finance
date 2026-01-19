@@ -41,7 +41,7 @@ class AssessmentController extends Controller
     public function submit(Request $request, ResourceCollection $resourceCollection, ResourceModule $resourceModule)
     {
         abort_unless($resourceModule->type === 'assessment', 404);
-        abort_unless($resourceModule->resource_collection_id === $resourceCollection->id, 404);
+        abort_unless($resourceModule->resource_collection_id == $resourceCollection->id, 404);
 
         $data = $request->validate([
             'answers' => ['required', 'array'],
@@ -57,11 +57,18 @@ class AssessmentController extends Controller
                 'submitted_at' => now(),
             ]);
 
+            $answersCreated = 0;
+
             // Process each answer
             foreach ($data['answers'] as $questionId => $answer) {
+                // Skip unanswered questions
+                if (empty($answer) && $answer !== '0') {
+                    continue;
+                }
+
                 $question = AssessmentQuestion::with('options')->find($questionId);
                 
-                if (!$question || $question->resource_module_id !== $resourceModule->id) {
+                if (!$question || $question->resource_module_id != $resourceModule->id) {
                     continue;
                 }
 
@@ -82,12 +89,14 @@ class AssessmentController extends Controller
                 }
 
                 // Create answer record
-                AssessmentAnswer::create([
+                $createdAnswer = AssessmentAnswer::create([
                     'assessment_submission_id' => $submission->id,
                     'assessment_question_id' => $question->id,
                     'assessment_question_option_id' => $selectedOptionId,
                     'answer_text' => $answerText,
                 ]);
+
+                $answersCreated++;
             }
 
             // Mark module as complete (first submission counts as completion)
@@ -116,9 +125,9 @@ class AssessmentController extends Controller
     public function results(ResourceCollection $resourceCollection, ResourceModule $resourceModule, AssessmentSubmission $submission)
     {
         abort_unless($resourceModule->type === 'assessment', 404);
-        abort_unless($resourceModule->resource_collection_id === $resourceCollection->id, 404);
-        abort_unless($submission->resource_module_id === $resourceModule->id, 404);
-        abort_unless($submission->user_id === auth()->id(), 403);
+        abort_unless($resourceModule->resource_collection_id == $resourceCollection->id, 404);
+        abort_unless($submission->resource_module_id == $resourceModule->id, 404);
+        abort_unless($submission->user_id == auth()->id(), 403);
 
         $submission->load(['answers.question.options', 'answers.selectedOption']);
 
@@ -126,23 +135,6 @@ class AssessmentController extends Controller
             'resourceCollection' => $resourceCollection,
             'module' => $resourceModule,
             'submission' => $submission,
-        ]);
-    }
-
-    public function history(ResourceCollection $resourceCollection, ResourceModule $resourceModule)
-    {
-        abort_unless($resourceModule->type === 'assessment', 404);
-        abort_unless($resourceModule->resource_collection_id === $resourceCollection->id, 404);
-
-        $submissions = AssessmentSubmission::where('resource_module_id', $resourceModule->id)
-            ->where('user_id', auth()->id())
-            ->orderBy('submitted_at', 'desc')
-            ->paginate(10);
-
-        return view('client.assessments.history', [
-            'resourceCollection' => $resourceCollection,
-            'module' => $resourceModule,
-            'submissions' => $submissions,
         ]);
     }
 }
