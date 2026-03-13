@@ -15,6 +15,9 @@
     @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <!-- Prevent flash of wrong theme -->
     <script>
         (function() {

@@ -203,6 +203,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/users/{user}/deactivate', UserDeactivationController::class)->name('users.deactivate');
 
     Route::get('schedules', [AdminScheduleController::class, 'index'])->name('schedules');
+    Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings');
+    Route::post('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
     Route::get('resources', [AdminResourcesController::class, 'index'])->name('resources');
     Route::post('resources', [AdminResourceCollectionController::class, 'store'])->name('resources.collection.store');
     Route::put('resources/{resourceCollection}', [AdminResourceCollectionController::class, 'update'])->name('resources.collection.update');

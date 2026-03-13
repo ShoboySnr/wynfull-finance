@@ -13,9 +13,10 @@ class ClientOnboardingController extends Controller
     {
         $user = $request->user();
 
-        if ($user->onboarding_completed) {
-            return response()->json(['ok' => true, 'already_completed' => true]);
-        }
+        // Allow multiple submissions for tracking progress over time
+        // if ($user->onboarding_completed) {
+        //     return response()->json(['ok' => true, 'already_completed' => true]);
+        // }
 
         $validated = $request->validate([
             'financial_situation' => ['required', 'array', 'min:1'],

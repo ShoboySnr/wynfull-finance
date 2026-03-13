@@ -14,6 +14,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\ClientOnboarding;
 
 class User extends Authenticatable
 {
@@ -180,5 +181,36 @@ class User extends Authenticatable
             'user_id',
             'meeting_id'
         )->withPivot(['status','responded_at'])->withTimestamps();
+    }
+
+    public function clientOnboardings(): HasMany
+    {
+        return $this->hasMany(ClientOnboarding::class, 'user_id');
+    }
+
+    public function shouldShowOnboarding(): bool
+    {
+        // Show onboarding if never completed OR if global schedule is set and has passed
+        if (!$this->onboarding_completed) {
+            return true;
+        }
+
+        // Check global onboarding schedule from settings
+        $globalOnboardingDate = Setting::get('next_onboarding_date');
+        
+        if ($globalOnboardingDate && now()->gte($globalOnboardingDate)) {
+            // Check if user has already submitted an onboarding after the scheduled date
+            $latestOnboarding = $this->clientOnboardings()
+                ->where('completed_at', '>=', $globalOnboardingDate)
+                ->latest('completed_at')
+                ->first();
+            
+            // Only show if they haven't submitted since the scheduled date
+            if (!$latestOnboarding) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

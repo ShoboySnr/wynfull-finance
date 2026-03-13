@@ -36,6 +36,12 @@
                 <span>Users</span>
             </a>
         </li>
+        <li class="nav-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+            <a href="{{ route('admin.settings') }}" class="nav-link">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
 
         <!-- Logout Button -->
         <li class="nav-item nav-item-logout">

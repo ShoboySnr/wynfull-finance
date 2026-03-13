@@ -99,7 +99,14 @@
                         'financialKnowledge' => $dashboardData['financialKnowledge'],
                         'wealthCards' => $dashboardData['wealthCards'],
                         'financialSituations' => $dashboardData['financialSituations'],
-                        'investingStatus' => $dashboardData['investingStatus']
+                        'investingStatus' => $dashboardData['investingStatus'],
+                        'onboardings' => $dashboardData['onboardings'],
+                        'budgetConfidenceChart' => $dashboardData['budgetConfidenceChart'],
+                        'personalFinanceConfidenceChart' => $dashboardData['personalFinanceConfidenceChart'],
+                        'debtKnowledgeChart' => $dashboardData['debtKnowledgeChart'],
+                        'investingKnowledgeChart' => $dashboardData['investingKnowledgeChart'],
+                        'emergencyReadinessChart' => $dashboardData['emergencyReadinessChart'],
+                        'investingHabitChart' => $dashboardData['investingHabitChart']
                     ])
                 </div>
             @endif
@@ -223,6 +230,7 @@
         @push('scripts')
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
+                    // Assign Coach Modal
                     const assignCoachBtn = document.getElementById('assignCoachBtn');
                     const assignCoachModal = document.getElementById('assignCoachModal');
                     const closeBtn = document.getElementById('closeAssignCoachModal');

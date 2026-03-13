@@ -72,15 +72,152 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="confidence-circle">
-                        @php
-                            $score = $confidence['score'] ?? 0;
-                            $degree = round($score * 3.6); // 1% = 3.6 degrees
-                        @endphp
-                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">
-                            <span class="confidence-value">{{ $score }}</span>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="budgetConfidenceChart"></canvas>
                         </div>
-                    </div>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="budgetConfidencePrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="budgetConfidencePageInfo" style="font-size: 0.875rem; color: var(--text-secondary); padding-left: 0.5rem; padding-right: 0.5rem;">Page 1</span>
+                            <button id="budgetConfidenceNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('budgetConfidenceChart');
+                            if (!ctx) return;
+
+                            const allData = @json($budgetConfidenceChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+                            
+                            const isDarkMode = document.body.getAttribute('data-theme') === 'dark' || 
+                                             document.documentElement.getAttribute('data-theme') === 'dark';
+                            const barColor = isDarkMode ? 'rgba(100, 200, 255, 0.8)' : 'rgba(14, 77, 164, 0.8)';
+                            const barBorderColor = isDarkMode ? 'rgba(100, 200, 255, 1)' : 'rgba(14, 77, 164, 1)';
+                            const firstSubmissionColor = isDarkMode ? 'rgba(251, 191, 36, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                            const firstSubmissionBorderColor = isDarkMode ? 'rgba(251, 191, 36, 1)' : 'rgba(245, 158, 11, 1)';
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionColor : barColor
+                                );
+                                const borderColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionBorderColor : barBorderColor
+                                );
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Budget Confidence Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 0) level = 'Not Set';
+                                                        else if (value === 25) level = 'Not Confident';
+                                                        else if (value === 50) level = 'Somewhat Confident';
+                                                        else if (value === 75) level = 'Confident';
+                                                        else if (value === 100) level = 'Very Confident';
+                                                        const item = pageData[context.dataIndex];
+                                                        const dateInfo = item.isFirst && item.fullDate ? ' (' + item.fullDate + ')' : '';
+                                                        return level + ' - ' + value + '%' + dateInfo;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                document.getElementById('budgetConfidencePageInfo').textContent = 
+                                    `Page ${page + 1} of ${totalPages}`;
+                                
+                                document.getElementById('budgetConfidencePrev').disabled = page === 0;
+                                document.getElementById('budgetConfidencePrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('budgetConfidencePrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                
+                                document.getElementById('budgetConfidenceNext').disabled = page >= totalPages - 1;
+                                document.getElementById('budgetConfidenceNext').style.opacity = page >= totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('budgetConfidenceNext').style.cursor = page >= totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('budgetConfidencePrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('budgetConfidenceNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div class="confidence-circle">
+                            @php
+                                $score = $confidence['score'] ?? 0;
+                                $degree = round($score * 3.6);
+                            @endphp
+                            <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $degree }}deg, #E5E7EB {{ $degree }}deg 360deg)">
+                                <span class="confidence-value">{{ $score }}</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -92,15 +229,150 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="confidence-circle">
-                        @php
-                            $pfScore = $personalFinanceConfidence['score'] ?? 0;
-                            $pfDegree = round($pfScore * 3.6); // 1% = 3.6 degrees
-                        @endphp
-                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $pfDegree }}deg, #E5E7EB {{ $pfDegree }}deg 360deg)">
-                            <span class="confidence-value">{{ $pfScore }}</span>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="personalFinanceConfidenceChart"></canvas>
                         </div>
-                    </div>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="pfConfidencePrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="pfConfidencePageInfo" style="font-size: 0.875rem; color: var(--text-secondary); padding-left: 0.5rem; padding-right: 0.5rem;">Page 1</span>
+                            <button id="pfConfidenceNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('personalFinanceConfidenceChart');
+                            if (!ctx) return;
+
+                            const allData = @json($personalFinanceConfidenceChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+                            
+                            const isDarkMode = document.body.getAttribute('data-theme') === 'dark' || 
+                                             document.documentElement.getAttribute('data-theme') === 'dark';
+                            const barColor = isDarkMode ? 'rgba(100, 200, 255, 0.8)' : 'rgba(14, 77, 164, 0.8)';
+                            const barBorderColor = isDarkMode ? 'rgba(100, 200, 255, 1)' : 'rgba(14, 77, 164, 1)';
+                            const firstSubmissionColor = isDarkMode ? 'rgba(251, 191, 36, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                            const firstSubmissionBorderColor = isDarkMode ? 'rgba(251, 191, 36, 1)' : 'rgba(245, 158, 11, 1)';
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionColor : barColor
+                                );
+                                const borderColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionBorderColor : barBorderColor
+                                );
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Personal Finance Confidence Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 25) level = 'Not Confident';
+                                                        else if (value === 50) level = 'Somewhat Confident';
+                                                        else if (value === 75) level = 'Confident';
+                                                        else if (value === 100) level = 'Very Confident';
+                                                        const isFirst = pageData[context.dataIndex].isFirst;
+                                                        return level + ' (' + value + '%)' + (isFirst ? ' 🌟 First Submission' : '');
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                document.getElementById('pfConfidencePageInfo').textContent = 
+                                    `Page ${page + 1} of ${totalPages}`;
+                                
+                                document.getElementById('pfConfidencePrev').disabled = page === 0;
+                                document.getElementById('pfConfidencePrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('pfConfidencePrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                
+                                document.getElementById('pfConfidenceNext').disabled = page >= totalPages - 1;
+                                document.getElementById('pfConfidenceNext').style.opacity = page >= totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('pfConfidenceNext').style.cursor = page >= totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('pfConfidencePrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('pfConfidenceNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div class="confidence-circle">
+                            @php
+                                $pfScore = $personalFinanceConfidence['score'] ?? 0;
+                                $pfDegree = round($pfScore * 3.6);
+                            @endphp
+                            <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $pfDegree }}deg, #E5E7EB {{ $pfDegree }}deg 360deg)">
+                                <span class="confidence-value">{{ $pfScore }}</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="metric-card debt-progress-card">
@@ -110,18 +382,151 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="debt-status">
-                        <div class="debt-icon">
-                            <i class="fas fa-chart-line"></i>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="debtKnowledgeChart"></canvas>
                         </div>
-                        <div class="debt-content">
-                            <span class="debt-text">{{ $journey['label'] ?? '' }}</span>
-                            <div class="debt-progress-bar">
-                                <div class="debt-progress-fill" style="width: {{ $journey['score'] ?? 0 }}%"></div>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="debtKnowledgePrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="debtKnowledgePageInfo" style="font-size: 0.875rem; color: var(--text-secondary); padding-left: 0.5rem; padding-right: 0.5rem;">Page 1</span>
+                            <button id="debtKnowledgeNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('debtKnowledgeChart');
+                            if (!ctx) return;
+
+                            const allData = @json($debtKnowledgeChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+                            
+                            const isDarkMode = document.body.getAttribute('data-theme') === 'dark' || 
+                                             document.documentElement.getAttribute('data-theme') === 'dark';
+                            const firstSubmissionColor = isDarkMode ? 'rgba(251, 191, 36, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                            const firstSubmissionBorderColor = isDarkMode ? 'rgba(251, 191, 36, 1)' : 'rgba(245, 158, 11, 1)';
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionColor : item.backgroundColor
+                                );
+                                const borderColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionBorderColor : item.borderColor
+                                );
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Debt Knowledge Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 25) level = 'No Knowledge';
+                                                        else if (value === 50) level = 'Learning Basics';
+                                                        else if (value === 75) level = 'Applying Strategies';
+                                                        else if (value === 100) level = 'Expert Level';
+                                                        const isFirst = pageData[context.dataIndex].isFirst;
+                                                        return level + ' (' + value + '%)' + (isFirst ? ' 🌟 First Submission' : '');
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                document.getElementById('debtKnowledgePageInfo').textContent = 
+                                    `Page ${page + 1} of ${totalPages}`;
+                                
+                                document.getElementById('debtKnowledgePrev').disabled = page === 0;
+                                document.getElementById('debtKnowledgePrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('debtKnowledgePrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                
+                                document.getElementById('debtKnowledgeNext').disabled = page >= totalPages - 1;
+                                document.getElementById('debtKnowledgeNext').style.opacity = page >= totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('debtKnowledgeNext').style.cursor = page >= totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('debtKnowledgePrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('debtKnowledgeNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div class="debt-status">
+                            <div class="debt-icon">
+                                <i class="fas fa-chart-line"></i>
                             </div>
-                            <span class="debt-subtitle">{{ $journey['badge']['text'] ?? '' }}</span>
+                            <div class="debt-content">
+                                <span class="debt-text">{{ $journey['label'] ?? '' }}</span>
+                                <div class="debt-progress-bar">
+                                    <div class="debt-progress-fill" style="width: {{ $journey['score'] ?? 0 }}%"></div>
+                                </div>
+                                <span class="debt-subtitle">{{ $journey['badge']['text'] ?? '' }}</span>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="metric-card knowledge-card">
@@ -131,18 +536,172 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="knowledge-content">
-                        <div class="knowledge-level">
-                            <div class="knowledge-icon">
-                                <i class="fas fa-brain"></i>
-                            </div>
-                            <div class="knowledge-info">
-                                <span class="knowledge-text">{{ $financialKnowledge['experience_label'] ?? '' }}</span>
-                                <x-knowledge-dots :score="$financialKnowledge['score'] ?? 0"/>
-                                <span class="knowledge-subtitle">Growing your expertise</span>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="investingKnowledgeChart"></canvas>
+                        </div>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="investingKnowledgePrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="investingKnowledgePageInfo" style="font-size: 0.875rem; color: var(--text-secondary); padding-left: 0.5rem; padding-right: 0.5rem;">Page 1</span>
+                            <button id="investingKnowledgeNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('investingKnowledgeChart');
+                            if (!ctx) return;
+
+                            const allData = @json($investingKnowledgeChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+                            
+                            const isDarkMode = document.body.getAttribute('data-theme') === 'dark' || 
+                                             document.documentElement.getAttribute('data-theme') === 'dark';
+                            const textColor = isDarkMode ? '#E5E7EB' : '#374151';
+                            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                            const firstSubmissionColor = isDarkMode ? 'rgba(251, 191, 36, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                            const firstSubmissionBorderColor = isDarkMode ? 'rgba(251, 191, 36, 1)' : 'rgba(245, 158, 11, 1)';
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionColor : item.backgroundColor
+                                );
+                                const borderColors = pageData.map(item => 
+                                    item.isFirst ? firstSubmissionBorderColor : item.borderColor
+                                );
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Investing Knowledge Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 1) level = 'Not Familiar Yet';
+                                                        else if (value === 2) level = 'Familiar with Basics';
+                                                        else if (value === 4) level = 'Comfortable Applying';
+                                                        else if (value === 5) level = 'Advanced Understanding';
+                                                        const isFirst = pageData[context.dataIndex].isFirst;
+                                                        return level + ' (Level ' + value + ')' + (isFirst ? ' 🌟 First Submission' : '');
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            x: {
+                                                ticks: {
+                                                    color: textColor,
+                                                    font: {
+                                                        size: 12
+                                                    }
+                                                },
+                                                grid: {
+                                                    color: gridColor
+                                                }
+                                            },
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 5,
+                                                ticks: {
+                                                    stepSize: 1,
+                                                    color: textColor,
+                                                    font: {
+                                                        size: 12
+                                                    },
+                                                    callback: function(value) {
+                                                        return 'Level ' + value;
+                                                    }
+                                                },
+                                                grid: {
+                                                    color: gridColor
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                document.getElementById('investingKnowledgePageInfo').textContent = 
+                                    `Page ${page + 1} of ${totalPages}`;
+                                
+                                document.getElementById('investingKnowledgePrev').disabled = page === 0;
+                                document.getElementById('investingKnowledgePrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('investingKnowledgePrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                
+                                document.getElementById('investingKnowledgeNext').disabled = page >= totalPages - 1;
+                                document.getElementById('investingKnowledgeNext').style.opacity = page >= totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('investingKnowledgeNext').style.cursor = page >= totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('investingKnowledgePrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('investingKnowledgeNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div class="knowledge-content">
+                            <div class="knowledge-level">
+                                <div class="knowledge-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="knowledge-info">
+                                    <span class="knowledge-text">{{ $financialKnowledge['experience_label'] ?? '' }}</span>
+                                    <x-knowledge-dots :score="$financialKnowledge['score'] ?? 0"/>
+                                    <span class="knowledge-subtitle">Growing your expertise</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="metric-card emergency-fund-card">
@@ -152,20 +711,159 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="confidence-circle">
-                        @php
-                            $erScore = $emergencyReadiness['score'] ?? 0;
-                            $erDegree = round($erScore * 3.6); // 1% = 3.6 degrees
-                        @endphp
-                        <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $erDegree }}deg, #E5E7EB {{ $erDegree }}deg 360deg)">
-                            <span class="confidence-value">{{ $erScore }}</span>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="emergencyReadinessChart"></canvas>
                         </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 10px;">
-                        <span class="badge badge-{{ $emergencyReadiness['badge']['style'] ?? 'secondary' }}">
-                            {{ $emergencyReadiness['badge']['text'] ?? 'Not Set' }}
-                        </span>
-                    </div>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="emergencyReadinessPrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="emergencyReadinessPageInfo" style="font-size: 0.875rem; color: var(--text-secondary); padding-left: 0.5rem; padding-right: 0.5rem;">Page 1</span>
+                            <button id="emergencyReadinessNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('emergencyReadinessChart');
+                            if (!ctx) return;
+
+                            const allData = @json($emergencyReadinessChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+                            
+                            const isDarkMode = document.body.getAttribute('data-theme') === 'dark' || 
+                                             document.documentElement.getAttribute('data-theme') === 'dark';
+                            const firstSubmissionColor = isDarkMode ? 'rgba(251, 191, 36, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+                            const firstSubmissionBorderColor = isDarkMode ? 'rgba(251, 191, 36, 1)' : 'rgba(245, 158, 11, 1)';
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => item.backgroundColor);
+                                const borderColors = pageData.map(item => item.borderColor);
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Emergency Readiness Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 25) level = 'Not Prepared';
+                                                        else if (value === 50) level = 'Building Readiness';
+                                                        else if (value === 75) level = 'Well Prepared';
+                                                        else if (value === 100) level = 'Fully Prepared';
+                                                        const item = pageData[context.dataIndex];
+                                                        const dateInfo = item.isFirst && item.fullDate ? ' (' + item.fullDate + ')' : '';
+                                                        return level + ' - ' + value + '%' + dateInfo;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
+                                            },
+                                            x: {
+                                                ticks: {
+                                                    font: function(context) {
+                                                        const item = pageData[context.index];
+                                                        if (item && item.isFirst) {
+                                                            return {
+                                                                weight: 'bold',
+                                                                size: 11
+                                                            };
+                                                        }
+                                                        return {};
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                document.getElementById('emergencyReadinessPageInfo').textContent = 
+                                    `Page ${page + 1} of ${totalPages}`;
+                                
+                                document.getElementById('emergencyReadinessPrev').disabled = page === 0;
+                                document.getElementById('emergencyReadinessPrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('emergencyReadinessPrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                
+                                document.getElementById('emergencyReadinessNext').disabled = page >= totalPages - 1;
+                                document.getElementById('emergencyReadinessNext').style.opacity = page >= totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('emergencyReadinessNext').style.cursor = page >= totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('emergencyReadinessPrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('emergencyReadinessNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div class="confidence-circle">
+                            @php
+                                $erScore = $emergencyReadiness['score'] ?? 0;
+                                $erDegree = round($erScore * 3.6);
+                            @endphp
+                            <div class="confidence-progress" style="background-image: conic-gradient(var(--success-green) 0deg {{ $erDegree }}deg, #E5E7EB {{ $erDegree }}deg 360deg)">
+                                <span class="confidence-value">{{ $erScore }}</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="metric-card investing-card">
@@ -175,19 +873,134 @@
                             <i class="fas fa-info-circle"></i>
                         </div>
                     </div>
-                    <div class="investing-content">
-                        <span class="investing-label">{{ $investingHabit['label'] ?? 'Not Set' }}</span>
-                        <div class="investing-progress">
-                            <div class="investing-bar">
-                                <div class="investing-fill" style="width: {{ $investingHabit['percentage'] ?? 0 }}%;"></div>
-                            </div>
+                    @if($onboardings->count() > 0)
+                        <div class="chart-container" style="height: 350px; padding: 1rem;">
+                            <canvas id="investingHabitChart"></canvas>
                         </div>
-                        <div style="text-align: center; margin-top: 10px;">
-                            <span class="badge badge-{{ $investingHabit['badge']['style'] ?? 'secondary' }}">
-                                {{ $investingHabit['badge']['text'] ?? 'Not Set' }}
-                            </span>
+                        <div class="chart-pagination" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; margin-top: 0.5rem;">
+                            <button id="investingHabitPrev" class="btn btn-sm btn-secondary" style="opacity: 0.5; cursor: not-allowed; padding: 0.25rem 0.5rem;" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="investingHabitPageInfo" style="font-size: 0.875rem; color: #6b7280;">Page 1</span>
+                            <button id="investingHabitNext" class="btn btn-sm btn-secondary" style="padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
-                    </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const ctx = document.getElementById('investingHabitChart');
+                            if (!ctx) return;
+
+                            const allData = @json($investingHabitChart);
+                            const itemsPerPage = 4;
+                            let currentPage = 0;
+                            let chartInstance = null;
+
+                            function renderChart(page) {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                const start = page * itemsPerPage;
+                                const end = start + itemsPerPage;
+                                const pageData = allData.slice(start, end);
+
+                                const labels = pageData.map(item => item.label);
+                                const values = pageData.map(item => item.value);
+                                const backgroundColors = pageData.map(item => item.backgroundColor);
+                                const borderColors = pageData.map(item => item.borderColor);
+
+                                if (chartInstance) {
+                                    chartInstance.destroy();
+                                }
+
+                                chartInstance = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Investing Habit Level',
+                                            data: values,
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            barThickness: 40,
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        barPercentage: 0.8,
+                                        categoryPercentage: 0.9,
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                padding: 12,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const value = context.parsed.y;
+                                                        let level = '';
+                                                        if (value === 0) level = 'Not Set';
+                                                        else if (value === 33) level = 'Beginner';
+                                                        else if (value === 66) level = 'Intermediate';
+                                                        else if (value === 100) level = 'Advanced';
+                                                        const item = pageData[context.dataIndex];
+                                                        const dateInfo = item.isFirst && item.fullDate ? ' (' + item.fullDate + ')' : '';
+                                                        return level + ' - ' + value + '%' + dateInfo;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                                // Update pagination controls
+                                document.getElementById('investingHabitPageInfo').textContent = `Page ${page + 1} of ${totalPages}`;
+                                document.getElementById('investingHabitPrev').disabled = page === 0;
+                                document.getElementById('investingHabitNext').disabled = page === totalPages - 1;
+                                
+                                document.getElementById('investingHabitPrev').style.opacity = page === 0 ? '0.5' : '1';
+                                document.getElementById('investingHabitPrev').style.cursor = page === 0 ? 'not-allowed' : 'pointer';
+                                document.getElementById('investingHabitNext').style.opacity = page === totalPages - 1 ? '0.5' : '1';
+                                document.getElementById('investingHabitNext').style.cursor = page === totalPages - 1 ? 'not-allowed' : 'pointer';
+                            }
+
+                            document.getElementById('investingHabitPrev').addEventListener('click', function() {
+                                if (currentPage > 0) {
+                                    currentPage--;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            document.getElementById('investingHabitNext').addEventListener('click', function() {
+                                const totalPages = Math.ceil(allData.length / itemsPerPage);
+                                if (currentPage < totalPages - 1) {
+                                    currentPage++;
+                                    renderChart(currentPage);
+                                }
+                            });
+
+                            renderChart(currentPage);
+                        });
+                        </script>
+                    @else
+                        <div style="padding: 2rem; text-align: center; color: #9ca3af;">
+                            <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <p>No onboarding data available yet.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -365,7 +1178,7 @@
     @if(auth()->user()->hasRole('client'))
         <script>
             window.WYNFULL = window.WYNFULL || {};
-            window.WYNFULL.onboardingCompleted = @json((bool)auth()->user()->onboarding_completed);
+            window.WYNFULL.onboardingCompleted = @json(!auth()->user()->shouldShowOnboarding());
             window.WYNFULL.onboardingCompleteRoute = @json(route('onboarding.complete'));
             window.WYNFULL.csrfToken = @json(csrf_token());
         </script>
